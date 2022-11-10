@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "../Include/dates.h"
 
 typedef struct ride {
     size_t id;
