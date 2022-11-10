@@ -2,10 +2,10 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "../Include/drivers.h"
-#include "../Include/users.h"
-#include "../Include/rides.h"
-#include "../Include/parser.h"
+#include "drivers.h"
+#include "users.h"
+#include "rides.h"
+#include "parser.h"
 
 int main(void){
 
@@ -14,25 +14,6 @@ int main(void){
             perror("Opening drivers.csv: try another path");
         }
         void **DRIVERS = parser(drivers, ";\n\r", process_driver);
-    //     printf(
-    //         "%s\n",
-    //         ((Driver *) DRIVERS[1])->account_status,
-    //         ((Driver *) DRIVERS[i])->name,
-    //         ((Driver *) DRIVERS[i])->birth_date
-    //         // ((Driver *) DRIVERS[i])-> ,
-    //         // ((Driver *) DRIVERS[i])-> ,
-    //         // ((Driver *) DRIVERS[i])->
-    //         // ((Driver *) DRIVERS[i])->
-    //         // ((Driver *) DRIVERS[i])->
-    //         // ((Driver *) DRIVERS[i])->
-    //     );
-    // }
-    // for(size_t i = 0; DRIVERS[i] != NULL; ++i) {
-    //     free(((Driver *) DRIVERS[i])->id);
-    //     free(((Driver *) DRIVERS[i])->name);
-    //     free(((Driver *) DRIVERS[i])->birth_date);
-    //     free(DRIVERS[i]);
-    // }
         free(DRIVERS);
         fclose(drivers);
 
@@ -49,6 +30,26 @@ int main(void){
             perror("Opening users.csv: try another path");
         }
         void **USERS = parser(users, ";\n\r", process_user);
+    //     for(size_t i = 0; i < 9 ; ++i) {
+    //         printf(
+    //             "%s;%s;%c;%c;%c;%c\n",
+    //             ((User *) USERS[i])->username,
+    //             ((User *) USERS[i])->name,
+    //             ((User *) USERS[i])->gender,
+    //             ((User *) USERS[i])->birth_date,
+    //             ((User *) USERS[i])->account_creation,
+    //             ((User *) USERS[i])->account_status
+    //     );
+    // }
+    // for(size_t i = 0; i < 9 ; ++i) {
+    //     free(((User *) USERS[i])->username);
+    //     free(((User *) USERS[i])->name);
+    //     free(((User *) USERS[i])->gender);
+    //     free(((User *) USERS[i])->birth_date);
+    //     free(((User *) USERS[i])->account_creation);
+    //     free(((User *) USERS[i])->account_status);
+    //     free(USERS[i]);
+    // }
         free(USERS);
         fclose(users);
 

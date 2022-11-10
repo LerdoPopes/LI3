@@ -7,15 +7,17 @@
 void *process_driver(char* const* info) {
     struct driver *dr = malloc(sizeof(struct driver));
 
+    size_t size = sizeof("DD/MM/AAAA");
+
     dr->id = atol(info[0]);
     dr->name = strdup(info[1]);
-    memmove(dr->birth_date, info[2], strlen(info[2]));
+    memmove(dr->birth_date, info[2], size);
     dr->gender = *info[3];
     dr->car_class = strdup(info[4]);
-    memmove(dr->license_plate, info[5], strlen(info[5]));
+    memmove(dr->license_plate, info[5], size);
     dr->city = strdup(info[6]);
-    memmove(dr->account_creation, info[7], strlen(info[7]));
-    // set_account_status(dr->account_status, info[8]);
+    memmove(dr->account_creation, info[7], size);
+    dr->account_status = info[8][0];
     free(dr);
     return dr;
 }

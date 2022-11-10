@@ -11,7 +11,7 @@ void **parser(FILE *to_parse, char const*rest, void* (*parse_func)(char* const*)
     void **result = malloc(sizeof(void*) * current);
 
     size_t i = 0;
-    short skip = 0;
+    char skip = 0;
 
     for(char buf[BUF] = { 0 }; fgets(buf, BUF, to_parse) != NULL;)
     {

@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "../Include/users.h"
+#include "users.h"
 
 void *process_user(char* const* info) 
 {
@@ -13,7 +13,8 @@ void *process_user(char* const* info)
     us->gender = *info[2];
     memmove(us->birth_date, info[3], strlen(info[3]));
     memmove(us->account_creation, info[4], strlen(info[4]));
-    
+    us->pay_method = info[5][1]; 
+    us->account_status = info[6][0]; //Para print disto, tem que se verificar a letra e dar print ao status com essa primeria letra 
     free(us);
     return us;
 }

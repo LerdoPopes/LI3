@@ -2,7 +2,8 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "../Include/rides.h"
+#include "rides.h"
+// #include "../Include/rides.h"
 
 void *process_ride(char* const* info) {
     struct ride *ri = malloc(sizeof(struct ride));
