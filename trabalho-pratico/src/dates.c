@@ -1,4 +1,4 @@
-#include "dates.h"
+#include "../Include/dates.h"
 
 short calc_Date(char* data){
     char* token;
@@ -32,7 +32,7 @@ short calc_Date(char* data){
 
 dateCombo* conv_Days_to_Date(short days){
     size_t i = 1950;
-    short month_diff[] = {0,31,59,90,120,151,181,212,243,273,304,334,366};
+    short month_diff[] = {0,31,59,90,120,151,181,212,243,273,304,334,365};
     dateCombo* dateCombo = malloc(sizeof(dateCombo));
     dateCombo->day = 1;
     dateCombo->month = 1;
@@ -46,9 +46,9 @@ dateCombo* conv_Days_to_Date(short days){
         days--;
             
     }
-    for (i = 0; month_diff[i+1]<days; i++);
+    for (i = 0; month_diff[i+1]<=days; i++);
     dateCombo->month += i;
     days-=month_diff[i];
     dateCombo->day += days;
-
+    return dateCombo;
 }

@@ -2,10 +2,10 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "drivers.h"
-#include "users.h"
-#include "rides.h"
-#include "parser.h"
+#include "../Include/drivers.h"
+#include "../Include/users.h"
+#include "../Include/rides.h"
+#include "../Include/parser.h"
 
 int main(void){
 
