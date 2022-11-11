@@ -1,4 +1,4 @@
-#include "../Include/dates.h"
+#include "dates.h"
 
 short calc_Date(char* data){
     char* token;

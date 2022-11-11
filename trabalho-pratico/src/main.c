@@ -30,26 +30,6 @@ int main(void){
             perror("Opening users.csv: try another path");
         }
         void **USERS = parser(users, ";\n\r", process_user);
-    //     for(size_t i = 0; i < 9 ; ++i) {
-    //         printf(
-    //             "%s;%s;%c;%c;%c;%c\n",
-    //             ((User *) USERS[i])->username,
-    //             ((User *) USERS[i])->name,
-    //             ((User *) USERS[i])->gender,
-    //             ((User *) USERS[i])->birth_date,
-    //             ((User *) USERS[i])->account_creation,
-    //             ((User *) USERS[i])->account_status
-    //     );
-    // }
-    // for(size_t i = 0; i < 9 ; ++i) {
-    //     free(((User *) USERS[i])->username);
-    //     free(((User *) USERS[i])->name);
-    //     free(((User *) USERS[i])->gender);
-    //     free(((User *) USERS[i])->birth_date);
-    //     free(((User *) USERS[i])->account_creation);
-    //     free(((User *) USERS[i])->account_status);
-    //     free(USERS[i]);
-    // }
         free(USERS);
         fclose(users);
 
