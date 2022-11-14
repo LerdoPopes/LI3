@@ -4,6 +4,18 @@
 #include <stdlib.h>
 #include "../Include/drivers.h"
 
+typedef struct driver {
+    size_t id;
+    char *name;
+    char birth_date[sizeof("AAAA/MM/DD")];
+    char gender;
+    char *car_class;
+    char license_plate[sizeof("00-00-AA")];
+    char *city;
+    char account_creation[sizeof("AAAA/MM/DD")];
+    char account_status;
+} Driver;
+
 void *process_driver(char* const* info) {
     struct driver *dr = malloc(sizeof(struct driver));
 
@@ -20,15 +32,3 @@ void *process_driver(char* const* info) {
     dr->account_status = info[8][0];
     return dr;
 }
-
-// char *set_account_status(int dr,const void* info)
-// {
-//     if(is_active(info)) dr = active;
-//     dr == inactive;
-// }
-
-// int is_active(char* const* info)
-// {
-//     if(*info[1] == "active") return 1;
-//     return 0;
-// }

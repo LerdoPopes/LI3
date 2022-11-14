@@ -12,7 +12,6 @@ void *parser(FILE *to_parse, char const*rest, void* (*parse_func)(char* const*),
     void *hashtable = NULL;
     size_t i = 0;
     char skip = 0;
-    //int k = 0;
 
     for(char buf[BUF] = { 0 }; fgets(buf, BUF, to_parse) != NULL;)
     {
@@ -38,9 +37,7 @@ void *parser(FILE *to_parse, char const*rest, void* (*parse_func)(char* const*),
     }
     result[i] = NULL;
     void* final = arrange_func(hashtable,result);
-    // for(int j = 0; j < 15; j++){
-    //     printf("%s,%s,%c,%s,%s,%s,%c\n",result[j][0],us->name,us->birth_date,us->account_creation,us->pay_method,us->account_status);
-    // } 
+
     return final;
 }
 
