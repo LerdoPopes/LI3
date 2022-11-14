@@ -5,11 +5,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void **parser(FILE *to_parse, char const*rest, void* (*parse_func)(char* const*))
+void *parser(FILE *to_parse, char const*rest, void* (*parse_func)(char* const*), void*(*organize_func)(void* , void*), void*(arrange_func)(void*, void**))
 {
     size_t current = 128;
     void **result = malloc(sizeof(void*) * current);
-
+    void *hashtable = NULL;
     size_t i = 0;
     char skip = 0;
     //int k = 0;
@@ -27,18 +27,21 @@ void **parser(FILE *to_parse, char const*rest, void* (*parse_func)(char* const*)
         for(char *token = buf, *aux = buf; token != NULL; token = aux) {
             token = strsep(&aux, rest);
             save[j++] = token;
+
         }
 
-        if(i + 1 == current) {
-            result = realloc(result, (current *= 2) * sizeof(void*));
+        if(i + 1 == current) { 
+            result = realloc(result, (current *= 2) * sizeof(void*)); 
         }
-        result[i++] = parse_func(save);
+        result[i++] = parse_func(save); 
+        hashtable = organize_func(hashtable, result[i-1]);
     }
-    // for(int j = 0; j < 15; j++){
-    //      printf("%s,%s,%c,%s,%s,%s,%c\n",result[j][0],us->name,us->birth_date,us->account_creation,us->pay_method,us->account_status);
-    // } 
     result[i] = NULL;
-    return result;
+    void* final = arrange_func(hashtable,result);
+    // for(int j = 0; j < 15; j++){
+    //     printf("%s,%s,%c,%s,%s,%s,%c\n",result[j][0],us->name,us->birth_date,us->account_creation,us->pay_method,us->account_status);
+    // } 
+    return final;
 }
 
 

@@ -7,7 +7,7 @@ short calc_Date(char* data){
     short month_diff[] = {0,31,59,90,120,151,181,212,243,273,304,334};
     char post_Fev = 0;
     while((token = strtok_r(data,"/",&data))!= NULL){
-        short date = atol(token);
+        int date = atol(token);
         if(cycle == 0){
             n_days += date - 1;
         }

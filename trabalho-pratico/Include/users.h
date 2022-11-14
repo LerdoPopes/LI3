@@ -8,15 +8,15 @@ enum method {
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <glib.h>
 
-typedef struct user {
-    char *username;
-    char *name;
-    char gender;
-    char birth_date[sizeof("AAAA/MM/DD")];
-    char account_creation[sizeof("AAAA/MM/DD")];
-    enum method pay_method;
-    char account_status;
-} User;
 
 void *process_user(char* const* info);
+
+void *organize_user(void* gtable,void* user);
+
+void *arrange_user(void* gtable,void** array);
+
+void free_user(void* user);
+
+void print_user(char* key, void* usersDB);

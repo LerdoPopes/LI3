@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "drivers.h"
+#include "../Include/drivers.h"
 
 void *process_driver(char* const* info) {
     struct driver *dr = malloc(sizeof(struct driver));
@@ -18,7 +18,6 @@ void *process_driver(char* const* info) {
     dr->city = strdup(info[6]);
     memmove(dr->account_creation, info[7], size);
     dr->account_status = info[8][0];
-    free(dr);
     return dr;
 }
 
