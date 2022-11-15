@@ -6,7 +6,7 @@
 #include "../Include/users.h"
 #include "../Include/rides.h"
 #include "../Include/parser.h"
-#include "../Include/dates.h"
+
 
 int main(void){
 
@@ -15,7 +15,6 @@ int main(void){
             perror("Opening users.csv: try another path");
         }
         void *USERS = parser(users, ";\n\r", process_user,organize_user,arrange_user);
-        free_user(USERS);
         fclose(users);
     
     FILE *drivers = fopen("./drivers.csv", "r");
@@ -29,10 +28,10 @@ int main(void){
         if(rides == NULL) {
             perror("Opening rides.csv: try another path");
         } 
-        //void **RIDES = parser(rides, ";\n\r", process_ride);
-        //free(RIDES);
+        void *RIDES = parser(rides, ";\n\r", process_ride,organize_rides,arrange_rides);
         fclose(rides);
 
+    free_rides(RIDES);
     free_driver(DRIVERS);
     free_user(USERS);
 }
