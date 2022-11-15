@@ -1,9 +1,3 @@
-enum method {
-    cash = 'a',
-    credit_card = 'r',
-    debit_card = 'e'
-};
-
 #include <math.h>
 #include <string.h>
 #include <stdio.h>

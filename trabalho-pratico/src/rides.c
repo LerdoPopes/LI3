@@ -17,6 +17,7 @@ typedef struct ride {
     char *comment;
 } Ride;
 
+
 void *process_ride(char* const* info) {
     struct ride *ri = malloc(sizeof(struct ride));
 
