@@ -1,5 +1,11 @@
 #include "../Include/dates.h"
 
+typedef struct dateCombo{
+    short day;
+    short month;
+    short year;
+} dateCombo;
+
 short calc_Date(char* data){
     char* token;
     char cycle = 0;

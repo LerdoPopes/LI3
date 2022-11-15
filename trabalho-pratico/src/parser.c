@@ -12,7 +12,6 @@ void *parser(FILE *to_parse, char const*rest,  void* (*parse_func)(char* const*)
     void *hashtable = NULL;
     size_t i = 0;
     char skip = 0;
-    //int k = 0;
 
     for(char buf[BUF] = { 0 }; fgets(buf, BUF, to_parse) != NULL;)
     {
@@ -37,7 +36,9 @@ void *parser(FILE *to_parse, char const*rest,  void* (*parse_func)(char* const*)
         hashtable = organize_func(hashtable, result[i-1]);
     }
     result[i] = NULL;
-    void* final = arrange_func(hashtable,result); 
+
+    void* final = arrange_func(hashtable,result);
+
     return final;
 }
 

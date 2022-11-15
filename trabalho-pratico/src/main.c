@@ -8,7 +8,6 @@
 #include "../Include/parser.h"
 #include "../Include/dates.h"
 
-
 int main(void){
 
     FILE *users = fopen("./users.csv", "r");

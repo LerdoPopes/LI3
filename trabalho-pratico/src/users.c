@@ -5,6 +5,12 @@
 #include "../Include/users.h"
 #include "../Include/dates.h"
 
+enum method {
+    cash = 'a',
+    credit_card = 'r',
+    debit_card = 'e'
+};
+
 typedef struct user {
     char *username;
     char *name;

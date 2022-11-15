@@ -9,11 +9,16 @@
 typedef struct driver {
     size_t id;
     char *name;
+<<<<<<< HEAD
     short birth_date;
+=======
+    char birth_date[sizeof("AAAA/MM/DD")];
+>>>>>>> e67494dfd7acf79cd7d412f148abc5e60cbd85cc
     char gender;
     char *car_class;
     char license_plate[sizeof("00-00-AA")];
     char *city;
+<<<<<<< HEAD
     short account_creation;
     char account_status;
 } Driver;
@@ -25,6 +30,12 @@ typedef struct data_base_drivers{
 } DB_drivers;
 
 
+=======
+    char account_creation[sizeof("AAAA/MM/DD")];
+    char account_status;
+} Driver;
+
+>>>>>>> e67494dfd7acf79cd7d412f148abc5e60cbd85cc
 void *process_driver(char* const* info) {
     struct driver *dr = malloc(sizeof(struct driver));
 
@@ -41,6 +52,7 @@ void *process_driver(char* const* info) {
     dr->account_status = info[8][0];
     return dr;
 }
+<<<<<<< HEAD
 
 void *organize_driver(void* gtablep,void* driverp){
     Driver* driver = (Driver*) driverp;
@@ -75,3 +87,5 @@ void free_driver(void* driver){
     GHashTable* gtable = (GHashTable*) db_drivers->drivers_hashtable;
     g_hash_table_destroy(gtable);
 }
+=======
+>>>>>>> e67494dfd7acf79cd7d412f148abc5e60cbd85cc

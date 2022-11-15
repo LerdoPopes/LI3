@@ -2,7 +2,6 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-//#include "rides.h"
 #include "../Include/rides.h"
 
 typedef struct ride {
