@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void *parser(FILE *to_parse, char const*rest, void* (*parse_func)(char* const*), void*(*organize_func)(void* , void*), void*(arrange_func)(void*, void**))
+void *parser(FILE *to_parse, char const*rest,  void* (*parse_func)(char* const*), void*(*organize_func)(void* , void*), void*(arrange_func)(void*, void**))
 {
     size_t current = 128;
     void **result = malloc(sizeof(void*) * current);
@@ -19,7 +19,7 @@ void *parser(FILE *to_parse, char const*rest, void* (*parse_func)(char* const*),
         if(skip == 0)
         {
             skip++;
-            continue;
+            continue/*to fuck urself*/;
         }
         char *save[12] = { 0 };
         
@@ -37,10 +37,7 @@ void *parser(FILE *to_parse, char const*rest, void* (*parse_func)(char* const*),
         hashtable = organize_func(hashtable, result[i-1]);
     }
     result[i] = NULL;
-    void* final = arrange_func(hashtable,result);
-    // for(int j = 0; j < 15; j++){
-    //     printf("%s,%s,%c,%s,%s,%s,%c\n",result[j][0],us->name,us->birth_date,us->account_creation,us->pay_method,us->account_status);
-    // } 
+    void* final = arrange_func(hashtable,result); 
     return final;
 }
 

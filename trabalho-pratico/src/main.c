@@ -11,12 +11,19 @@
 
 int main(void){
 
+    FILE *users = fopen("./users.csv", "r");
+        if(users == NULL) {
+            perror("Opening users.csv: try another path");
+        }
+        void *USERS = parser(users, ";\n\r", process_user,organize_user,arrange_user);
+        free_user(USERS);
+        fclose(users);
+    
     FILE *drivers = fopen("./drivers.csv", "r");
         if(drivers == NULL) {
             perror("Opening drivers.csv: try another path");
         }
-        //void **DRIVERS = parser(drivers, ";\n\r", process_driver);
-        //free(DRIVERS);
+        void *DRIVERS = parser(drivers, ";\n\r", process_driver,organize_driver,arrange_driver);
         fclose(drivers);
 
     FILE *rides = fopen("./rides.csv", "r");
@@ -27,14 +34,6 @@ int main(void){
         //free(RIDES);
         fclose(rides);
 
-    FILE *users = fopen("./users.csv", "r");
-        if(users == NULL) {
-            perror("Opening users.csv: try another path");
-        }
-        void *USERS = parser(users, ";\n\r", process_user,organize_user,arrange_user);
-        char username[] = "LuciaPinto36";
-        print_user(username, USERS);
-        free_user(USERS);
-        fclose(users);
-
+    free_driver(DRIVERS);
+    free_user(USERS);
 }
