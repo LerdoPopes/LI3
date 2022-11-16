@@ -5,11 +5,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void *parser(FILE *to_parse, char const*rest,  void* (*parse_func)(char* const*), void*(*organize_func)(void* , void*), void*(arrange_func)(void*, void**))
+void *parser(FILE *to_parse, char const*rest,  void* (*parse_func)(char* const*), void*(*organize_func)(void**), void*(arrange_func)(void*, void**))
 {
     size_t current = 128;
     void **result = malloc(sizeof(void*) * current);
-    void *hashtable = NULL;
     size_t i = 0;
     char skip = 0;
 
@@ -33,13 +32,9 @@ void *parser(FILE *to_parse, char const*rest,  void* (*parse_func)(char* const*)
             result = realloc(result, (current *= 2) * sizeof(void*)); 
         }
         result[i++] = parse_func(save); 
-        hashtable = organize_func(hashtable, result[i-1]);
     }
     result[i] = NULL;
-
-    void* final = arrange_func(hashtable,result);
-
-    return final;
+    return organize_func(result);
 }
 
 

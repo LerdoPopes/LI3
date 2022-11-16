@@ -10,9 +10,7 @@
 
 void *process_driver(char* const* info); 
 
-void *organize_driver(void* gtable,void* driver);
-
-void *arrange_driver(void* gtable,void** array);
+void *organize_driver(void** results);
 
 void free_driver(void* driver);
 

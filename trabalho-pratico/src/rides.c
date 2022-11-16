@@ -6,7 +6,7 @@
 #include "../Include/rides.h"
 
 typedef struct ride {
-    size_t id;
+    int id;
     short date;
     size_t driver; 
     char *user;
@@ -41,22 +41,16 @@ void *process_ride(char* const* info) {
     return ri;
 }
 
-void *organize_rides(void* gtablep,void* ridesp){
-    Rides* rides = (Rides*) ridesp;
-    if(gtablep == NULL){
-        GHashTable* hashtable = g_hash_table_new(g_str_hash,g_str_equal);
-        g_hash_table_insert(hashtable,&(rides->id),rides);
-        return hashtable;
+void *organize_rides(void** results){
+    GHashTable* gtable = g_hash_table_new(g_int_hash,g_str_equal);
+    for (size_t i = 0; results[i]; i++)
+    {
+        Rides* rides = (Rides*) results[i];
+        g_hash_table_insert(gtable,&(rides->id),rides);
     }
-    GHashTable* gtable = (GHashTable*) gtablep;
-    g_hash_table_insert(gtable,&(rides->id),rides);
-    return gtable;
-}
-
-void *arrange_rides(void* gtable,void** array){
     DB_rides* db_rides = malloc(sizeof(DB_rides));
-    db_rides->rides_array = array;
-    db_rides->rides_hashtable = (GHashTable*) gtable;
+    db_rides->rides_array = results;
+    db_rides->rides_hashtable = gtable;
     return db_rides;
 }
 

@@ -7,9 +7,7 @@
 
 void *process_user(char* const* info);
 
-void *organize_user(void* gtable,void* user);
-
-void *arrange_user(void* gtable,void** array);
+void *organize_user(void** user);
 
 void free_user(void* user);
 

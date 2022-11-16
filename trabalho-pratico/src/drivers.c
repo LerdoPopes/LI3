@@ -7,7 +7,7 @@
 #include "../Include/drivers.h"
 
 typedef struct driver {
-    size_t id;
+    int id;
     char *name;
     short birth_date;
     char gender;
@@ -41,22 +41,16 @@ void *process_driver(char* const* info) {
     return dr;
 }
 
-void *organize_driver(void* gtablep,void* driverp){
-    Driver* driver = (Driver*) driverp;
-    if(gtablep == NULL){
-        GHashTable* hashtable = g_hash_table_new(g_str_hash,g_str_equal);
-        g_hash_table_insert(hashtable,&(driver->id),driver);
-        return hashtable;
+void *organize_driver(void** results){
+    GHashTable* gtable = g_hash_table_new(g_int_hash,g_str_equal);
+    for (size_t i = 0; results[i]; i++)
+    {
+        Driver* driver = (Driver*) results[i];
+        g_hash_table_insert(gtable,&(driver->id),driver);
     }
-    GHashTable* gtable = (GHashTable*) gtablep;
-    g_hash_table_insert(gtable,&(driver->id),driver);
-    return gtable;
-}
-
-void *arrange_driver(void* gtable,void** array){
     DB_drivers* db_drivers = malloc(sizeof(DB_drivers));
-    db_drivers->drivers_array = array;
-    db_drivers->drivers_hashtable = (GHashTable*) gtable;
+    db_drivers->drivers_array = results;
+    db_drivers->drivers_hashtable = gtable;
     return db_drivers;
 }
 

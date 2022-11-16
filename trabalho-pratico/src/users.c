@@ -44,22 +44,17 @@ void *process_user(char* const* info)
     return us;
 }
 
-void *organize_user(void* gtablep,void* userp){
-    User* user = (User*) userp;
-    if(gtablep == NULL){
-        GHashTable* hashtable = g_hash_table_new(g_str_hash,g_str_equal);
-        g_hash_table_insert(hashtable,user->username,user);
-        return hashtable;
+void *organize_user(void** results){
+    GHashTable* gtable = g_hash_table_new(g_str_hash,g_str_equal);
+    // g_hash_table_insert(hashtable,user->username,user);
+      for (size_t i = 0; results[i]; i++)
+    {
+        User* user = (User*) results[i];
+        g_hash_table_insert(gtable,user->username,user);  
     }
-    GHashTable* gtable = (GHashTable*) gtablep;
-    g_hash_table_insert(gtable,user->username,user);
-    return gtable;
-}
-
-void *arrange_user(void* gtable,void** array){
     DB_users* db_users = malloc(sizeof(DB_users));
-    db_users->users_array = array;
-    db_users->users_hashtable = (GHashTable*) gtable;
+    db_users->users_array = results;
+    db_users->users_hashtable = gtable;
     return db_users;
 }
 

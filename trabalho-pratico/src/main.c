@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "../Include/drivers.h"
 #include "../Include/users.h"
 #include "../Include/rides.h"
@@ -34,4 +35,8 @@ int main(void){
     free_rides(RIDES);
     free_driver(DRIVERS);
     free_user(USERS);
+
+    int time = clock();
+    printf("%f\n",(float)time/CLOCKS_PER_SEC);
+    
 }
