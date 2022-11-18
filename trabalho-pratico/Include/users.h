@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <glib.h>
 
-
 void *process_user(char* const* info);
 
 void *organize_user(void** user);

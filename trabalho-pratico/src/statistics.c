@@ -4,4 +4,4 @@
 #include <stdlib.h>
 #include <glib.h>
 
-void organize_statistics()
+void organize_statistics();

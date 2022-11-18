@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void *parser(FILE *to_parse, char const*rest,  void* (*parse_func)(char* const*), void*(*organize_func)(void**), void*(arrange_func)(void*, void**))
+void *parser(FILE *to_parse, char const*rest,  void* (*parse_func)(char* const*), void*(*organize_func)(void**))
 {
     size_t current = 128;
     void **result = malloc(sizeof(void*) * current);

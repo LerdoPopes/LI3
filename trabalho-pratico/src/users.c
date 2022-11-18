@@ -78,3 +78,21 @@ void print_user(char* key, void* usersDB){
     User* user = (User*) guser;
     printf("%s,%s,%c,%u,%u\n",user->username,user->name,user->gender,user->birth_date,user->account_creation);
 }
+
+void *user_get_name(char *key, void* usersDB){
+    DB_users* db_users = (DB_users*) usersDB;
+    gconstpointer user_name = (gconstpointer) key;
+    gpointer guser = g_hash_table_lookup(db_users->users_hashtable,user_name);
+    User* user = (User*) guser;
+    char *name_copy;
+    return strcpy(name_copy,user->name);
+}
+
+char user_get_gender(char *key, void* usersDB){
+    DB_users* db_users = (DB_users*) usersDB;
+    gconstpointer user_name = (gconstpointer) key;
+    gpointer guser = g_hash_table_lookup(db_users->users_hashtable,user_name);
+    User* user = (User*) guser;
+    return user->gender;
+}
+

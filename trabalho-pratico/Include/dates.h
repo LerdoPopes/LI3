@@ -11,5 +11,6 @@ typedef struct dateCombo{
 
 short calc_Date(char* data);
 
-dateCombo* conv_Days_to_Date(short days);
+short idade(char *data_atual,char *birth_date);
 
+// dateCombo* conv_Days_to_Date(short days);

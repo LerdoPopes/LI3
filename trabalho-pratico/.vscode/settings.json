@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "drivers.h": "c",
+        "rides.h": "c",
+        "users.h": "c",
+        "dates.h": "c"
+    }
+}

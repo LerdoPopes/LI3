@@ -1,8 +1,3 @@
-//enum status{
-//    active = 'a', 
-//    inactive = 'i'
-//};
-
 #include <math.h>
 #include <string.h>
 #include <stdio.h>

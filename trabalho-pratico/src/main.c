@@ -15,21 +15,21 @@ int main(void){
         if(users == NULL) {
             perror("Opening users.csv: try another path");
         }
-        void *USERS = parser(users, ";\n\r", process_user,organize_user,arrange_user);
+        void *USERS = parser(users, ";\n\r", process_user,organize_user);
         fclose(users);
     
     FILE *drivers = fopen("./drivers.csv", "r");
         if(drivers == NULL) {
             perror("Opening drivers.csv: try another path");
         }
-        void *DRIVERS = parser(drivers, ";\n\r", process_driver,organize_driver,arrange_driver);
+        void *DRIVERS = parser(drivers, ";\n\r", process_driver,organize_driver);
         fclose(drivers);
 
     FILE *rides = fopen("./rides.csv", "r");
         if(rides == NULL) {
             perror("Opening rides.csv: try another path");
         } 
-        void *RIDES = parser(rides, ";\n\r", process_ride,organize_rides,arrange_rides);
+        void *RIDES = parser(rides, ";\n\r", process_ride,organize_rides);
         fclose(rides);
 
     free_rides(RIDES);

@@ -43,12 +43,18 @@ dateCombo* conv_Days_to_Date(short days){
     }
     dateCombo->year = i;
     if ((dateCombo->year)%4==0 && days>59){
-        days--;
-            
+        days--;     
     }
     for (i = 0; month_diff[i+1]<=days; i++);
     dateCombo->month += i;
     days-=month_diff[i];
     dateCombo->day += days;
     return dateCombo;
+}
+
+short idade(char *data_atual,char *birth_date){
+    short i = (calc_Date(data_atual)-calc_Date(birth_date));
+    if((i%365) == 0)
+        return i;
+    else return i - 1;
 }
