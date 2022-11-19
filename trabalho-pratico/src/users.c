@@ -11,7 +11,7 @@ enum method {
     debit_card = 'e'
 };
 
-typedef struct user {
+struct user{
     char *username;
     char *name;
     char gender;
@@ -19,7 +19,8 @@ typedef struct user {
     short account_creation;
     enum method pay_method;
     char account_status;
-} User;
+    short idade;
+};
 
 typedef struct data_base_users{
     void** users_array;
@@ -79,20 +80,35 @@ void print_user(char* key, void* usersDB){
     printf("%s,%s,%c,%u,%u\n",user->username,user->name,user->gender,user->birth_date,user->account_creation);
 }
 
-void *user_get_name(char *key, void* usersDB){
-    DB_users* db_users = (DB_users*) usersDB;
-    gconstpointer user_name = (gconstpointer) key;
-    gpointer guser = g_hash_table_lookup(db_users->users_hashtable,user_name);
-    User* user = (User*) guser;
-    char *name_copy;
-    return strcpy(name_copy,user->name);
+char *user_get_username(struct user *u){
+     char *user_nome = (char *)malloc(255 * sizeof(char));
+     strcpy(user_nome,u->username);    
+     return user_nome;
 }
 
-char user_get_gender(char *key, void* usersDB){
-    DB_users* db_users = (DB_users*) usersDB;
-    gconstpointer user_name = (gconstpointer) key;
-    gpointer guser = g_hash_table_lookup(db_users->users_hashtable,user_name);
-    User* user = (User*) guser;
-    return user->gender;
+char *user_get_name(struct user *u){
+     char *nome = (char *)malloc(255 * sizeof(char));
+     strcpy(nome,u->name);    
+     return nome;
 }
 
+char user_get_gender(struct user *u){
+    return u->gender;
+}
+
+char user_get_birth_date(struct user *u){
+    return u->birth_date;
+}
+
+short user_get_account_creation(struct user *u){
+    return u->account_creation;
+}
+
+char user_get_account_status(struct user *u){
+    return u->account_status;
+}
+
+short user_get_idade(struct user *u,char *data_atual,char *birth_date){
+     u->idade = idade(data_atual,birth_date);
+     return u->idade;
+}

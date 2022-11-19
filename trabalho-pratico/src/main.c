@@ -7,7 +7,7 @@
 #include "../Include/users.h"
 #include "../Include/rides.h"
 #include "../Include/parser.h"
-
+#include "../Include/query1.h"
 
 int main(void){
 
@@ -32,9 +32,11 @@ int main(void){
         void *RIDES = parser(rides, ";\n\r", process_ride,organize_rides);
         fclose(rides);
 
+    query1("1",DRIVERS);
     free_rides(RIDES);
     free_driver(DRIVERS);
     free_user(USERS);
+   
 
     int time = clock();
     printf("%f\n",(float)time/CLOCKS_PER_SEC);
