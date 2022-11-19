@@ -41,3 +41,8 @@ int main(){
     return n_days;
     
 }
+
+
+void * (*)(void **, void *, void *, void (*)(void *, void *, void *, void *, void *), void * (*)(void *, void *, void *, void *))
+
+void * (*)(void **, void *, void *, void * (*)(void *, void *, void *, void *, void *), void * (*)(void *, void *, void *, void *))

@@ -4,4 +4,5 @@
 #include <stdlib.h>
 // #include "../Include/dates.h"
 
-void *parser(FILE *to_parse, char *rest, void* (*parse_func)(char* const*), void*(*organize_func)(void**), void*(arrange_func)(void*, void**));
+void *parser(FILE *to_parse, char const*rest,  void* (*parse_func)(char* const*), void* (organize_func)(void **, void *, void *, void (*)(void *, void *, void *, void *, void *), void * (*)(void *, void *, void *, void *)), void* struct_drivers, void* struct_users, void(set_users_stats)(void*,void*,void*,void*, void*), void*(set_driver_stats)(void*,void*,void*, void*));
+

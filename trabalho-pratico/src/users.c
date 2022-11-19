@@ -19,6 +19,10 @@ typedef struct user {
     short account_creation;
     enum method pay_method;
     char account_status;
+    short trips;
+    float total_spent;
+    short total_dist;
+    short aval;
 } User;
 
 typedef struct data_base_users{
@@ -35,16 +39,17 @@ void *process_user(char* const* info)
     us->name = strdup(info[1]);
     us->gender = *info[2];
     us->birth_date = calc_Date(info[3]);
-    //char *bla = malloc(sizeof("11/11/1111"));
     us->account_creation = calc_Date(info[4]);
-    //memmove(us->birth_date, info[3], strlen(info[3]));
-    // memmove(us->account_creation, info[4], strlen(info[4]));
     us->pay_method = info[5][1]; 
     us->account_status = info[6][0]; //Para print disto, tem que se verificar a letra e dar print ao status com essa primeria letra 
+    us->aval = 0;
+    us->total_dist = 0;
+    us->total_spent = 0;
+    us->trips = 0;
     return us;
 }
 
-void *organize_user(void** results){
+void *organize_user(void** results, void* useless, void* useless2, void(useless3)(void*,void*,void*,void*,void*), void*(useless4)(void*,void*,void*,void*)){
     GHashTable* gtable = g_hash_table_new(g_str_hash,g_str_equal);
     // g_hash_table_insert(hashtable,user->username,user);
       for (size_t i = 0; results[i]; i++)
@@ -71,10 +76,23 @@ void free_user(void* user){
     g_hash_table_destroy(gtable);
 }
 
-void print_user(char* key, void* usersDB){
+void print_user(void* key, void* usersDB){
     DB_users* db_users = (DB_users*) usersDB;
     gconstpointer user_name = (gconstpointer) key;
     gpointer guser = g_hash_table_lookup(db_users->users_hashtable,user_name);
     User* user = (User*) guser;
     printf("%s,%s,%c,%u,%u\n",user->username,user->name,user->gender,user->birth_date,user->account_creation);
+}
+
+void set_user_stats(void* dbUsers, void* distp, void* avalp, void* username, void* moneyp){
+    DB_users* db_users = (DB_users*) dbUsers;
+    gpointer userp = g_hash_table_lookup(db_users->users_hashtable,username);
+    User* user = (User*) userp;
+    short* dist = (short*) distp;
+    short* aval = (short*) avalp;
+    float* money = (float*) moneyp;
+    user->total_dist += *dist;
+    user->aval += *aval;
+    user->trips++;
+    user->total_spent += *money;
 }
