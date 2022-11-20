@@ -31,20 +31,20 @@ int main(void){
         } 
         void *RIDES = parser(rides, ";\n\r", process_ride,organize_rides,DRIVERS,USERS,set_user_stats,set_driver_stats);
         fclose(rides);
-    //print_driver(DRIVERS);
     
-    FILE *queries = fopen("./input.txt", "r");
-        if(queries == NULL) {
-            perror("Opening input.txt: try another path");
-        }
-        void* QUERIES = parser(queries, " \n\r", process_querie, organize_querie,NULL,NULL,NULL,NULL) 
-
+        // FILE *queries = fopen("./input.txt", "r");
+        //     if(queries == NULL) {
+        //         perror("Opening input.txt: try another path");
+        //     }
+        //     void* QUERIES = parser(queries, " \n\r", process_querie, organize_querie,NULL,NULL,NULL,NULL);
     //query1("1",DRIVERS);
     free_rides(RIDES);
     free_driver(DRIVERS);
     free_user(USERS);
 
     int time = clock();
-    printf("%f\n",(float)time/CLOCKS_PER_SEC);
-    
+    printf("%f\n",(float)time/CLOCKS_PER_SEC);  
+    return 0;
 }
+
+
