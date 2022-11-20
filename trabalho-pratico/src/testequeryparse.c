@@ -31,3 +31,17 @@ void *parseQueries(FILE *queries){
     return all;
 
 }
+
+void q_printall(Querys *all){
+    int i = 0;
+    printf("%d\n", all[i].id);
+    while (all[i].line != 1){
+        printf("indice: %d\n",all[i].line);
+        printf("n: %c\n",all[i].queriex);
+        printf("argument: %s\n",all[i].comando);
+        printf("------------------------------------------------------------------\n");
+        i++;
+    }
+    printf("done\n");
+
+} 
