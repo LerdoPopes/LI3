@@ -20,7 +20,8 @@ struct driver{
     short trips;
     short aval;
     float total_spent;
-} Driver;
+    short aval_m;
+} ;
 
 
 typedef struct data_base_drivers{
@@ -47,6 +48,7 @@ void *process_driver(char* const* info) {
     dr->total_dist = 0;
     dr->total_spent = 0;
     dr->trips = 0;
+    dr->aval_m = 0;
     return dr;
 }
 
@@ -88,17 +90,19 @@ void* set_driver_stats(void* dbDrivers, void* distp, void* avalp, void* id){
     driver->total_dist += *dist;
     driver->aval += *aval;
     driver->trips++;
+    float* money = malloc(sizeof(float));
     if(driver->car_class[0] == 'g' || driver->car_class[0] == 'G' ){
         driver->total_spent += (4+0.79*driver->total_dist); 
+        *money = (4+0.79*driver->total_dist);
     }
     else if(driver->car_class[0] == 'p' || driver->car_class[0] == 'P' ){
         driver->total_spent += (5.2+0.94*driver->total_dist);
+        *money = (5.2+0.94*driver->total_dist);
     }
     else{
         driver->total_spent += (3*0.62*driver->total_dist);
+        *money = (3*0.62*driver->total_dist);
     }
-    float* money = malloc(sizeof(float));
-    *money = 1;
     return money;
 }
 
@@ -158,10 +162,10 @@ char driver_get_account_status(struct driver *d) {
     return d->account_status;
 }
 
-short driver_get_idade(struct driver *d,char *data_atual,char *birth_date){
-     d->idade = idade(data_atual,birth_date);
-     return d->idade;
-}
+// short driver_get_idade(struct driver *d,char *data_atual,char *birth_date){
+//      d->idade = idade(data_atual,birth_date);
+//      return d->idade;
+// }
 
 
 // char *get_name_driver(void *hash_drivers, const void *key){

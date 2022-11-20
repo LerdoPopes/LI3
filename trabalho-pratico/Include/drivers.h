@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+typedef struct driver Driver;
+
 void *process_driver(char* const* info); 
 
 void *organize_driver(void** results, void* useless, void* useless2, void(useless3)(void*,void*,void*,void*,void*), void*(useless4)(void*,void*,void*,void*));
@@ -31,5 +33,5 @@ short driver_get_account_creation(struct driver *d);
 
 char driver_get_account_status(struct driver *d);
 
-short driver_get_idade(struct driver *d,char *data_atual,char *birth_date);
+// short driver_get_idade(struct driver *d,char *data_atual,char *birth_date);
 

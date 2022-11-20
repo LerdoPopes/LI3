@@ -35,7 +35,6 @@ void *parser(FILE *to_parse, char const*rest,  void* (*parse_func)(char* const*)
     }
     result[i] = NULL;
     return organize_func(result,struct_drivers,struct_users,set_users_stats,set_driver_stats);
-    }
-//}
+}
 
 // /*, void* (organize_func2)(void** ,void* , void*, void*, void*), void* struct_drivers, void* struct_users, void*(set_users_stats)(void*,void*), void*(set_driver_stats)(void*,void*)

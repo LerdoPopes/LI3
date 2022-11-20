@@ -52,9 +52,15 @@ dateCombo* conv_Days_to_Date(short days){
     return dateCombo;
 }
 
-short idade(char *data_atual,char *birth_date){
-    short i = (calc_Date(data_atual)-calc_Date(birth_date));
-    if((i%365) == 0)
-        return i;
-    else return i - 1;
+short idade(short birth_date){
+    dateCombo* dateCombo = conv_Days_to_Date(birth_date);
+    short idade = 0;
+    if (dateCombo->month>10 || dateCombo->month==10 && dateCombo->day>=9)
+    {
+        idade = 2022-dateCombo->year;
+    }
+    else{
+        idade = 2022-dateCombo->year-1;
+    }
+    else return idade;
 }

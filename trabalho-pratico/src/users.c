@@ -23,7 +23,7 @@ struct user{
     float total_spent;
     short total_dist;
     short aval;
-} User;
+};
 
 typedef struct data_base_users{
     void** users_array;
@@ -126,7 +126,7 @@ char user_get_account_status(struct user *u){
     return u->account_status;
 }
 
-short user_get_idade(struct user *u,char *data_atual,char *birth_date){
-     u->idade = idade(data_atual,birth_date);
-     return u->idade;
-}
+// short user_get_idade(struct user *u,char *data_atual,char *birth_date){
+//      u->idade = idade(data_atual,birth_date);
+//      return u->idade;
+// }

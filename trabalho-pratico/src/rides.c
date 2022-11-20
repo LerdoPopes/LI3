@@ -46,7 +46,7 @@ void *organize_rides(void** results, void* struct_drivers, void* struct_users, v
     GHashTable* gtable = g_hash_table_new(g_int_hash,g_str_equal);
     for (size_t i = 0; results[i]; i++)
     {
-        Rides* rides = (Rides*) results[i];
+        Ride* rides = (Ride*) results[i];
         short dist = rides->distance;
         short score_u = rides->score_user;
         short score_d = rides->score_driver;
@@ -56,7 +56,6 @@ void *organize_rides(void** results, void* struct_drivers, void* struct_users, v
         set_users_stats(struct_users,&dist,&score_u,username,money);
         free(money);
         free(username);
-        Ride* rides = (Ride*) results[i];
         g_hash_table_insert(gtable,&(rides->id),rides);
     }
     DB_rides* db_rides = malloc(sizeof(DB_rides));

@@ -33,6 +33,12 @@ int main(void){
         fclose(rides);
     //print_driver(DRIVERS);
     
+    FILE *queries = fopen("./input.txt", "r");
+        if(queries == NULL) {
+            perror("Opening input.txt: try another path");
+        }
+        void* QUERIES = parser(queries, " \n\r", process_querie, organize_querie,NULL,NULL,NULL,NULL) 
+
     //query1("1",DRIVERS);
     free_rides(RIDES);
     free_driver(DRIVERS);
