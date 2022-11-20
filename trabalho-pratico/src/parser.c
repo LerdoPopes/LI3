@@ -5,6 +5,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+typedef struct querie{
+    int line; //linha do ficheiro da query
+    char queriex; //query a ser executada
+    char comando[500]; //arg
+} querie;
 
 void *parser(FILE *to_parse, char const*rest,  void* (*parse_func)(char**), void* (organize_func)(void **, void *, void *, void (*)(void *, void *, void *, void *, void *,void*), void * (*)(void *, void *, void *, void *,void*,void*)), void* struct_drivers, void* struct_users, void(set_users_stats)(void*,void*,void*,void*, void*,void*), void*(set_driver_stats)(void*,void*,void*,void*, void*,void*))
 {
