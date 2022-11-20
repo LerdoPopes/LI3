@@ -21,6 +21,7 @@ struct driver{
     short aval;
     float total_spent;
     short aval_m;
+    short last_trip_date;
 } ;
 
 
@@ -49,10 +50,11 @@ void *process_driver(char** info) {
     dr->total_spent = 0;
     dr->trips = 0;
     dr->aval_m = 0;
+    dr->last_trip_date = 0;
     return dr;
 }
 
-void *organize_driver(void** results, void* useless, void* useless2, void(useless3)(void*,void*,void*,void*,void*), void*(useless4)(void*,void*,void*,void*)){
+void *organize_driver(void** results, void* useless, void* useless2, void(useless3)(void*,void*,void*,void*,void*,void*), void*(useless4)(void*,void*,void*,void*,void*,void*)){
     GHashTable* gtable = g_hash_table_new(g_int_hash,g_int_equal);
     for (size_t i = 0; results[i]; i++)
     {
@@ -80,28 +82,33 @@ void free_driver(void* driver){
     free(db_drivers);
 }
 
-void* set_driver_stats(void* dbDrivers, void* distp, void* avalp, void* id){
+void* set_driver_stats(void* dbDrivers, void* distp, void* avalp, void* id, void* tips, void* last_tripp){
     DB_drivers* db_drivers = (DB_drivers*) dbDrivers;
     gconstpointer idp = (gconstpointer) id;
     gpointer driverp = g_hash_table_lookup(db_drivers->drivers_hashtable,idp);
     Driver* driver = (Driver*) driverp;
     short* dist = (short*) distp;
     short* aval = (short*)  avalp;
+    short* last_trip = (short*) last_tripp;
     driver->total_dist += *dist;
     driver->aval += *aval;
     driver->trips++;
+    if(*last_trip>driver->last_trip_date){
+        driver->last_trip_date = *last_trip;
+    }
+    float* tip = (float*) tips;
     float* money = malloc(sizeof(float));
     if(driver->car_class[0] == 'g' || driver->car_class[0] == 'G' ){
-        driver->total_spent += (4+0.79*driver->total_dist); 
-        *money = (4+0.79*driver->total_dist);
+        driver->total_spent += (4+0.79*(*dist)+(*tip)); 
+        *money = (4+0.79*(*dist)+(*tip));
     }
     else if(driver->car_class[0] == 'p' || driver->car_class[0] == 'P' ){
-        driver->total_spent += (5.2+0.94*driver->total_dist);
-        *money = (5.2+0.94*driver->total_dist);
+        driver->total_spent += (5.2+0.94*(*dist)+(*tip));
+        *money = (5.2+0.94*(*dist)+(*tip));
     }
     else{
-        driver->total_spent += (3*0.62*driver->total_dist);
-        *money = (3*0.62*driver->total_dist);
+        driver->total_spent += (3.25*0.62*(*dist)+(*tip));
+        *money = (3.25+0.62*(*dist)+(*tip));
     }
     return money;
 }

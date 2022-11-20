@@ -32,14 +32,7 @@ int main(void){
         void *RIDES = parser(rides, ";\n\r", process_ride,organize_rides,DRIVERS,USERS,set_user_stats,set_driver_stats);
         fclose(rides);
     
-    // FILE *queries = fopen("./input.txt", "r");
-    //     if(queries == NULL) {
-    //         perror("Opening input.txt: try another path");
-    //     }
-    //     void* QUERIES = parser(queries, " \n\r", process_querie, organize_querie,NULL,NULL,NULL,NULL);
-
-    // print_queries(QUERIES);
-    //query1("000000003123",DRIVERS,USERS,1);
+    query1("SaCruz110",DRIVERS,USERS,1);
     free_rides(RIDES);
     free_driver(DRIVERS);
     free_user(USERS);
