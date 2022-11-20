@@ -1,3 +1,5 @@
+#define BUF 1024
+
 typedef struct querie{
     int line; //linha do ficheiro da query
     char queriex; //query a ser executada
