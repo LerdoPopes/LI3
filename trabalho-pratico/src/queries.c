@@ -7,6 +7,7 @@
 #include "../Include/dates.h"
 #include "../Include/queries.h"
 #include <ctype.h>
+#include <math.h>
 
 void query1(char *ID, void *dbDrivers, void *dbUsers, short i){
     char *id = malloc(50);

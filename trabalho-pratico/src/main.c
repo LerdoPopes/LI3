@@ -1,13 +1,14 @@
-#include <math.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+#include "../Include/parser.h"
 #include "../Include/drivers.h"
 #include "../Include/users.h"
 #include "../Include/rides.h"
-#include "../Include/parser.h"
 #include "../Include/queries.h"
+#include <math.h>
+#include <time.h>
+
 
 int main(void){
 

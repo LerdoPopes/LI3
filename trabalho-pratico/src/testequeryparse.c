@@ -1,7 +1,7 @@
 typedef struct querie{
     int line; //linha do ficheiro da query
     char queriex; //query a ser executada
-    char comando[500]; //arg
+    char comando[500]; //args
 } querie;
 
 void *parseQueries(FILE *queries){

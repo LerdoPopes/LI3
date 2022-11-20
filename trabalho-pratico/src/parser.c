@@ -1,14 +1,14 @@
 #define BUF 1024
 
-#include <math.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 typedef struct querie{
     int line; //linha do ficheiro da query
     char queriex; //query a ser executada
-    char comando[500]; //arg
+    char comando[500]; //arguments
 } querie;
 
 void *parser(FILE *to_parse, char const*rest,  void* (*parse_func)(char**), void* (organize_func)(void **, void *, void *, void (*)(void *, void *, void *, void *, void *,void*), void * (*)(void *, void *, void *, void *,void*,void*)), void* struct_drivers, void* struct_users, void(set_users_stats)(void*,void*,void*,void*, void*,void*), void*(set_driver_stats)(void*,void*,void*,void*, void*,void*))
@@ -23,7 +23,7 @@ void *parser(FILE *to_parse, char const*rest,  void* (*parse_func)(char**), void
         if(skip == 0)
         {
             skip++;
-            continue/*to fuck urself*/;
+            continue;
         }
         char *save[12] = { 0 };
         
@@ -42,4 +42,4 @@ void *parser(FILE *to_parse, char const*rest,  void* (*parse_func)(char**), void
     return organize_func(result,struct_drivers,struct_users,set_users_stats,set_driver_stats);
 }
 
-// /*, void* (organize_func2)(void** ,void* , void*, void*, void*), void* struct_drivers, void* struct_users, void*(set_users_stats)(void*,void*), void*(set_driver_stats)(void*,void*)
+//  void* (organize_func2)(void** ,void* , void*, void*, void*), void* struct_drivers, void* struct_users, void*(set_users_stats)(void*,void*), void*(set_driver_stats)(void*,void*)
