@@ -25,7 +25,7 @@ typedef struct data_base_rides{
     // GTree* users_tree;
 } DB_rides;
 
-void *process_ride(char* const* info) {
+void *process_ride(char** info) {
     struct ride *ri = malloc(sizeof(struct ride));
 
     ri->id = atol(info[0]);

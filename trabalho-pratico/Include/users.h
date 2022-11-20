@@ -6,7 +6,9 @@
 
 typedef struct user User;
 
-void *process_user(char* const* info);
+typedef struct data_base_users DB_Users;
+
+void *process_user(char** info);
 
 void *organize_user(void** results, void* useless, void* useless2, void(useless3)(void*,void*,void*,void*,void*), void*(useless4)(void*,void*,void*,void*));
 
@@ -29,3 +31,5 @@ short user_get_account_creation(struct user *u);
 char user_get_account_status(struct user *u);
 
 // short user_get_idade(struct user *u,char *data_atual,char *birth_date);
+
+void *answer_q1_user(FILE *output,void *dbUsers, char *ID);

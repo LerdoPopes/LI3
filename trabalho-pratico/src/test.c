@@ -43,6 +43,3 @@ int main(){
 }
 
 
-void * (*)(void **, void *, void *, void (*)(void *, void *, void *, void *, void *), void * (*)(void *, void *, void *, void *))
-
-void * (*)(void **, void *, void *, void * (*)(void *, void *, void *, void *, void *), void * (*)(void *, void *, void *, void *))

@@ -5,7 +5,9 @@
 
 typedef struct driver Driver;
 
-void *process_driver(char* const* info); 
+typedef struct data_base_drivers DB_drivers; 
+
+void *process_driver(char** info); 
 
 void *organize_driver(void** results, void* useless, void* useless2, void(useless3)(void*,void*,void*,void*,void*), void*(useless4)(void*,void*,void*,void*));
 
@@ -34,4 +36,7 @@ short driver_get_account_creation(struct driver *d);
 char driver_get_account_status(struct driver *d);
 
 // short driver_get_idade(struct driver *d,char *data_atual,char *birth_date);
+
+void *answer_q1_driver(FILE *output,void *dbDrivers, char *ID);
+
 

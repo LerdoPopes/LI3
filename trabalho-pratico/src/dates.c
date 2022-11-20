@@ -62,5 +62,6 @@ short idade(short birth_date){
     else{
         idade = 2022-dateCombo->year-1;
     }
+    free(dateCombo);
     return idade;
 }
