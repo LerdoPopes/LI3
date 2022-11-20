@@ -1,3 +1,9 @@
+typedef struct querie{
+    int line; //linha do ficheiro da query
+    char queriex; //query a ser executada
+    char comando[500]; //arg
+} querie;
+
 void *parseQueries(FILE *queries){
     size_t numquerie = BUF
     size_t current = 128
