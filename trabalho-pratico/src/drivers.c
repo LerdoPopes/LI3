@@ -24,11 +24,11 @@ struct driver{
 } ;
 
 
-typedef struct data_base_drivers{
+struct data_base_drivers{
     void** drivers_array;
     GHashTable* drivers_hashtable;
     // GTree* drivers_tree;
-} DB_drivers;
+};
 
 void *process_driver(char* const* info) {
     struct driver *dr = malloc(sizeof(struct driver));
@@ -162,42 +162,24 @@ char driver_get_account_status(struct driver *d) {
     return d->account_status;
 }
 
+void *answer_q1_driver(FILE *output,void *dbDrivers, char *ID){
+    int Id = atoi(ID);
+    DB_drivers* db_drivers = (DB_drivers*) dbDrivers;
+    gconstpointer id = (gconstpointer) &Id;
+    gpointer driverp = g_hash_table_lookup(db_drivers->drivers_hashtable,id);
+    Driver* driver = (Driver*) driverp;
+    printf("%p",driver);
+    short Idade = idade(driver->birth_date);
+    double media = (driver->aval)/(driver->trips);
+    if(driver->account_status = 'a'){
+        fprintf(output,"%s;%c;%d;%.3f;%d;%.3f\n",driver->name,driver->gender,Idade,media,driver->trips,driver->total_spent);//avaliacao_media,numero_viagens,total_gasto);    
+    }
+    fclose(output);     
+}
+
 // short driver_get_idade(struct driver *d,char *data_atual,char *birth_date){
 //      d->idade = idade(data_atual,birth_date);
 //      return d->idade;
 // }
 
-
-// char *get_name_driver(void *hash_drivers, const void *key){
-//     GHashTable* gtable = (GHashTable*) hash_drivers;
-//     struct driver *driver = g_hash_table_lookup(gtable,key);
-//     char *nome = (char *)malloc(255 * sizeof(char));
-//     strcpy(nome,driver->name);
-//     return nome;
-// }
-
-// short get_birth_date_driver(void *hash_drivers, const void *key){
-//     GHashTable* gtable = (GHashTable*) hash_drivers;
-//     struct driver *driver = g_hash_table_lookup(gtable,key);
-//     return driver->birth_date;
-// }
-
-// char get_gender_driver(void *hash_drivers, const void *key){
-//     GHashTable* gtable = (GHashTable*) hash_drivers;
-//     struct driver *driver = g_hash_table_lookup(gtable,key);
-//     return driver->gender;    
-// }
-
-// short get_idade_driver(void *hash_drivers, const void *key,char *data_atual,char *birth_date){
-//     GHashTable* gtable = (GHashTable*) hash_drivers;
-//     struct driver *driver = g_hash_table_lookup(gtable,key);
-//     driver->idade = idade(data_atual,birth_date);
-//     return driver->idade;
-// }
-
-// char get_account_status_driver(void *hash_drivers, const void *key){
-//     GHashTable* gtable = (GHashTable*) hash_drivers;
-//     struct driver *driver = g_hash_table_lookup(gtable,key);
-//     return driver->account_status;
-// }
 

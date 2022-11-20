@@ -126,6 +126,19 @@ char user_get_account_status(struct user *u){
     return u->account_status;
 }
 
+void *answer_q1_user(FILE *output,void *dbUsers, char *ID){
+    DB_Users* db_users = (DB_Users*) dbUsers;
+    gconstpointer id = (gconstpointer) ID;
+    gpointer userp = g_hash_table_lookup(db_users->users_hashtable,id);
+    User* user = (User*) userp;
+    short Idade = idade(user->birth_date);
+    double media = (user->aval)/(user->trips);
+    if(user->account_status = 'a'){
+        fprintf(output,"%s;%c;%d;%.3f;%d;%.3f\n",user->name,user->gender,Idade,media,user->trips,user->total_spent);//avaliacao_media,numero_viagens,total_gasto);    
+    }    
+    fclose(output);
+}
+
 // short user_get_idade(struct user *u,char *data_atual,char *birth_date){
 //      u->idade = idade(data_atual,birth_date);
 //      return u->idade;

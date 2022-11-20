@@ -7,7 +7,7 @@
 #include "../Include/users.h"
 #include "../Include/rides.h"
 #include "../Include/parser.h"
-#include "../Include/query1.h"
+#include "../Include/queries.h"
 
 int main(void){
 
@@ -37,9 +37,10 @@ int main(void){
         if(queries == NULL) {
             perror("Opening input.txt: try another path");
         }
-        void* QUERIES = parser(queries, " \n\r", process_querie, organize_querie,NULL,NULL,NULL,NULL) 
+        void* QUERIES = parser(queries, " \n\r", process_querie, organize_querie,NULL,NULL,NULL,NULL); 
 
     //query1("1",DRIVERS);
+    query1("000000003123",DRIVERS,USERS,1);
     free_rides(RIDES);
     free_driver(DRIVERS);
     free_user(USERS);
