@@ -39,7 +39,7 @@ char driver_get_account_status(struct driver *d);
 
 void *answer_q1_driver(FILE *output,void *dbDrivers, char *ID);
 
-void *answer_q2_driver(FILE *output,void *dbDrivers, short N, short key);
+void *answer_q2_driver(FILE *output,void *dbDrivers, short N);
 
 int comparador(const void *a, const void *b);
 

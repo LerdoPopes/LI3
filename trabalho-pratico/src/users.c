@@ -28,9 +28,11 @@ struct user{
 };
 
 typedef struct data_base_users{
-    void** users_array;
+    User** users_array;
     GHashTable* users_hashtable;
     // GTree* users_tree;
+    int len;
+    int order;
 } DB_users;
 
 void *process_user(char** info) 
@@ -56,14 +58,17 @@ void *process_user(char** info)
 void *organize_user(void** results, void* useless, void* useless2, void(useless3)(void*,void*,void*,void*,void*,void*), void*(useless4)(void*,void*,void*,void*,void*,void*)){
     GHashTable* gtable = g_hash_table_new(g_str_hash,g_str_equal);
     // g_hash_table_insert(hashtable,user->username,user);
-      for (size_t i = 0; results[i]; i++)
+    int i;
+    for (i = 0; results[i]; i++)
     {
         User* user = (User*) results[i];
         g_hash_table_insert(gtable,user->username,user);  
     }
     DB_users* db_users = malloc(sizeof(DB_users));
-    db_users->users_array = results;
+    db_users->users_array = (User*) results;
     db_users->users_hashtable = gtable;
+    db_users->len=i;
+    db_users->order = 0;
     return db_users;
 }
 
@@ -106,6 +111,60 @@ void set_user_stats(void* dbUsers, void* distp, void* avalp, void* username, voi
     user->total_spent += *money;
 }
 
+void *answer_q1_user(FILE *output,void *dbUsers, char *ID){
+    DB_Users* db_users = (DB_Users*) dbUsers;
+    gconstpointer id = (gconstpointer) ID;
+    gpointer userp = g_hash_table_lookup(db_users->users_hashtable,id);
+    User* user = (User*) userp;
+    if(user){
+        short Idade = idade(user->birth_date);
+        double media = (double) (user->aval)/(user->trips);
+        if(user->account_status == 'a' && user->trips != 0){
+            fprintf(output,"%s;%c;%d;%.3f;%d;%.3f\n",user->name,user->gender,Idade,media,user->trips,user->total_spent);    
+        }
+        else if(user->account_status == 'a' && user->trips == 0){
+            fprintf(output,"%s;%c;%d;%.3lf;%d;%.3f\n",user->name,user->gender,Idade,0,user->trips,0);
+        }   
+    }
+    fclose(output);
+}
+
+void *answer_q3_user(FILE *output, void *dbUsers, short N, short key)
+{
+    DB_users *db_users = (DB_users *)dbUsers;
+    User **users = db_users->users_array;
+    // qsort(drivers, 10000, sizeof(Driver *), comparador);
+    int n = db_users->len;
+    if (db_users->order != 1){
+        for (int gap = n/2; gap > 0; gap /= 2)
+        {
+            for (int i = gap; i < n; i += 1)
+            {
+                User* temp = users[i];
+                double media = (double) (temp->aval)/(temp->trips);
+
+                int j;           
+                for (j = i; j >= gap && (((users[j - gap]->total_dist)>temp->total_dist) || ((users[j - gap])==temp->total_dist && (double)(users[j - gap]->aval)/(users[j - gap]->trips)>media) || ((users[j - gap])==temp->total_dist && (double)(users[j - gap]->aval)/(users[j - gap]->trips)>media && (users[j - gap]->last_trip_date)>temp->last_trip_date )); j -= gap)
+                    users[j] = users[j - gap];
+
+                users[j] = temp;
+            }
+        }
+        db_users->order = 1;
+    }
+    for (size_t i = n-1; i>n-N-1; i--)
+    {
+        User *user = users[i];
+        if(user->account_status != 'a'){
+            i++;
+        }
+        else{
+            fprintf(output,"%d;%s;%.3f\n",user->username,user->name,user->total_dist);
+        }        
+    }
+    fclose(output);
+}
+
 char *user_get_username(struct user *u){
      char *user_nome = (char *)malloc(255 * sizeof(char));
      strcpy(user_nome,u->username);    
@@ -133,26 +192,3 @@ short user_get_account_creation(struct user *u){
 char user_get_account_status(struct user *u){
     return u->account_status;
 }
-
-void *answer_q1_user(FILE *output,void *dbUsers, char *ID){
-    DB_Users* db_users = (DB_Users*) dbUsers;
-    gconstpointer id = (gconstpointer) ID;
-    gpointer userp = g_hash_table_lookup(db_users->users_hashtable,id);
-    User* user = (User*) userp;
-    if(user){
-        short Idade = idade(user->birth_date);
-        double media = (double) (user->aval)/(user->trips);
-        if(user->account_status == 'a' && user->trips != 0){
-            fprintf(output,"%s;%c;%d;%.3f;%d;%.3f\n",user->name,user->gender,Idade,media,user->trips,user->total_spent);    
-        }
-        else if(user->account_status == 'a' && user->trips == 0){
-            fprintf(output,"%s;%c;%d;%.3lf;%d;%.3f\n",user->name,user->gender,Idade,0,user->trips,0);
-        }   
-    }
-    fclose(output);
-}
-
-// short user_get_idade(struct user *u,char *data_atual,char *birth_date){
-//      u->idade = idade(data_atual,birth_date);
-//      return u->idade;
-// }

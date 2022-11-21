@@ -216,7 +216,7 @@ void *answer_q1_driver(FILE *output, void *dbDrivers, char *ID)
     fclose(output);
 }
 
-void *answer_q2_driver(FILE *output, void *dbDrivers, short N, short key)
+void *answer_q2_driver(FILE *output, void *dbDrivers, short N)
 {
     DB_drivers *db_drivers = (DB_drivers *)dbDrivers;
     Driver **drivers = db_drivers->drivers_array;
@@ -239,7 +239,7 @@ void *answer_q2_driver(FILE *output, void *dbDrivers, short N, short key)
         }
         db_drivers->order = 1;
     }
-    for (size_t i = n-1; i<n-N-1; i--)
+    for (size_t i = n-1; i>n-N-1; i--)
     {
         Driver *driver = drivers[i];
         if(driver->account_status != 'a'){

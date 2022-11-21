@@ -33,3 +33,5 @@ char user_get_account_status(struct user *u);
 // short user_get_idade(struct user *u,char *data_atual,char *birth_date);
 
 void *answer_q1_user(FILE *output,void *dbUsers, char *ID);
+
+void *answer_q3_user(FILE *output, void *dbDrivers, short N);
