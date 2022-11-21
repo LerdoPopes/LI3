@@ -10,12 +10,13 @@ typedef struct querie{
 } querie;
 
 void *parseQueries(FILE *queries){
-    size_t numquerie = BUF
-    size_t current = 128
+    size_t numquerie = BUF;
+    size_t current = 128;
     querie *all = calloc(numquerie, sizeof(querie)); //todas as querys
     //char *um = malloc(sizeof(char)*current); 
-
-    for (size_t i=1, char str[BUF] = { 0 }; fgets(str,BUF,queries) != NULL;){
+    char *str = (char *)malloc(sizeof(char)*numquerie);
+    int i=1;
+    for(; fgets(str,BUF,queries) != NULL;){
         querie* one = malloc(sizeof (querie));
         one->queriex = str[0];
 
@@ -34,7 +35,7 @@ void *parseQueries(FILE *queries){
         all [i-1] = *one;
 
         if(i + 1 > BUF){
-            all = realloc(all, (BUF *= 2) * sizeof(querie));
+            all = realloc(all, (numquerie *= 2) * sizeof(querie));
 
         }
     }    
@@ -45,7 +46,7 @@ void *parseQueries(FILE *queries){
 
 void q_printall(querie *all){
     int i = 0;
-    printf("%d\n", all[i].id);
+    printf("%d\n", all[i].line);
     while (all[i].line != 1){
         printf("indice: %d\n",all[i].line);
         printf("n: %c\n",all[i].queriex);
@@ -56,3 +57,9 @@ void q_printall(querie *all){
     printf("done\n");
 
 } 
+
+void main(int argc,char **argv) {
+    FILE * querys = fopen(argv[1], "r");
+    void * monky = parseQueries(querys);
+    q_printall(monky);
+}

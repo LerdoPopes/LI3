@@ -10,10 +10,10 @@
 $(CC) = gcc
 PNTC=$(wildcard src/* .c)
 PNTH=$(wildcard Include/* .h)
-FLAGS=-Wall -IInclude -Wextra `pkg-config --cflags glib-2.0`
+FLAGS=-Wall -IInclude `pkg-config --cflags glib-2.0`
 
 compile: Resultados
-		$(CC) $(FLAGS) -o programa-principal $(PNTC) $(PNTH)
+		$(CC) $(FLAGS) -o programa-principal $(PNTC) $(PNTH) `pkg-config --cflags glib-2.0`
 
 #testes:
 Resultados:
