@@ -32,7 +32,7 @@ int main(void){
         void *RIDES = parser(rides, ";\n\r", process_ride,organize_rides,DRIVERS,USERS,set_user_stats,set_driver_stats);
         fclose(rides);
     
-    query1("SaCruz110",DRIVERS,USERS,1);
+    query1("000000014780",DRIVERS,USERS,1);
     free_rides(RIDES);
     free_driver(DRIVERS);
     free_user(USERS);

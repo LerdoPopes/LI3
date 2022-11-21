@@ -1,6 +1,6 @@
 #include "../Include/dates.h"
 
-short calc_Date(char* data){
+unsigned short calc_Date(char* data){
     char* token;
     char cycle = 0;
     short n_days = 0;

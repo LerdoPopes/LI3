@@ -6,22 +6,23 @@
 #include "../Include/dates.h"
 #include "../Include/drivers.h"
 
+
 struct driver{
     int id;
     char *name;
-    short birth_date;
+    unsigned short birth_date;
     char gender;
     char *car_class;
     char license_plate[sizeof("00-00-AA")];
     char *city;
-    short account_creation;
+    unsigned short account_creation;
     char account_status;
-    short total_dist;
-    short trips;
-    short aval;
-    float total_spent;
-    short aval_m;
-    short last_trip_date;
+    int total_dist;
+    unsigned short trips;
+    unsigned short aval;
+    double total_spent;
+    double aval_m;
+    unsigned short last_trip_date;
 } ;
 
 
@@ -87,17 +88,17 @@ void* set_driver_stats(void* dbDrivers, void* distp, void* avalp, void* id, void
     gconstpointer idp = (gconstpointer) id;
     gpointer driverp = g_hash_table_lookup(db_drivers->drivers_hashtable,idp);
     Driver* driver = (Driver*) driverp;
-    short* dist = (short*) distp;
-    short* aval = (short*)  avalp;
-    short* last_trip = (short*) last_tripp;
+    unsigned short* dist = (unsigned short*) distp;
+    unsigned short* aval = (unsigned short*)  avalp;
+    unsigned short* last_trip = (unsigned short*) last_tripp;
     driver->total_dist += *dist;
     driver->aval += *aval;
     driver->trips++;
     if(*last_trip>driver->last_trip_date){
         driver->last_trip_date = *last_trip;
     }
-    float* tip = (float*) tips;
-    float* money = malloc(sizeof(float));
+    double* tip = (double*) tips;
+    double* money = malloc(sizeof(double));
     if(driver->car_class[0] == 'g' || driver->car_class[0] == 'G' ){
         driver->total_spent += (4+0.79*(*dist)+(*tip)); 
         *money = (4+0.79*(*dist)+(*tip));
@@ -175,11 +176,12 @@ void *answer_q1_driver(FILE *output,void *dbDrivers, char *ID){
     gconstpointer id = (gconstpointer) &Id;
     gpointer driverp = g_hash_table_lookup(db_drivers->drivers_hashtable,id);
     Driver* driver = (Driver*) driverp;
-    printf("%p",driver);
-    short Idade = idade(driver->birth_date);
-    double media = (driver->aval)/(driver->trips);
-    if(driver->account_status = 'a'){
-        fprintf(output,"%s;%c;%d;%.3f;%d;%.3f\n",driver->name,driver->gender,Idade,media,driver->trips,driver->total_spent);//avaliacao_media,numero_viagens,total_gasto);    
+    if(driver){
+        unsigned short Idade = idade(driver->birth_date);
+        double media = (double) (driver->aval)/(driver->trips);
+        if(driver->account_status = 'a'){
+            fprintf(output,"%s;%c;%d;%.3f;%d;%.3f\n",driver->name,driver->gender,Idade,media,driver->trips,driver->total_spent);//avaliacao_media,numero_viagens,total_gasto);    
+        }
     }
     fclose(output);     
 }

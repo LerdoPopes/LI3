@@ -47,12 +47,12 @@ void *organize_rides(void** results, void* struct_drivers, void* struct_users, v
     for (size_t i = 0; results[i]; i++)
     {
         Ride* rides = (Ride*) results[i];
-        short dist = rides->distance;
+        unsigned short dist = rides->distance;
         short score_u = rides->score_user;
         short score_d = rides->score_driver;
-        short date = rides->date;
+        unsigned short date = rides->date;
         int id = rides->driver;
-        float tip = rides->tip;
+        double tip = rides->tip;
         char* username = strdup(rides->user);
         void* money = set_driver_stats(struct_drivers,&dist,&score_d,&id,&tip,&date);
         set_users_stats(struct_users,&dist,&score_u,username,money,&date);
