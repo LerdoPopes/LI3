@@ -12,11 +12,12 @@ PNTC=$(wildcard src/* .c)
 PNTH=$(wildcard Include/* .h)
 FLAGS=-Wall -IInclude -Wextra
 
-programa-principal:
-					$(CC) $(FLAGS) -o programa-principal $(PNTC) $(PNTH)
+compile: Resultados
+		$(CC) $(FLAGS) -o programa-principal $(PNTC) $(PNTH)
 
 #testes:
+Resultados:
+		mkdir -p $@
 
 clean:
-		rm *.o programa-principal
-
+		rm -rf *.o programa-principal Resultados
