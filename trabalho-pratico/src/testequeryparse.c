@@ -10,12 +10,12 @@ typedef struct querie{
 } querie;
 
 void *parseQueries(FILE *queries){
-    size_t numquerie = BUF;
-    size_t current = 128;
+    size_t numquerie = BUF
+    size_t current = 128
     querie *all = calloc(numquerie, sizeof(querie)); //todas as querys
     //char *um = malloc(sizeof(char)*current); 
 
-    for (size_t i=1, char str[BUF] = { 0 }; fgets(str,BUF,queries);){
+    for (size_t i=1, char str[BUF] = { 0 }; fgets(str,BUF,queries) != NULL;){
         querie* one = malloc(sizeof (querie));
         one->queriex = str[0];
 
@@ -27,7 +27,7 @@ void *parseQueries(FILE *queries){
             store[j++] = token;
 
         } 
-        strcpy(one->comando,&store[2]);
+        strcpy(one->comando,&store[1]);
         one->line = i;
         i++;
 
