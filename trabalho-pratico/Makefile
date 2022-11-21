@@ -10,7 +10,7 @@
 $(CC) = gcc
 PNTC=$(wildcard src/* .c)
 PNTH=$(wildcard Include/* .h)
-FLAGS=-Wall -Wextra
+FLAGS=-Wall -IInclude -Wextra
 
 programa-principal:
 					$(CC) $(FLAGS) -o programa-principal $(PNTC) $(PNTCH)
