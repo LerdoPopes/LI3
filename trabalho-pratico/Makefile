@@ -13,7 +13,7 @@ PNTH=$(wildcard Include/* .h)
 FLAGS=-Wall -IInclude -Wextra
 
 programa-principal:
-					$(CC) $(FLAGS) -o programa-principal $(PNTC) $(PNTCH)
+					$(CC) $(FLAGS) -o programa-principal $(PNTC) $(PNTH)
 
 #testes:
 
