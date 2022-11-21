@@ -6,8 +6,8 @@
 #include "../Include/dates.h"
 #include "../Include/drivers.h"
 
-
-struct driver{
+struct driver
+{
     int id;
     char *name;
     unsigned short birth_date;
@@ -23,16 +23,19 @@ struct driver{
     double total_spent;
     double aval_m;
     unsigned short last_trip_date;
-} ;
+};
 
-
-struct data_base_drivers{
-    void** drivers_array;
-    GHashTable* drivers_hashtable;
+struct data_base_drivers
+{
+    Driver **drivers_array;
+    GHashTable *drivers_hashtable;
+    int order;
+    int len;
     // GTree* drivers_tree;
 };
 
-void *process_driver(char** info) {
+void *process_driver(char **info)
+{
     struct driver *dr = malloc(sizeof(struct driver));
 
     dr->id = atol(info[0]);
@@ -55,179 +58,227 @@ void *process_driver(char** info) {
     return dr;
 }
 
-void *organize_driver(void** results, void* useless, void* useless2, void(useless3)(void*,void*,void*,void*,void*,void*), void*(useless4)(void*,void*,void*,void*,void*,void*)){
-    GHashTable* gtable = g_hash_table_new(g_int_hash,g_int_equal);
-    for (size_t i = 0; results[i]; i++)
+void *organize_driver(void **results, void *useless, void *useless2, void(useless3)(void *, void *, void *, void *, void *, void *), void *(useless4)(void *, void *, void *, void *, void *, void *))
+{
+    GHashTable *gtable = g_hash_table_new(g_int_hash, g_int_equal);
+    int i;
+    for (i = 0; results[i]; i++)
     {
-        Driver* driver = (Driver*) results[i];
-        g_hash_table_insert(gtable,&(driver->id),driver);
+        Driver *driver = (Driver *)results[i];
+        g_hash_table_insert(gtable, &(driver->id), driver);
     }
-    DB_drivers* db_drivers = malloc(sizeof(DB_drivers));
-    db_drivers->drivers_array = results;
+    DB_drivers *db_drivers = malloc(sizeof(DB_drivers));
+    db_drivers->drivers_array = (Driver**)results;
     db_drivers->drivers_hashtable = gtable;
+    db_drivers->order = 0;
+    db_drivers->len = i;
     return db_drivers;
 }
 
-void free_driver(void* driver){
-    DB_drivers* db_drivers = (DB_drivers*) driver;
+void free_driver(void *driver)
+{
+    DB_drivers *db_drivers = (DB_drivers *)driver;
     for (size_t i = 0; db_drivers->drivers_array[i]; i++)
     {
-        Driver* drivers = (Driver*) db_drivers->drivers_array[i];
+        Driver *drivers = (Driver *)db_drivers->drivers_array[i];
         free(drivers->car_class);
         free(drivers->city);
         free(drivers->name);
         free(drivers);
     }
-    GHashTable* gtable = (GHashTable*) db_drivers->drivers_hashtable;
+    GHashTable *gtable = (GHashTable *)db_drivers->drivers_hashtable;
     g_hash_table_destroy(gtable);
     free(db_drivers);
 }
 
-void* set_driver_stats(void* dbDrivers, void* distp, void* avalp, void* id, void* tips, void* last_tripp){
-    DB_drivers* db_drivers = (DB_drivers*) dbDrivers;
-    gconstpointer idp = (gconstpointer) id;
-    gpointer driverp = g_hash_table_lookup(db_drivers->drivers_hashtable,idp);
-    Driver* driver = (Driver*) driverp;
-    unsigned short* dist = (unsigned short*) distp;
-    unsigned short* aval = (unsigned short*)  avalp;
-    unsigned short* last_trip = (unsigned short*) last_tripp;
+void *set_driver_stats(void *dbDrivers, void *distp, void *avalp, void *id, void *tips, void *last_tripp)
+{
+    DB_drivers *db_drivers = (DB_drivers *)dbDrivers;
+    gconstpointer idp = (gconstpointer)id;
+    gpointer driverp = g_hash_table_lookup(db_drivers->drivers_hashtable, idp);
+    Driver *driver = (Driver *)driverp;
+    unsigned short *dist = (unsigned short *)distp;
+    unsigned short *aval = (unsigned short *)avalp;
+    unsigned short *last_trip = (unsigned short *)last_tripp;
     driver->total_dist += *dist;
     driver->aval += *aval;
     driver->trips++;
-    if(*last_trip>driver->last_trip_date){
+    if (*last_trip > driver->last_trip_date)
+    {
         driver->last_trip_date = *last_trip;
     }
-    double* tip = (double*) tips;
-    double* money = malloc(sizeof(double));
-    if(driver->car_class[0] == 'g' || driver->car_class[0] == 'G' ){
-        driver->total_spent += (4+0.79*(*dist)+(*tip)); 
-        *money = (4+0.79*(*dist)+(*tip));
+    double *tip = (double *)tips;
+    double *money = malloc(sizeof(double));
+    if (driver->car_class[0] == 'g' || driver->car_class[0] == 'G')
+    {
+        driver->total_spent += (4 + 0.79 * (*dist) + (*tip));
+        *money = (4 + 0.79 * (*dist) + (*tip));
     }
-    else if(driver->car_class[0] == 'p' || driver->car_class[0] == 'P' ){
-        driver->total_spent += (5.2+0.94*(*dist)+(*tip));
-        *money = (5.2+0.94*(*dist)+(*tip));
+    else if (driver->car_class[0] == 'p' || driver->car_class[0] == 'P')
+    {
+        driver->total_spent += (5.2 + 0.94 * (*dist) + (*tip));
+        *money = (5.2 + 0.94 * (*dist) + (*tip));
     }
-    else{
-        driver->total_spent += (3.25*0.62*(*dist)+(*tip));
-        *money = (3.25+0.62*(*dist)+(*tip));
+    else
+    {
+        driver->total_spent += (3.25 * 0.62 * (*dist) + (*tip));
+        *money = (3.25 + 0.62 * (*dist) + (*tip));
     }
     return money;
 }
 
-void print_driver(void* driversDB){
-    DB_drivers* db_drivers = (DB_drivers*) driversDB;
-    //gconstpointer id = (gconstpointer) key;
-    //gpointer guser = g_hash_table_lookup(db_drivers->drivers_hashtable,id);
+void print_driver(void *driversDB)
+{
+    DB_drivers *db_drivers = (DB_drivers *)driversDB;
+    // gconstpointer id = (gconstpointer) key;
+    // gpointer guser = g_hash_table_lookup(db_drivers->drivers_hashtable,id);
     for (size_t i = 0; db_drivers->drivers_array[i]; i++)
     {
-        Driver* driver = (Driver*) db_drivers->drivers_array[i];
-        printf("%d,%s,%c,%u,%u,%.3f\n",driver->id,driver->name,driver->gender,driver->birth_date,driver->trips,driver->total_spent);
+        Driver *driver = (Driver *)db_drivers->drivers_array[i];
+        printf("%d,%s,%c,%u,%u,%.3f\n", driver->id, driver->name, driver->gender, driver->birth_date, driver->trips, driver->total_spent);
     }
-    
-    //Driver* driver = (Driver*) guser;
-    //printf("%d,%s,%c,%u,%u\n",driver->id,driver->name,driver->gender,driver->birth_date,driver->account_creation);
+
+    // Driver* driver = (Driver*) guser;
+    // printf("%d,%s,%c,%u,%u\n",driver->id,driver->name,driver->gender,driver->birth_date,driver->account_creation);
 }
 
-int driver_get_id(struct driver *d){
+int driver_get_id(struct driver *d)
+{
     return d->id;
 }
 
-char *driver_get_name(struct driver *d){
-     char *nome = (char *)malloc(255 * sizeof(char));
-     strcpy(nome,d->name);    
-     return nome;
+char *driver_get_name(struct driver *d)
+{
+    char *nome = (char *)malloc(255 * sizeof(char));
+    strcpy(nome, d->name);
+    return nome;
 }
 
-char driver_get_birth_date(struct driver *d){
+char driver_get_birth_date(struct driver *d)
+{
     return d->birth_date;
 }
 
-char driver_get_gender(struct driver *d){
+char driver_get_gender(struct driver *d)
+{
     return d->gender;
 }
 
-char *driver_get_car_class(struct driver *d){
-     char *classe = (char *)malloc(255 * sizeof(char));
-     strcpy(classe,d->car_class);    
-     return classe;
+char *driver_get_car_class(struct driver *d)
+{
+    char *classe = (char *)malloc(255 * sizeof(char));
+    strcpy(classe, d->car_class);
+    return classe;
 }
 
-char *driver_get_license_plate(struct driver *d){
+char *driver_get_license_plate(struct driver *d)
+{
     return d->license_plate;
 }
 
-char *driver_get_city(struct driver *d){
-     char *cidade = (char *)malloc(255 * sizeof(char));
-     strcpy(cidade,d->city);    
-     return cidade;
+char *driver_get_city(struct driver *d)
+{
+    char *cidade = (char *)malloc(255 * sizeof(char));
+    strcpy(cidade, d->city);
+    return cidade;
 }
 
-short driver_get_account_creation(struct driver *d) {
+short driver_get_account_creation(struct driver *d)
+{
     return d->account_creation;
 }
 
-char driver_get_account_status(struct driver *d) {
+char driver_get_account_status(struct driver *d)
+{
     return d->account_status;
 }
 
-void *answer_q1_driver(FILE *output,void *dbDrivers, char *ID){
+void *answer_q1_driver(FILE *output, void *dbDrivers, char *ID)
+{
     int Id = atoi(ID);
-    DB_drivers* db_drivers = (DB_drivers*) dbDrivers;
-    gconstpointer id = (gconstpointer) &Id;
-    gpointer driverp = g_hash_table_lookup(db_drivers->drivers_hashtable,id);
-    Driver* driver = (Driver*) driverp;
-    if(driver){
+    DB_drivers *db_drivers = (DB_drivers *)dbDrivers;
+    gconstpointer id = (gconstpointer)&Id;
+    gpointer driverp = g_hash_table_lookup(db_drivers->drivers_hashtable, id);
+    Driver *driver = (Driver *)driverp;
+    if (driver)
+    {
         unsigned short Idade = idade(driver->birth_date);
-        double media = (double) (driver->aval)/(driver->trips);
-        if(driver->account_status == 'a' && driver->trips != 0){
-        fprintf(output,"%s;%c;%d;%.3f;%d;%.3f\n",driver->name,driver->gender,Idade,media,driver->trips,driver->total_spent);    
+        double media = (double)(driver->aval) / (driver->trips);
+        if (driver->account_status == 'a' && driver->trips != 0)
+        {
+            fprintf(output, "%s;%c;%d;%.3f;%d;%.3f\n", driver->name, driver->gender, Idade, media, driver->trips, driver->total_spent);
         }
-        else if(driver->account_status == 'a' && driver->trips == 0){
-            fprintf(output,"%s;%c;%d;%.3f;%d;%.3f\n",driver->name,driver->gender,Idade,0,driver->trips,0);
+        else if (driver->account_status == 'a' && driver->trips == 0)
+        {
+            fprintf(output, "%s;%c;%d;%.3f;%d;%.3f\n", driver->name, driver->gender, Idade, 0, driver->trips, 0);
         }
     }
-    fclose(output);     
+    fclose(output);
 }
 
-void *answer_q2_driver(FILE *output,void *dbDrivers, short N, short key){
-    // for(int i = 0; i < N; i++){
-    //     DB_drivers* db_drivers = (DB_drivers*) dbDrivers;
-    //     void *drivers = db_drivers->drivers_array;
-    //     double media = (driver->aval)/(driver->trips);
-    //     if(driver->account_status = 'a'){
-    //     fprintf(output,"%d;%s;%.3f\n",driver->id,driver->name,media);
-    //     key++;
-    //     }
-    //     else if(driver->trips == 0){
-    //     fprintf(output,"%d;%s;%.3f\n",driver->id,driver->name,0);
-    //     }
-    // }
+void *answer_q2_driver(FILE *output, void *dbDrivers, short N, short key)
+{
+    DB_drivers *db_drivers = (DB_drivers *)dbDrivers;
+    Driver **drivers = db_drivers->drivers_array;
+    // qsort(drivers, 10000, sizeof(Driver *), comparador);
+    int n = db_drivers->len;
+    if (db_drivers->order != 1){
+        for (int gap = n/2; gap > 0; gap /= 2)
+        {
+            for (int i = gap; i < n; i += 1)
+            {
+                Driver* temp = drivers[i];
+                double media = (double) (temp->aval)/(temp->trips);
 
-    // fclose(output);     
+                int j;           
+                for (j = i; j >= gap && ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)>media || ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)==media && (drivers[j - gap]->last_trip_date)>temp->last_trip_date)); j -= gap)
+                    drivers[j] = drivers[j - gap];
+
+                drivers[j] = temp;
+            }
+        }
+        db_drivers->order = 1;
+    }
+    for (size_t i = n-1; i<n-N-1; i--)
+    {
+        Driver *driver = drivers[i];
+        if(driver->account_status != 'a'){
+            i++;
+        }
+        else if(driver->trips == 0){
+            fprintf(output,"%d;%s;%.3f\n",driver->id,driver->name,0);
+        }
+        else{
+            double media = (double)(driver->aval) / (driver->trips);
+            fprintf(output,"%d;%s;%.3f\n",driver->id,driver->name,media);
+        }        
+    }
+    fclose(output);
 }
 
-int comparador(const void *a, const void *b) {
-    Driver *driver_a = (Driver*) a;
-    Driver *driver_b = (Driver*) b;
-    if(driver_a->aval_m == 0){
-        driver_a->aval_m = (driver_a->aval)/(driver_a->trips);
-    }
-    if(driver_b->aval_m == 0){
-        driver_b->aval_m = (driver_b->aval)/(driver_b->trips);
-    }
-    if((driver_a->aval_m)>(driver_b->aval_m)){
+int comparador(const void *a, const void *b)
+{
+    Driver *driver_a = (Driver *)a;
+    Driver *driver_b = (Driver *)b;
+    double media_a = (double)(driver_a->aval) / (driver_a->trips);
+    double media_b = (double)(driver_b->aval) / (driver_b->trips);
+    if ((media_a) > (media_b))
         return 1;
-    }
-    else if((driver_a->aval_m)<(driver_b->aval_m)){
+    if ((media_a) < (media_b))
         return -1;
-    }
-    else if((driver_a->last_trip_date)>(driver_b->last_trip_date)){
+    if ((driver_a->last_trip_date) > (driver_b->last_trip_date))
         return 1;
-    }
-    else if((driver_a->last_trip_date)<(driver_b->last_trip_date)){
-        return -1;
-    } 
-    else{
-        return ((driver_a->id) - (driver_b->id));
+            if ((driver_a->last_trip_date) < (driver_b->last_trip_date))
+                return -1;
+            return ((driver_a->id) - (driver_b->id));
+
+    
 }
-}
+
+
+//for (size_t i = 0; drivers[i]; i++)
+//    {
+//        Driver *driver = (Driver *)drivers[i];
+//        double media = (double)(driver->aval) / (driver->trips);
+//        printf("%d;%s;%.3f;%d\n;", driver->id, driver->name, media, driver->last_trip_date);
+//    }

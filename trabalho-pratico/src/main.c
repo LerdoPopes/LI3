@@ -54,6 +54,7 @@ int main(int argc, char *argv){
     // }
 
     query1("SaCruz110",DRIVERS,USERS,1);
+    //answer_q2_driver(output,DRIVERS,1,2);
     free_rides(RIDES);
     free_driver(DRIVERS);
     free_user(USERS);
