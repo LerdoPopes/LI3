@@ -1,4 +1,7 @@
 #define BUF 1024
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 typedef struct querie{
     int line; //linha do ficheiro da query
@@ -7,8 +10,8 @@ typedef struct querie{
 } querie;
 
 void *parseQueries(FILE *queries){
-    size_t numquerie = BUF
-    size_t current = 128
+    size_t numquerie = BUF;
+    size_t current = 128;
     querie *all = calloc(numquerie, sizeof(querie)); //todas as querys
     //char *um = malloc(sizeof(char)*current); 
 
@@ -40,7 +43,7 @@ void *parseQueries(FILE *queries){
 
 }
 
-void q_printall(Querys *all){
+void q_printall(querie *all){
     int i = 0;
     printf("%d\n", all[i].id);
     while (all[i].line != 1){

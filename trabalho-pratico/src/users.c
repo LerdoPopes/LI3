@@ -138,10 +138,13 @@ void *answer_q1_user(FILE *output,void *dbUsers, char *ID){
     gpointer userp = g_hash_table_lookup(db_users->users_hashtable,id);
     User* user = (User*) userp;
     short Idade = idade(user->birth_date);
-    double media =((double) user->aval)/(user->trips);
-    if(user->account_status = 'a'){
-        fprintf(output,"%s;%c;%d;%.3f;%d;%.3f\n",user->name,user->gender,Idade,media,user->trips,user->total_spent);//avaliacao_media,numero_viagens,total_gasto);    
-    }    
+    double media =((double) user->aval)/(user->trips);//double media = (user->aval)/(user->trips);
+    if(user->account_status == 'a' && user->trips != 0){
+        fprintf(output,"%s;%c;%d;%.3f;%d;%.3f\n",user->name,user->gender,Idade,media,user->trips,user->total_spent);    
+    }
+    else if(user->account_status == 'a' && user->trips == 0){
+        fprintf(output,"%s;%c;%d;%.3lf;%d;%.3f\n",user->name,user->gender,Idade,0,user->trips,0);
+    }
     fclose(output);
 }
 

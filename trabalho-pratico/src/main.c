@@ -1,16 +1,15 @@
+#include <math.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "../Include/parser.h"
+#include <time.h>
 #include "../Include/drivers.h"
 #include "../Include/users.h"
 #include "../Include/rides.h"
+#include "../Include/parser.h"
 #include "../Include/queries.h"
-#include <math.h>
-#include <time.h>
 
-
-int main(void){
+int main(int argc, char *argv){
 
     FILE *users = fopen("./users.csv", "r");
         if(users == NULL) {
@@ -33,6 +32,27 @@ int main(void){
         void *RIDES = parser(rides, ";\n\r", process_ride,organize_rides,DRIVERS,USERS,set_user_stats,set_driver_stats);
         fclose(rides);
     
+    // FILE *input = fopen("./input.txt", "r");
+    //     if(input == NULL){
+    //         perror("Opening input.txt: try another path");
+    //     }
+    //     //void *INPUT = parser_queries(input," \n\r");
+    //     fclose(input);
+
+    // for(short i = 0, j = 1; INPUT[i] != NULL;i++,j++){
+    //     switch(INPUT[i][0]){
+    //         case(1):                                              <------    Criador de command_outputs possivemente porreiro 
+    //             query1(INPUT[i][1],DRIVERS,USERS,j);
+    //             break;
+    //         case(2):
+    //             query2();
+    //             break;
+    //         case(3):
+    //             query3();
+    //             break;
+    //     }
+    // }
+
     query1("SaCruz110",DRIVERS,USERS,1);
     free_rides(RIDES);
     free_driver(DRIVERS);
@@ -41,5 +61,6 @@ int main(void){
     int time = clock();
     printf("%f\n",(float)time/CLOCKS_PER_SEC);  
 }
+
 
 

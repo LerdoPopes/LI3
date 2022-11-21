@@ -178,15 +178,54 @@ void *answer_q1_driver(FILE *output,void *dbDrivers, char *ID){
     printf("%p",driver);
     short Idade = idade(driver->birth_date);
     double media = (driver->aval)/(driver->trips);
-    if(driver->account_status = 'a'){
-        fprintf(output,"%s;%c;%d;%.3f;%d;%.3f\n",driver->name,driver->gender,Idade,media,driver->trips,driver->total_spent);//avaliacao_media,numero_viagens,total_gasto);    
+    if(driver->account_status == 'a' && driver->trips != 0){
+        fprintf(output,"%s;%c;%d;%.3f;%d;%.3f\n",driver->name,driver->gender,Idade,media,driver->trips,driver->total_spent);    
+    }
+    else if(driver->account_status == 'a' && driver->trips == 0){
+        fprintf(output,"%s;%c;%d;%.3f;%d;%.3f\n",driver->name,driver->gender,Idade,0,driver->trips,0);
     }
     fclose(output);     
 }
 
-// short driver_get_idade(struct driver *d,char *data_atual,char *birth_date){
-//      d->idade = idade(data_atual,birth_date);
-//      return d->idade;
-// }
+void *answer_q2_driver(FILE *output,void *dbDrivers, short N, short key){
+    // for(int i = 0; i < N; i++){
+    //     DB_drivers* db_drivers = (DB_drivers*) dbDrivers;
+    //     void *drivers = db_drivers->drivers_array;
+    //     double media = (driver->aval)/(driver->trips);
+    //     if(driver->account_status = 'a'){
+    //     fprintf(output,"%d;%s;%.3f\n",driver->id,driver->name,media);
+    //     key++;
+    //     }
+    //     else if(driver->trips == 0){
+    //     fprintf(output,"%d;%s;%.3f\n",driver->id,driver->name,0);
+    //     }
+    // }
 
+    // fclose(output);     
+}
 
+int comparador(const void *a, const void *b) {
+    Driver *driver_a = (Driver*) a;
+    Driver *driver_b = (Driver*) b;
+    if(driver_a->aval_m == 0){
+        driver_a->aval_m = (driver_a->aval)/(driver_a->trips);
+    }
+    if(driver_b->aval_m == 0){
+        driver_b->aval_m = (driver_b->aval)/(driver_b->trips);
+    }
+    if((driver_a->aval_m)>(driver_b->aval_m)){
+        return 1;
+    }
+    else if((driver_a->aval_m)<(driver_b->aval_m)){
+        return -1;
+    }
+    else if((driver_a->last_trip_date)>(driver_b->last_trip_date)){
+        return 1;
+    }
+    else if((driver_a->last_trip_date)<(driver_b->last_trip_date)){
+        return -1;
+    } 
+    else{
+        return ((driver_a->id) - (driver_b->id));
+}
+}

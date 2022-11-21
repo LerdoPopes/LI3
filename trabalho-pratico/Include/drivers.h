@@ -39,4 +39,5 @@ char driver_get_account_status(struct driver *d);
 
 void *answer_q1_driver(FILE *output,void *dbDrivers, char *ID);
 
+int comparador(const void *a, const void *b);
 
