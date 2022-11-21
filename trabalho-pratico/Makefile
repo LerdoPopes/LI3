@@ -1,7 +1,22 @@
+#$(CC) = gcc
+#
+#
+#compile:
+#		 $(CC) src/main.c  src/parser.c src/drivers.c src/rides.c src/users.c -o programa-principal
+#
+#Clean:
+#		rm *.o programa-principal
+
 $(CC) = gcc
+PNTC=$(wildcard src/* .c)
+PNTH=$(wildcard Include/* .h)
+FLAGS=-Wall -Wextra
 
-compile:
-		 $(CC) `pkg-config --cflags glib-2.0` src/main.c  src/parser.c src/drivers.c src/rides.c src/users.c src/dates.c -o programa-principal `pkg-config --libs glib-2.0`
+programa-principal:
+					$(CC) $(FLAGS) -o programa-principal $(PNTC) $(PNTCH)
 
-Clean:
+#testes:
+
+clean:
 		rm *.o programa-principal
+
