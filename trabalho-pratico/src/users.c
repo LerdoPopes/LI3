@@ -192,3 +192,5 @@ short user_get_account_creation(struct user *u){
 char user_get_account_status(struct user *u){
     return u->account_status;
 }
+
+((users[j - gap])==temp->total_dist && (users[j - gap]->last_trip_date)>temp->last_trip_dat) || ((users[j - gap])==temp->total_dist && (users[j - gap]->last_trip_date)=temp->last_trip_date && (double)(users[j - gap]->aval)/(users[j - gap]->trips)>media)
