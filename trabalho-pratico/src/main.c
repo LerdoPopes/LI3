@@ -43,8 +43,7 @@ int main(int argc, char **argv){
         fclose(rides);
     
     char *Input = (char *)malloc(30 * sizeof(char));
-    sprintf(Input,"./%s",argv[2]);
-    FILE *input = fopen(Input, "r");
+    FILE *input = fopen(argv[2], "r");
         if(input == NULL){
             perror("Opening input.txt: try another path");
         }
