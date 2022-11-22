@@ -55,7 +55,7 @@ dateCombo* conv_Days_to_Date(short days){
 short idade(short birth_date){
     dateCombo* dateCombo = conv_Days_to_Date(birth_date);
     short idade = 0;
-    if (dateCombo->month<10 || dateCombo->month==10 && dateCombo->day<=9)
+    if (dateCombo->month<10 || (dateCombo->month==10 && dateCombo->day<=9))
     {
         idade = 2022-dateCombo->year;
     }

@@ -18,7 +18,6 @@ struct ride {
     char *comment;
 };
 
-
 typedef struct data_base_rides{
     void** rides_array;
     GHashTable* rides_hashtable;
