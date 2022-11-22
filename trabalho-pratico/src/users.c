@@ -123,13 +123,13 @@ void *answer_q1_user(FILE *output,void *dbUsers, char *ID){
             fprintf(output,"%s;%c;%d;%.3f;%d;%.3f\n",user->name,user->gender,Idade,media,user->trips,user->total_spent);    
         }
         else if(user->account_status == 'a' && user->trips == 0){
-            fprintf(output,"%s;%c;%d;%.3lf;%d;%.3f\n",user->name,user->gender,Idade,0,user->trips,0);
+            fprintf(output,"%s;%c;%d;%d;%d;%d\n",user->name,user->gender,Idade,0,user->trips,0);
         }   
     }
     fclose(output);
 }
 
-void *answer_q3_user(FILE *output, void *dbUsers, short N, short key)
+void *answer_q3_user(FILE *output, void *dbUsers, short N)
 {
     DB_users *db_users = (DB_users *)dbUsers;
     User **users = db_users->users_array;
@@ -144,7 +144,7 @@ void *answer_q3_user(FILE *output, void *dbUsers, short N, short key)
                 double media = (double) (temp->aval)/(temp->trips);
 
                 int j;           
-                for (j = i; j >= gap && (((users[j - gap]->total_dist)>temp->total_dist) || ((users[j - gap])==temp->total_dist && (double)(users[j - gap]->aval)/(users[j - gap]->trips)>media) || ((users[j - gap])==temp->total_dist && (double)(users[j - gap]->aval)/(users[j - gap]->trips)>media && (users[j - gap]->last_trip_date)>temp->last_trip_date )); j -= gap)
+                for (j = i; j >= gap && (((users[j - gap]->total_dist)>temp->total_dist) || ((users[j - gap]->total_dist)==temp->total_dist && (users[j - gap]->last_trip_date)>temp->last_trip_date) || ((users[j - gap]->total_dist)==temp->total_dist && (users[j - gap]->last_trip_date)==temp->last_trip_date && (double)(users[j - gap]->aval)/(users[j - gap]->trips)>media)); j -= gap)
                     users[j] = users[j - gap];
 
                 users[j] = temp;
@@ -156,39 +156,12 @@ void *answer_q3_user(FILE *output, void *dbUsers, short N, short key)
     {
         User *user = users[i];
         if(user->account_status != 'a'){
-            i++;
+            N++;
         }
         else{
-            fprintf(output,"%d;%s;%.3f\n",user->username,user->name,user->total_dist);
+            fprintf(output,"%s;%s;%d\n",user->username,user->name,user->total_dist);
         }        
     }
     fclose(output);
 }
 
-char *user_get_username(struct user *u){
-     char *user_nome = (char *)malloc(255 * sizeof(char));
-     strcpy(user_nome,u->username);    
-     return user_nome;
-}
-
-char *user_get_name(struct user *u){
-     char *nome = (char *)malloc(255 * sizeof(char));
-     strcpy(nome,u->name);    
-     return nome;
-}
-
-char user_get_gender(struct user *u){
-    return u->gender;
-}
-
-char user_get_birth_date(struct user *u){
-    return u->birth_date;
-}
-
-short user_get_account_creation(struct user *u){
-    return u->account_creation;
-}
-
-char user_get_account_status(struct user *u){
-    return u->account_status;
-}

@@ -18,20 +18,6 @@ void print_user(void* key, void* usersDB);
 
 void set_user_stats(void* dbUsers, void* dist, void* aval, void* username, void* money ,void* last_trip);
 
-char *user_get_username(struct user *u);
-
-char *user_get_name(struct user *u);
-
-char user_get_gender(struct user *u);
-
-char user_get_birth_date(struct user *u);
-
-short user_get_account_creation(struct user *u);
-
-char user_get_account_status(struct user *u);
-
-// short user_get_idade(struct user *u,char *data_atual,char *birth_date);
-
 void *answer_q1_user(FILE *output,void *dbUsers, char *ID);
 
-void *answer_q3_user(FILE *output, void *dbDrivers, short N);
+void *answer_q3_user(FILE *output, void *dbUsers, short N);

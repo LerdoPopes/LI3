@@ -142,57 +142,6 @@ void print_driver(void *driversDB)
     // printf("%d,%s,%c,%u,%u\n",driver->id,driver->name,driver->gender,driver->birth_date,driver->account_creation);
 }
 
-int driver_get_id(struct driver *d)
-{
-    return d->id;
-}
-
-char *driver_get_name(struct driver *d)
-{
-    char *nome = (char *)malloc(255 * sizeof(char));
-    strcpy(nome, d->name);
-    return nome;
-}
-
-char driver_get_birth_date(struct driver *d)
-{
-    return d->birth_date;
-}
-
-char driver_get_gender(struct driver *d)
-{
-    return d->gender;
-}
-
-char *driver_get_car_class(struct driver *d)
-{
-    char *classe = (char *)malloc(255 * sizeof(char));
-    strcpy(classe, d->car_class);
-    return classe;
-}
-
-char *driver_get_license_plate(struct driver *d)
-{
-    return d->license_plate;
-}
-
-char *driver_get_city(struct driver *d)
-{
-    char *cidade = (char *)malloc(255 * sizeof(char));
-    strcpy(cidade, d->city);
-    return cidade;
-}
-
-short driver_get_account_creation(struct driver *d)
-{
-    return d->account_creation;
-}
-
-char driver_get_account_status(struct driver *d)
-{
-    return d->account_status;
-}
-
 void *answer_q1_driver(FILE *output, void *dbDrivers, char *ID)
 {
     int Id = atoi(ID);
@@ -210,7 +159,7 @@ void *answer_q1_driver(FILE *output, void *dbDrivers, char *ID)
         }
         else if (driver->account_status == 'a' && driver->trips == 0)
         {
-            fprintf(output, "%s;%c;%d;%.3f;%d;%.3f\n", driver->name, driver->gender, Idade, 0, driver->trips, 0);
+            fprintf(output, "%s;%c;%d;%d;%d;%d\n", driver->name, driver->gender, Idade, 0, driver->trips, 0);
         }
     }
     fclose(output);
@@ -243,37 +192,37 @@ void *answer_q2_driver(FILE *output, void *dbDrivers, short N)
     {
         Driver *driver = drivers[i];
         if(driver->account_status != 'a'){
-            i++;
+            N++;
         }
         else if(driver->trips == 0){
-            fprintf(output,"%d;%s;%.3f\n",driver->id,driver->name,0);
+            fprintf(output,"%012d;%s;%d\n",driver->id,driver->name,0);
         }
         else{
             double media = (double)(driver->aval) / (driver->trips);
-            fprintf(output,"%d;%s;%.3f\n",driver->id,driver->name,media);
+            fprintf(output,"%012d;%s;%.3f\n",driver->id,driver->name,media);
         }        
     }
     fclose(output);
 }
 
-int comparador(const void *a, const void *b)
-{
-    Driver *driver_a = (Driver *)a;
-    Driver *driver_b = (Driver *)b;
-    double media_a = (double)(driver_a->aval) / (driver_a->trips);
-    double media_b = (double)(driver_b->aval) / (driver_b->trips);
-    if ((media_a) > (media_b))
-        return 1;
-    if ((media_a) < (media_b))
-        return -1;
-    if ((driver_a->last_trip_date) > (driver_b->last_trip_date))
-        return 1;
-            if ((driver_a->last_trip_date) < (driver_b->last_trip_date))
-                return -1;
-            return ((driver_a->id) - (driver_b->id));
+// int comparador(const void *a, const void *b)
+// {
+//     Driver *driver_a = (Driver *)a;
+//     Driver *driver_b = (Driver *)b;
+//     double media_a = (double)(driver_a->aval) / (driver_a->trips);
+//     double media_b = (double)(driver_b->aval) / (driver_b->trips);
+//     if ((media_a) > (media_b))
+//         return 1;
+//     if ((media_a) < (media_b))
+//         return -1;
+//     if ((driver_a->last_trip_date) > (driver_b->last_trip_date))
+//         return 1;
+//             if ((driver_a->last_trip_date) < (driver_b->last_trip_date))
+//                 return -1;
+//             return ((driver_a->id) - (driver_b->id));
 
     
-}
+// }
 
 
 //for (size_t i = 0; drivers[i]; i++)

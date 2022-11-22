@@ -9,7 +9,6 @@ typedef struct dateCombo{
     short year;
 } dateCombo;
 
-
 unsigned short calc_Date(char* data);
 
 short idade(short birth_date);

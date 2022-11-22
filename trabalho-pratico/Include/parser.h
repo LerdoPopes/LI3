@@ -8,9 +8,5 @@ void *parser(FILE *to_parse, char const*rest,  void* (*parse_func)(char**), void
 
 void* process_querie(char** save);
 
-void** parse_querie(FILE *to_parse)
+void** parse_querie(FILE *to_parse);
 
-
-//void *parseQueries(FILE *queries);
-
-//void q_printall(Querys *all);
