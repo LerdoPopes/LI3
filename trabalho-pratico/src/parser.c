@@ -5,11 +5,11 @@
 #include <stdlib.h>
 #include <math.h>
 
-typedef struct querie{
-    int line; //linha do ficheiro da query
-    char queriex; //query a ser executada
-    char comando[500]; //arguments
-} querie;
+//typedef struct querie{
+//    int line; //linha do ficheiro da query
+//    char queriex; //query a ser executada
+//    char comando[500]; //arguments
+//} querie;
 
 void *parser(FILE *to_parse, 
 char const*rest,  
@@ -48,5 +48,64 @@ void*(set_driver_stats)(void*,void*,void*,void*, void*,void*))
     result[i] = NULL;
     return organize_func(result,struct_drivers,struct_users,set_users_stats,set_driver_stats);
 }
+
+void* process_querie(char** save){
+    char** save2 = malloc(12*sizeof(char*));
+    size_t i = 0;
+    for(; save[i]; i++)
+    {
+        save2[i] = strdup(save[i]);
+    }
+    save2[i] = NULL;
+    return save2;
+}
+
+void** parse_querie(FILE *to_parse)
+{
+size_t current = 64;
+    void **result = malloc(sizeof(void*) * current);
+    size_t i = 0;
+    
+    for(char buf[BUF] = { 0 }; fgets(buf, BUF, to_parse) != NULL;)
+    {
+        char *save[12] = { 0 };
+        
+        size_t j = 0;
+        for(char *token = buf, *aux = buf; token != NULL; token = aux) {
+            token = strsep(&aux, " \n\r");
+            save[j++] = token;
+        }
+
+        if(i + 1 == current) { 
+            result = realloc(result, (current *= 2) * sizeof(void*)); 
+        }
+        save[j] = NULL;
+        result[i++] = process_querie(save);
+    }
+    result[i] = NULL;
+    return result;
+}
+
+
+
+//void q_printall(void **all){
+//    int i;
+//    for(i=0;all[i];i++){
+//        char** save = (char**) all[i];
+//        for (size_t j = 0; save[j]; j++)
+//        {
+//            printf("%s\n",save[j]);
+//        }
+//    
+//    }
+//    printf("done\n");
+//
+//} 
+//
+//void main(int argc,char **argv) {
+//    FILE * querys = fopen("./input.txt", "r");
+//    void ** monky = parser(querys);
+//    q_printall(monky);
+//}
 
 //  void* (organize_func2)(void** ,void* , void*, void*, void*), void* struct_drivers, void* struct_users, void*(set_users_stats)(void*,void*), void*(set_driver_stats)(void*,void*)
