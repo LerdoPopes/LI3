@@ -49,18 +49,7 @@ void*(set_driver_stats)(void*,void*,void*,void*, void*,void*))
     return organize_func(result,struct_drivers,struct_users,set_users_stats,set_driver_stats);
 }
 
-void* process_querie(char** save){
-    char** save2 = malloc(12*sizeof(char*));
-    size_t i = 0;
-    for(; save[i]; i++)
-    {
-        save2[i] = strdup(save[i]);
-    }
-    save2[i] = NULL;
-    return save2;
-}
-
-void** parse_querie(FILE *to_parse)
+void** parse_querie(FILE *to_parse, void* (process)(char**))
 {
 size_t current = 64;
     void **result = malloc(sizeof(void*) * current);
@@ -80,7 +69,7 @@ size_t current = 64;
             result = realloc(result, (current *= 2) * sizeof(void*)); 
         }
         save[j] = NULL;
-        result[i++] = process_querie(save);
+        result[i++] = process(save);
     }
     result[i] = NULL;
     return result;

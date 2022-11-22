@@ -48,32 +48,14 @@ int main(int argc, char **argv){
         if(input == NULL){
             perror("Opening input.txt: try another path");
         }
-        char ***INPUT = parse_querie(input);
+        void **INPUT = parse_querie(input,process_querie);
         fclose(input);
 
-
-    for(short i = 0, j = 1; INPUT[i] != NULL;i++,j++){
-        switch(atoi(INPUT[i][0])){
-            case(1):                                              
-                query1(INPUT[i][1],DRIVERS,USERS,j);
-                break;
-            case(2):
-                query2(INPUT[i][1],DRIVERS,j);
-                break;
-            case(3):
-                query3(INPUT[i][1],USERS,j);
-                break;
-        }
-    }
-
-    // query1("SaCruz110",DRIVERS,USERS,1);
-    // query2("10",DRIVERS,2);
-    // query3("10",USERS,3);
-    //answer_q2_driver(output,DRIVERS,1,2);
+    answer_queries(INPUT,USERS,DRIVERS);
     free_rides(RIDES);
     free_driver(DRIVERS);
     free_user(USERS);
-
+    free(aux);
     int time = clock();
     printf("%f\n",(float)time/CLOCKS_PER_SEC);  
 }

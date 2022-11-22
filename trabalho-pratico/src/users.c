@@ -65,7 +65,7 @@ void *organize_user(void** results, void* useless, void* useless2, void(useless3
         g_hash_table_insert(gtable,user->username,user);  
     }
     DB_users* db_users = malloc(sizeof(DB_users));
-    db_users->users_array = (User*) results;
+    db_users->users_array = (User**) results;
     db_users->users_hashtable = gtable;
     db_users->len=i;
     db_users->order = 0;

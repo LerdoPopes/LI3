@@ -9,6 +9,34 @@
 #include <ctype.h>
 #include <math.h>
 
+void* process_querie(char** save){
+    char** save2 = malloc(12*sizeof(char*));
+    size_t i = 0;
+    for(; save[i]; i++)
+    {
+        save2[i] = strdup(save[i]);
+    }
+    save2[i] = NULL;
+    return save2;
+}
+
+void answer_queries(void** input, void* USERS, void* DRIVERS){
+    char*** INPUT = (char***) input;
+    for(short i = 0, j = 1; INPUT[i] != NULL;i++,j++){
+         switch(atoi(INPUT[i][0])){
+             case(1):                                              
+                 query1(INPUT[i][1],DRIVERS,USERS,j);
+                 break;
+             case(2):
+                 query2(INPUT[i][1],DRIVERS,j);
+                 break;
+             case(3):
+                 query3(INPUT[i][1],USERS,j);
+                 break;
+         }
+    }
+}
+
 void query1(char *ID, void *dbDrivers, void *dbUsers, short i){
     char *id = malloc(50);
     sprintf(id, "./Resultados/command%d_output.txt", i);
