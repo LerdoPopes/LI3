@@ -15,8 +15,9 @@ int main(int argc, char **argv){
     }
 
     char *aux = (char *)malloc(1000 * sizeof(char));
-    strcpy(aux,argv[1]);
-    strcat(aux,"/users.csv");
+    // strcpy(aux,argv[1]);
+    // strcat(aux,"/users.csv");
+    sprintf(aux,"./%s/users.csv",argv[1]);
     FILE *users = fopen(aux, "r");
         if(users == NULL) {
             perror("Opening users.csv: try another path");
@@ -24,8 +25,9 @@ int main(int argc, char **argv){
         void *USERS = parser(users, ";\n\r", process_user,organize_user,NULL,NULL,NULL,NULL);
         fclose(users);
 
-    strcpy(aux,argv[1]);
-    strcat(aux,"/drivers.csv");
+    // strcpy(aux,argv[1]);
+    // strcat(aux,"/drivers.csv");
+    sprintf(aux,"./%s/drivers.csv",argv[1]);
     FILE *drivers = fopen(aux, "r");
         if(drivers == NULL) {
             perror("Opening drivers.csv: try another path");
@@ -33,8 +35,9 @@ int main(int argc, char **argv){
         void *DRIVERS = parser(drivers, ";\n\r", process_driver,organize_driver,NULL,NULL,NULL,NULL);
         fclose(drivers);
 
-    strcpy(aux,argv[1]);
-    strcat(aux,"/rides.csv");
+    // strcpy(aux,argv[1]);
+    // strcat(aux,"/rides.csv");
+    sprintf(aux,"./%s/rides.csv",argv[1]);
     FILE *rides = fopen(aux, "r");
         if(rides == NULL) {
             perror("Opening rides.csv: try another path");
