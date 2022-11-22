@@ -14,11 +14,11 @@ PNTH=$(wildcard Include/* .h)
 FLAGS= -IInclude `pkg-config --cflags glib-2.0`
 
 compile: Resultados
-			$(CC) $(FLAGS) -o programa-principal $(PNTC) $(PNTH) `pkg-config --libs glib-2.0`
+	$(CC) $(FLAGS) -o programa-principal $(PNTC) $(PNTH) `pkg-config --libs glib-2.0`
 
 #testes:
 Resultados:
-			mkdir -p $@
+	mkdir -p $@
 
 clean:
-		rm -rf *.o programa-principal Resultados
+	rm -rf *.o programa-principal Resultados
