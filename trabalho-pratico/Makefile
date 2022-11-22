@@ -16,6 +16,9 @@ FLAGS= -IInclude `pkg-config --cflags glib-2.0`
 compile: Resultados
 		$(CC) $(FLAGS) -o programa-principal $(PNTC) $(PNTH) `pkg-config --libs glib-2.0`
 
+run: compile 
+	./programa-principal
+
 #testes:
 Resultados:
 		mkdir -p $@
