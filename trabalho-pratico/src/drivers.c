@@ -121,8 +121,12 @@ void *set_driver_stats(void *dbDrivers, void *distp, void *avalp, void *id, void
     }
     else
     {
-        driver->total_spent += (3.25 * 0.62 * (*dist) + (*tip));
+        driver->total_spent += (3.25 + 0.62 * (*dist) + (*tip));
         *money = (3.25 + 0.62 * (*dist) + (*tip));
+    }
+    int* x = (int*) idp;
+    if(*x == 7141){
+        printf("%.3f\n",driver->total_spent);
     }
     return money;
 }
