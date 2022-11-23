@@ -31,7 +31,6 @@ struct data_base_drivers
     GHashTable *drivers_hashtable;
     int order;
     int len;
-    // GTree* drivers_tree;
 };
 
 void *process_driver(char **info)

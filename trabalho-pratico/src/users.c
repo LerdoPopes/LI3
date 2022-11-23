@@ -30,7 +30,6 @@ struct user{
 typedef struct data_base_users{
     User** users_array;
     GHashTable* users_hashtable;
-    // GTree* users_tree;
     int len;
     int order;
 } DB_users;
@@ -45,7 +44,7 @@ void *process_user(char** info)
     us->birth_date = calc_Date(info[3]);
     us->account_creation = calc_Date(info[4]);
     us->pay_method = info[5][1]; 
-    us->account_status = info[6][0]; //Para print disto, tem que se verificar a letra e dar print ao status com essa primeria letra 
+    us->account_status = info[6][0];
     us->aval = 0;
     us->total_dist = 0;
     us->total_spent = 0;

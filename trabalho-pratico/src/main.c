@@ -13,7 +13,7 @@ int main(int argc, char **argv){
     if(argc < 2){
         perror("Not enough arguments are being used: try again");
     }
-
+    else{
     char *aux = (char *)malloc(1000 * sizeof(char));
     strcpy(aux,argv[1]);
     strcat(aux,"/users.csv");
@@ -43,8 +43,7 @@ int main(int argc, char **argv){
         fclose(rides);
     
     char *Input = (char *)malloc(30 * sizeof(char));
-    sprintf(Input,"./%s",argv[2]);
-    FILE *input = fopen(Input, "r");
+    FILE *input = fopen(argv[2], "r");
         if(input == NULL){
             perror("Opening input.txt: try another path");
         }
@@ -59,6 +58,6 @@ int main(int argc, char **argv){
     int time = clock();
     printf("%f\n",(float)time/CLOCKS_PER_SEC);  
 }
-
+}
 
 

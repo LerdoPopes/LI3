@@ -21,7 +21,6 @@ struct ride {
 typedef struct data_base_rides{
     void** rides_array;
     GHashTable* rides_hashtable;
-    // GTree* users_tree;
 } DB_rides;
 
 void *process_ride(char** info) {
