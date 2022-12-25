@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include "../Include/users.h"
 #include "../Include/dates.h"
 
@@ -54,7 +55,7 @@ void *process_user(char** info)
     return us;
 }
 
-void *organize_user(void** results, void* useless, void* useless2, void(useless3)(void*,void*,void*,void*,void*,void*), void*(useless4)(void*,void*,void*,void*,void*,void*)){
+void *organize_user(void** results, int num_args, ...){
     GHashTable* gtable = g_hash_table_new(g_str_hash,g_str_equal);
     // g_hash_table_insert(hashtable,user->username,user);
     int i;

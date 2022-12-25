@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 
 typedef struct driver Driver;
 
@@ -9,7 +10,7 @@ typedef struct data_base_drivers DB_drivers;
 
 void *process_driver(char** info); 
 
-void *organize_driver(void** results, void* useless, void* useless2, void(useless3)(void*,void*,void*,void*,void*,void*), void*(useless4)(void*,void*,void*,void*,void*,void*));
+void *organize_driver(void** results, int num_args, ...);
 
 void free_driver(void* driver);
 

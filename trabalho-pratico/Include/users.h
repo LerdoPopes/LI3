@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <glib.h>
+#include <stdarg.h>
 
 typedef struct user User;
 
@@ -10,7 +11,7 @@ typedef struct data_base_users DB_Users;
 
 void *process_user(char** info);
 
-void *organize_user(void** results, void* useless, void* useless2, void(useless3)(void*,void*,void*,void*,void*,void*), void*(useless4)(void*,void*,void*,void*,void*,void*));
+void *organize_user(void** results, int num_args, ...);
 
 void free_user(void* user);
 

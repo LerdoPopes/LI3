@@ -21,7 +21,7 @@ int main(int argc, char **argv){
         if(users == NULL) {
             perror("Opening users.csv: try another path");
         }
-        void *USERS = parser(users, ";\n\r", process_user,organize_user,NULL,NULL,NULL,NULL);
+        void *USERS = parser(users, ";\n\r", process_user,organize_user,0);
         fclose(users);
 
     strcpy(aux,argv[1]);
@@ -30,7 +30,7 @@ int main(int argc, char **argv){
         if(drivers == NULL) {
             perror("Opening drivers.csv: try another path");
         }
-        void *DRIVERS = parser(drivers, ";\n\r", process_driver,organize_driver,NULL,NULL,NULL,NULL);
+        void *DRIVERS = parser(drivers, ";\n\r", process_driver,organize_driver,0);
         fclose(drivers);
 
     strcpy(aux,argv[1]);
@@ -39,7 +39,7 @@ int main(int argc, char **argv){
         if(rides == NULL) {
             perror("Opening rides.csv: try another path");
         } 
-        void *RIDES = parser(rides, ";\n\r", process_ride,organize_rides,DRIVERS,USERS,set_user_stats,set_driver_stats);
+        void *RIDES = parser(rides, ";\n\r", process_ride,organize_rides,4,DRIVERS,USERS,set_user_stats,set_driver_stats);
         fclose(rides);
     
     char *Input = (char *)malloc(30 * sizeof(char));

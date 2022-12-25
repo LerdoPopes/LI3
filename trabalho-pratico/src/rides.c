@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <glib.h>
+#include <stdarg.h>
 #include "../Include/rides.h"
 
 struct ride {
@@ -40,7 +41,14 @@ void *process_ride(char** info) {
     return ri;
 }
 
-void *organize_rides(void** results, void* struct_drivers, void* struct_users, void(set_users_stats)(void*,void*,void*,void*,void*,void*), void*(set_driver_stats)(void*,void*,void*,void*,void*,void*)){
+void *organize_rides(void** results,int num_args, ... ){
+    va_list args;
+    va_start(args, num_args);
+    void * struct_drivers = va_arg(args,void*);
+    void * struct_users = va_arg(args,void*);
+    void (*set_users_stats)(void *, void *, void *, void *, void *, void *) = va_arg(args,void (*)(void *, void *, void *, void *, void *, void *));
+    void* (*set_driver_stats)(void *, void *, void *, void *, void *, void *) = va_arg(args,void* (*)(void *, void *, void *, void *, void *, void *));
+    va_end(args);
     GHashTable* gtable = g_hash_table_new(g_int_hash,g_str_equal);
     for (size_t i = 0; results[i]; i++)
     {

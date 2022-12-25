@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <glib.h>
+#include <stdarg.h>
 #include "../Include/dates.h"
 #include "../Include/drivers.h"
 
@@ -57,7 +58,7 @@ void *process_driver(char **info)
     return dr;
 }
 
-void *organize_driver(void **results, void *useless, void *useless2, void(useless3)(void *, void *, void *, void *, void *, void *), void *(useless4)(void *, void *, void *, void *, void *, void *))
+void *organize_driver(void **results, int num_args, ...)
 {
     GHashTable *gtable = g_hash_table_new(g_int_hash, g_int_equal);
     int i;
@@ -124,9 +125,6 @@ void *set_driver_stats(void *dbDrivers, void *distp, void *avalp, void *id, void
         *money = (3.25 + 0.62 * (*dist) + (*tip));
     }
     int* x = (int*) idp;
-    if(*x == 7141){
-        printf("%.3f\n",driver->total_spent);
-    }
     return money;
 }
 
