@@ -11,8 +11,8 @@ void query3(char *ID, void *dbUsers, short i);
 
 void answer_queries(void** input, void* USERS, void* DRIVERS);
 
-void* process_querie(char** info);
+void free_queries(void** queries_p);
 
-void* organize_querie(void** results, void* struct_drivers, void* struct_users, void(set_users_stats)(void*,void*,void*,void*,void*), void*(set_driver_stats)(void*,void*,void*,void*));
+void* process_query(char** info);
 
-void print_queries(void* db_queries);
+void printq(void** queriesp);
