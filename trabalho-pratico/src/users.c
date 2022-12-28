@@ -22,6 +22,7 @@ struct user{
     char account_status;
     short trips;
     double total_spent;
+    double total_spent_notip;
     unsigned short total_dist;
     short aval;
     short aval_m;
@@ -49,6 +50,7 @@ void *process_user(char** info)
     us->aval = 0;
     us->total_dist = 0;
     us->total_spent = 0;
+    us->total_spent_notip = 0;
     us->trips = 0;
     us->aval_m;
     us->last_trip_date = 0;

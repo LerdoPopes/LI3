@@ -22,6 +22,7 @@ struct ride {
 typedef struct data_base_rides{
     void** rides_array;
     GHashTable* rides_hashtable;
+    int len;
 } DB_rides;
 
 void *process_ride(char** info) {
@@ -50,7 +51,8 @@ void *organize_rides(void** results,int num_args, ... ){
     void* (*set_driver_stats)(void *, void *, void *, void *, void *, void *) = va_arg(args,void* (*)(void *, void *, void *, void *, void *, void *));
     va_end(args);
     GHashTable* gtable = g_hash_table_new(g_int_hash,g_str_equal);
-    for (size_t i = 0; results[i]; i++)
+    size_t i;
+    for (i = 0; results[i]; i++)
     {
         Ride* rides = (Ride*) results[i];
         unsigned short dist = rides->distance;
@@ -69,6 +71,7 @@ void *organize_rides(void** results,int num_args, ... ){
     DB_rides* db_rides = malloc(sizeof(DB_rides));
     db_rides->rides_array = results;
     db_rides->rides_hashtable = gtable;
+    db_rides->len = i;
     return db_rides;
 }
 
