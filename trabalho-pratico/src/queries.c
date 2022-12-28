@@ -10,7 +10,7 @@
 #include <ctype.h>
 #include <math.h>
 
-void* process_querie(char** save){
+void* process_query(char** save){
     char** save2 = malloc(12*sizeof(char*));
     size_t i = 0;
     for(; save[i]; i++)
@@ -20,6 +20,20 @@ void* process_querie(char** save){
     save2[i] = NULL;
     return save2;
 }
+
+void free_queries(void** queries_p){
+    char*** queries = (char***) queries_p;
+    for(int i = 0; queries[i] != NULL;i++){
+        for (size_t j = 0; queries[i][j] != NULL ; j++)
+        {
+            free(queries[i][j]);
+        }
+        
+        free(queries[i]);
+    }
+    free(queries);
+}
+
 
 void answer_queries(void** input, void* USERS, void* DRIVERS){
     char*** INPUT = (char***) input;
@@ -54,15 +68,15 @@ void query2(char* N, void *dbDrivers, short i){
     char *id = malloc(50);
     sprintf(id, "./Resultados/command%d_output.txt", i);
     FILE *resultado = fopen(id, "w");    
-        answer_q2_driver(resultado,dbDrivers,atoi(N));
-    }
+    answer_q2_driver(resultado,dbDrivers,atoi(N));
+}
 
 void query3(char *N, void *dbUsers, short i){
     char *id = malloc(50);
     sprintf(id, "./Resultados/command%d_output.txt", i);
     FILE *resultado = fopen(id, "w");    
-        answer_q3_user(resultado,dbUsers,atoi(N));
-    }
+    answer_q3_user(resultado,dbUsers,atoi(N));
+}
 
 
 void answer_q4(FILE* input,char *city,void *db_rides, void *db_drivers){

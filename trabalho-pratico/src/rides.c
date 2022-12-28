@@ -42,30 +42,12 @@ void *process_ride(char** info) {
     return ri;
 }
 
-void *organize_rides(void** results,int num_args, ... ){
-    va_list args;
-    va_start(args, num_args);
-    void * struct_drivers = va_arg(args,void*);
-    void * struct_users = va_arg(args,void*);
-    void (*set_users_stats)(void *, void *, void *, void *, void *, void *) = va_arg(args,void (*)(void *, void *, void *, void *, void *, void *));
-    void* (*set_driver_stats)(void *, void *, void *, void *, void *, void *) = va_arg(args,void* (*)(void *, void *, void *, void *, void *, void *));
-    va_end(args);
+void *organize_rides(void** results){
     GHashTable* gtable = g_hash_table_new(g_int_hash,g_str_equal);
     size_t i;
     for (i = 0; results[i]; i++)
     {
         Ride* rides = (Ride*) results[i];
-        unsigned short dist = rides->distance;
-        short score_u = rides->score_user;
-        short score_d = rides->score_driver;
-        unsigned short date = rides->date;
-        int id = rides->driver;
-        double tip = rides->tip;
-        char* username = strdup(rides->user);
-        void* money = set_driver_stats(struct_drivers,&dist,&score_d,&id,&tip,&date);
-        set_users_stats(struct_users,&dist,&score_u,username,money,&date);
-        free(money);
-        free(username);
         g_hash_table_insert(gtable,&(rides->id),rides);
     }
     DB_rides* db_rides = malloc(sizeof(DB_rides));
@@ -87,14 +69,18 @@ void free_rides(void* rides){
     }
     GHashTable* gtable = (GHashTable*) db_rides->rides_hashtable;
     g_hash_table_destroy(gtable);
+    free(db_rides->rides_array);
+    free(db_rides);
 }
 
-int ride_get_id(struct ride *r){
-    return r->id;
-}
-
-short ride_get_date(struct ride *r){
-    return r->date;
+short* ride_get_date(void* rides_p, int Id){
+    DB_rides* rides = (DB_rides*) rides_p;
+    gconstpointer id = (gconstpointer)&Id;
+    gpointer ridep = g_hash_table_lookup(rides->rides_hashtable, id);
+    Ride* ride = (Ride*) ridep;
+    short* data = malloc(sizeof(ride->date));
+    *data = ride->date;
+    return data;
 }
 
 size_t ride_get_driver(struct ride *r){

@@ -11,7 +11,7 @@ typedef struct data_base_users DB_Users;
 
 void *process_user(char** info);
 
-void *organize_user(void** results, int num_args, ...);
+void *organize_user(void** results);
 
 void free_user(void* user);
 

@@ -15,13 +15,7 @@
 void *parser(FILE *to_parse, 
 char const*rest,  
 void* (*parse_func)(char**), 
-void* (organize_func)(void **, int, .../*void * , void *, void (*)(void *, void *, void *, void *, void *,void*), void * (*)(void *, void *, void *, void *,void*,void*)*/), 
-int num_args_xtra,
-...
-/*void* struct_drivers, 
-void* struct_users,
-void(set_users_stats)(void*,void*,void*,void*, void*,void*), 
-void*(set_driver_stats)(void*,void*,void*,void*, void*,void*)*/)
+void* (organize_func)(void **))
 {
     size_t current = 128;
     void **result = malloc(sizeof(void*) * current);
@@ -49,29 +43,12 @@ void*(set_driver_stats)(void*,void*,void*,void*, void*,void*)*/)
         result[i++] = parse_func(save); 
     }
     result[i] = NULL;
-    if(num_args_xtra == 0){
-        return organize_func(result,num_args_xtra);
-    }
-    va_list args;
-    va_start(args, num_args_xtra);
-    void * struct_drivers = va_arg(args,void*);
-    void * struct_users = va_arg(args,void*);
-    void (*set_users_stats)(void *, void *, void *, void *, void *, void *) = va_arg(args,void (*)(void *, void *, void *, void *, void *, void *));
-    void* (*set_driver_stats)(void *, void *, void *, void *, void *, void *) = va_arg(args,void *(*)(void *, void *, void *, void *, void *, void *));
-    va_end(args);
-    return organize_func(result,num_args_xtra,struct_drivers,struct_users,set_users_stats,set_driver_stats);
-
+    return organize_func(result);
 }
 
 
 
-
-
-
-
-
-
-void** parse_querie(FILE *to_parse, void* (process)(char**))
+void** parse_query(FILE *to_parse, void* (process)(char**))
 {
 size_t current = 64;
     void **result = malloc(sizeof(void*) * current);

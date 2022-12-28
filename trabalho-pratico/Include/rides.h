@@ -11,13 +11,8 @@ typedef struct data_base_rides DB_Rides;
 
 void *process_ride(char** info);
 
-void *organize_rides(void** results,int num_args, ... );
+void *organize_rides(void** results);
 
 void free_rides(void* rides);
 
 typedef struct ride Ride;
-
-
-
-
-

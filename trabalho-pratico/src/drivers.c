@@ -58,7 +58,7 @@ void *process_driver(char **info)
     return dr;
 }
 
-void *organize_driver(void **results, int num_args, ...)
+void *organize_driver(void **results)
 {
     GHashTable *gtable = g_hash_table_new(g_int_hash, g_int_equal);
     int i;
@@ -88,6 +88,7 @@ void free_driver(void *driver)
     }
     GHashTable *gtable = (GHashTable *)db_drivers->drivers_hashtable;
     g_hash_table_destroy(gtable);
+    free(db_drivers->drivers_array);
     free(db_drivers);
 }
 

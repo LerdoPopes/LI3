@@ -10,7 +10,7 @@ typedef struct data_base_drivers DB_drivers;
 
 void *process_driver(char** info); 
 
-void *organize_driver(void** results, int num_args, ...);
+void *organize_driver(void** results);
 
 void free_driver(void* driver);
 

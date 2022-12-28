@@ -39,7 +39,7 @@ int main(int argc, char **argv){
         if(rides == NULL) {
             perror("Opening rides.csv: try another path");
         } 
-        void *RIDES = parser(rides, ";\n\r", process_ride,organize_rides,4,DRIVERS,USERS,set_user_stats,set_driver_stats);
+        void *RIDES = parser(rides, ";\n\r", process_ride,organize_rides);
         fclose(rides);
     
     char *Input = (char *)malloc(30 * sizeof(char));
@@ -47,14 +47,16 @@ int main(int argc, char **argv){
         if(input == NULL){
             perror("Opening input.txt: try another path");
         }
-        void **INPUT = parse_querie(input,process_querie);
+        void **INPUT = parse_query(input,process_query);
         fclose(input);
 
    // answer_queries(INPUT,USERS,DRIVERS);
     free_rides(RIDES);
     free_driver(DRIVERS);
     free_user(USERS);
+    free_queries(INPUT);
     free(aux);
+    free(Input);
     int time = clock();
     printf("%f\n",(float)time/CLOCKS_PER_SEC);  
 }

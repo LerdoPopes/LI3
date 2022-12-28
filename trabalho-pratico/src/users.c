@@ -57,9 +57,8 @@ void *process_user(char** info)
     return us;
 }
 
-void *organize_user(void** results, int num_args, ...){
+void *organize_user(void** results){
     GHashTable* gtable = g_hash_table_new(g_str_hash,g_str_equal);
-    // g_hash_table_insert(hashtable,user->username,user);
     int i;
     for (i = 0; results[i]; i++)
     {
@@ -85,6 +84,8 @@ void free_user(void* user){
     }
     GHashTable* gtable = (GHashTable*) db_users->users_hashtable;
     g_hash_table_destroy(gtable);
+    free(db_users->users_array);
+    free(db_users);
 }
 
 void print_user(void* key, void* usersDB){
