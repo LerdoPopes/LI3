@@ -22,6 +22,7 @@ struct user{
     char account_status;
     short trips;
     double total_spent;
+    double total_spent_notip;
     unsigned short total_dist;
     short aval;
     short aval_m;
@@ -49,6 +50,7 @@ void *process_user(char** info)
     us->aval = 0;
     us->total_dist = 0;
     us->total_spent = 0;
+    us->total_spent_notip = 0;
     us->trips = 0;
     us->aval_m;
     us->last_trip_date = 0;
@@ -130,11 +132,10 @@ void *answer_q1_user(FILE *output,void *dbUsers, char *ID){
     fclose(output);
 }
 
-void *answer_q3_user(FILE *output, void *dbUsers, short N)
+void *order_by_dist(void *dbUsers)
 {
     DB_users *db_users = (DB_users *)dbUsers;
     User **users = db_users->users_array;
-    // qsort(drivers, 10000, sizeof(Driver *), comparador);
     int n = db_users->len;
     if (db_users->order != 1){
         for (int gap = n/2; gap > 0; gap /= 2)
@@ -153,16 +154,40 @@ void *answer_q3_user(FILE *output, void *dbUsers, short N)
         }
         db_users->order = 1;
     }
-    for (size_t i = n-1; i>n-N-1; i--)
-    {
-        User *user = users[i];
-        if(user->account_status != 'a'){
-            N++;
-        }
-        else{
-            fprintf(output,"%s;%s;%d\n",user->username,user->name,user->total_dist);
-        }        
-    }
-    fclose(output);
 }
 
+int get_len_user(void* user_p){
+    DB_users* users = (DB_users*) user_p;
+    return users->len;
+}
+
+char* get_n_user(void* data, int i){
+   DB_Users* users = (DB_Users*) data;
+   char* username = strdup(users->users_array[i]->username);
+   return username;
+}
+
+int user_get_idade(void* data, char* Username){
+    DB_Users* db_users = (DB_Users*) data;
+    gconstpointer id = (gconstpointer) Username;
+    gpointer userp = g_hash_table_lookup(db_users->users_hashtable,id);
+    User* user = (User*) userp;
+    return idade(user->birth_date);
+}
+
+double user_get_avalm(void* data, char* Username){
+    DB_Users* db_users = (DB_Users*) data;
+    gconstpointer id = (gconstpointer) Username;
+    gpointer userp = g_hash_table_lookup(db_users->users_hashtable,id);
+    User* user = (User*) userp;
+    double avalm = (double) user->aval/user->trips;
+    return avalm;
+}
+
+int isUser(void* data, char* Username){
+    DB_Users* db_users = (DB_Users*) data;
+    gconstpointer id = (gconstpointer) Username;
+    gpointer userp = g_hash_table_lookup(db_users->users_hashtable,id);
+    User* user = (User*) userp;
+    return (user != NULL);
+}

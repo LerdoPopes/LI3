@@ -21,4 +21,14 @@ void set_user_stats(void* dbUsers, void* dist, void* aval, void* username, void*
 
 void *answer_q1_user(FILE *output,void *dbUsers, char *ID);
 
-void *answer_q3_user(FILE *output, void *dbUsers, short N);
+void *order_by_dist(void *dbUsers);
+
+int get_len_user(void* user_p);
+
+char* get_n_user(void* data, int i);
+
+double user_get_avalm(void* data, char* Username);
+
+int  user_get_idade(void* data, char* Username);
+
+int isUser(void* data, char* Username);

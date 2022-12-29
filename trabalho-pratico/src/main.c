@@ -50,7 +50,7 @@ int main(int argc, char **argv){
         void **INPUT = parse_query(input,process_query);
         fclose(input);
 
-    //answer_queries(INPUT,USERS,DRIVERS);
+   // answer_queries(INPUT,USERS,DRIVERS);
     free_rides(RIDES);
     free_driver(DRIVERS);
     free_user(USERS);
