@@ -15,7 +15,7 @@ struct ride {
     short distance;
     short score_user;
     short score_driver;
-    float tip;
+    double tip;
     char *comment;
 };
 
@@ -74,45 +74,75 @@ void free_rides(void* rides){
     free(db_rides);
 }
 
-short* ride_get_date(void* rides_p, int Id){
+short ride_get_date(void* rides_p, int Id){
     DB_rides* rides = (DB_rides*) rides_p;
     gconstpointer id = (gconstpointer)&Id;
     gpointer ridep = g_hash_table_lookup(rides->rides_hashtable, id);
     Ride* ride = (Ride*) ridep;
-    short* data = malloc(sizeof(ride->date));
-    *data = ride->date;
-    return data;
+    return ride->date;
 }
 
-size_t ride_get_driver(struct ride *r){
-    return r->driver;
+int ride_get_driver(void *ride_p, int ID){
+    DB_rides* rides = (DB_rides*) ride_p;
+    gconstpointer id = (gconstpointer)&ID;
+    gpointer ridep = g_hash_table_lookup(rides->rides_hashtable, id);
+    Ride* ride = (Ride*) ridep;
+    return ride->driver;
 }
 
-char *ride_get_user(struct ride *r){
-     char *User = (char *)malloc(255 * sizeof(char));
-     strcpy(User,r->user);    
-     return User;
+char *ride_get_user(void *ride_p, int ID){
+    DB_rides* rides = (DB_rides*) ride_p;
+    gconstpointer id = (gconstpointer)&ID;
+    gpointer ridep = g_hash_table_lookup(rides->rides_hashtable, id);
+    Ride* ride = (Ride*) ridep;
+    char *User = strdup(ride->user);    
+    return User;
 }
 
-char *ride_get_city(struct ride *r){
-     char *cidade = (char *)malloc(255 * sizeof(char));
-     strcpy(cidade,r->city);    
-     return cidade;
-}
-size_t ride_get_distance(struct ride *r){
-    return r->distance;
-}
-
-size_t ride_get_score_user(struct ride *r){
-    return r->score_user;
+char *ride_get_city(void *ride_p, int ID){
+    DB_rides* rides = (DB_rides*) ride_p;
+    gconstpointer id = (gconstpointer)&ID;
+    gpointer ridep = g_hash_table_lookup(rides->rides_hashtable, id);
+    Ride* ride = (Ride*) ridep;
+    char *City = strdup(ride->city);    
+    return City;
 }
 
-size_t ride_get_score_driver(struct ride *r){
-    return r->score_driver;
+short ride_get_distance(void *ride_p,int ID){
+    DB_rides* rides = (DB_rides*) ride_p;
+    gconstpointer id = (gconstpointer)&ID;
+    gpointer ridep = g_hash_table_lookup(rides->rides_hashtable, id);
+    Ride* ride = (Ride*) ridep;
+    return ride->distance;
 }
 
-size_t ride_get_tip(struct ride *r){
-    return r->tip;
+short ride_get_score_user(void *ride_p, int ID){
+    DB_rides* rides = (DB_rides*) ride_p;
+    gconstpointer id = (gconstpointer)&ID;
+    gpointer ridep = g_hash_table_lookup(rides->rides_hashtable, id);
+    Ride* ride = (Ride*) ridep;
+    return ride->score_user;
+}
+
+short ride_get_score_driver(void *ride_p, int ID){
+    DB_rides* rides = (DB_rides*) ride_p;
+    gconstpointer id = (gconstpointer)&ID;
+    gpointer ridep = g_hash_table_lookup(rides->rides_hashtable, id);
+    Ride* ride = (Ride*) ridep;
+    return ride->score_driver;
+}
+
+double ride_get_tip(void *ride_p, int ID){    
+    DB_rides* rides = (DB_rides*) ride_p;
+    gconstpointer id = (gconstpointer)&ID;
+    gpointer ridep = g_hash_table_lookup(rides->rides_hashtable, id);
+    Ride* ride = (Ride*) ridep;
+    return ride->tip;
+}
+
+int get_len_ride(void* ride_p){
+    DB_rides* rides = (DB_rides*) ride_p;
+    return rides->len;
 }
 
 char *ride_get_comment(struct ride *r){

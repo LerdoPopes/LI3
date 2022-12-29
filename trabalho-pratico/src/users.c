@@ -132,6 +132,7 @@ void *answer_q1_user(FILE *output,void *dbUsers, char *ID){
     fclose(output);
 }
 
+
 void *order_by_dist(void *dbUsers)
 {
     DB_users *db_users = (DB_users *)dbUsers;

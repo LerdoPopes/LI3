@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #define INITDATE 26.579 // 1 de Janeiro 1950
+#pragma once 
 
 typedef struct dateCombo{
     short day;

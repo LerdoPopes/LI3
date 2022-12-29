@@ -15,4 +15,6 @@ void *organize_rides(void** results);
 
 void free_rides(void* rides);
 
-int get_len_ride(void* rides_p);
+int get_len_ride(void* ride_p);
+
+char *ride_get_user(void *ride_p, int ID);
