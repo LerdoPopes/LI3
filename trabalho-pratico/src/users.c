@@ -132,7 +132,7 @@ void *answer_q1_user(FILE *output,void *dbUsers, char *ID){
     fclose(output);
 }
 
-void *answer_q3_user(FILE *output, void *dbUsers, short N)
+void *order_users_dist(void *dbUsers)
 {
     DB_users *db_users = (DB_users *)dbUsers;
     User **users = db_users->users_array;
@@ -155,16 +155,5 @@ void *answer_q3_user(FILE *output, void *dbUsers, short N)
         }
         db_users->order = 1;
     }
-    for (size_t i = n-1; i>n-N-1; i--)
-    {
-        User *user = users[i];
-        if(user->account_status != 'a'){
-            N++;
-        }
-        else{
-            fprintf(output,"%s;%s;%d\n",user->username,user->name,user->total_dist);
-        }        
-    }
-    fclose(output);
 }
 

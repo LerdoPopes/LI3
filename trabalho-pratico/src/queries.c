@@ -68,52 +68,41 @@ void query2(char* N, void *dbDrivers, short i){
     char *id = malloc(50);
     sprintf(id, "./Resultados/command%d_output.txt", i);
     FILE *resultado = fopen(id, "w");    
-    answer_q2_driver(resultado,dbDrivers,atoi(N));
+    // answer_q2_driver(resultado,dbDrivers,atoi(N));
 }
+
+//  for (size_t i = n-1; i>n-N-1; i--)
+//     {
+//         Driver *driver = drivers[i];
+//         if(driver->account_status != 'a'){
+//             N++;
+//         }
+//         else if(driver->trips == 0){
+//             fprintf(output,"%012d;%s;%d\n",driver->id,driver->name,0);
+//         }
+//         else{
+//             double media = (double)(driver->aval) / (driver->trips);
+//             fprintf(output,"%012d;%s;%.3f\n",driver->id,driver->name,media);
+//         }        
+//     }
+//     fclose(output);
 
 void query3(char *N, void *dbUsers, short i){
     char *id = malloc(50);
     sprintf(id, "./Resultados/command%d_output.txt", i);
     FILE *resultado = fopen(id, "w");    
-    answer_q3_user(resultado,dbUsers,atoi(N));
+    // answer_q3_user(resultado,dbUsers,atoi(N));
 }
 
-
-void answer_q4(FILE* input,char *city,void *db_rides, void *db_drivers){
-    DB_Rides* dbRides = (DB_Rides*) db_rides;
-    DB_drivers* dbDrivers = (DB_Drivers*) db_drivers;
-    GHashTable* dbdrivers = dbDrivers->drivers_hashtable;
-    Ride** rides = dbRides->rides_array;
-    int n_rides = 0;
-    double total = 0.0;
-    int n = dbRides->len;
-    for(int i = 0; i < n; i++){
-        Ride* ride = rides[i]; 
-        if(strcmp(get_ride_city(rides[i]),city) == 0){
-            Driver *driver = g_hash_table_lookup(db_drivers, get_driver_id(rides[i]));
-
-        }
-    }
-}
-
-// void answer_q4(FILE* input,char *city,void *db_rides, void *db_drivers){
-//     DB_Rides* dbRides = (DB_Rides*) db_rides;
-//     GHashTable* dbrides = dbRides->rides_hashtable;
-//     DB_Drivers* dbDrivers = (DB_Drivers*) db_drivers;
-//     GHashTable* dbdrivers = dbDrivers->drivers_hashtable;
-//     double total_price = 0.0;
-//     int n_rides = 0;
-//     GHashTableIter iter;
-//     gpointer key, value;
-//     g_hash_table_iter_init(&iter, db_rides);
-//     while (g_hash_table_iter_next(&iter, &key, &value)) {
-//         Ride *ride = value;
-//         if (strcmp(ride_get_city(ride), city) == 0) {
-//             Driver *driver = g_hash_table_lookup(db_drivers, get_driver_id(driver));
-//             if(driver == NULL) printf("Driver não encontrado\n");
-//             if (driver != NULL) {
-//                 double price = 0.0;
-//             }
+// for (size_t i = n-1; i>n-N-1; i--)
+//     {
+//         User *user = users[i];
+//         if(user->account_status != 'a'){
+//             N++;
 //         }
+//         else{
+//             fprintf(output,"%s;%s;%d\n",user->username,user->name,user->total_dist);
+//         }        
 //     }
-// }
+//     fclose(output);
+
