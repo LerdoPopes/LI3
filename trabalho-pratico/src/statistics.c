@@ -36,11 +36,8 @@ double total_money_notip;
             double *money = (double *) set_driver_stats(dbDrivers,&distance,&score_driver,&driver_ID,&tip,&date);
             set_user_stats(dbUsers,&distance,&score_user,&user,&money,&date);
 
-
             free(money);
             free(city);
             free(user);
-
-        }
-    
+        }    
  }
