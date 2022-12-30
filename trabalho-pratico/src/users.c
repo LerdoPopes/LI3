@@ -132,11 +132,11 @@ void *answer_q1_user(FILE *output,void *dbUsers, char *ID){
     fclose(output);
 }
 
-void *order_users_dist(void *dbUsers)
+
+void *order_by_dist(void *dbUsers)
 {
     DB_users *db_users = (DB_users *)dbUsers;
     User **users = db_users->users_array;
-    // qsort(drivers, 10000, sizeof(Driver *), comparador);
     int n = db_users->len;
     if (db_users->order != 1){
         for (int gap = n/2; gap > 0; gap /= 2)
@@ -157,3 +157,38 @@ void *order_users_dist(void *dbUsers)
     }
 }
 
+int get_len_user(void* user_p){
+    DB_users* users = (DB_users*) user_p;
+    return users->len;
+}
+
+char* get_n_user(void* data, int i){
+   DB_Users* users = (DB_Users*) data;
+   char* username = strdup(users->users_array[i]->username);
+   return username;
+}
+
+int user_get_idade(void* data, char* Username){
+    DB_Users* db_users = (DB_Users*) data;
+    gconstpointer id = (gconstpointer) Username;
+    gpointer userp = g_hash_table_lookup(db_users->users_hashtable,id);
+    User* user = (User*) userp;
+    return idade(user->birth_date);
+}
+
+double user_get_avalm(void* data, char* Username){
+    DB_Users* db_users = (DB_Users*) data;
+    gconstpointer id = (gconstpointer) Username;
+    gpointer userp = g_hash_table_lookup(db_users->users_hashtable,id);
+    User* user = (User*) userp;
+    double avalm = (double) user->aval/user->trips;
+    return avalm;
+}
+
+int isUser(void* data, char* Username){
+    DB_Users* db_users = (DB_Users*) data;
+    gconstpointer id = (gconstpointer) Username;
+    gpointer userp = g_hash_table_lookup(db_users->users_hashtable,id);
+    User* user = (User*) userp;
+    return (user != NULL);
+}
