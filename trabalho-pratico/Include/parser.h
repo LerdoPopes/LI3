@@ -1,3 +1,6 @@
+#ifndef PARSER_H
+#define PARSER_H
+
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
@@ -17,3 +20,4 @@ void*(set_driver_stats)(void*,void*,void*,void*, void*,void*)*/);
 
 void** parse_query(FILE *to_parse, void* (process)(char**));
 
+#endif

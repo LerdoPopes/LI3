@@ -1,11 +1,14 @@
+#ifndef DATES_H
+#define DATES_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 #define INITDATE 26.579 // 1 de Janeiro 1950
-#pragma once 
+//#pragma once 
 
-typedef struct dateCombo{
+typedef struct dateCombo {
     short day;
     short month;
     short year;

@@ -1,3 +1,6 @@
+#ifndef USERS_H
+#define USERS_H
+
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
@@ -32,3 +35,5 @@ double user_get_avalm(void* data, char* Username);
 int  user_get_idade(void* data, char* Username);
 
 int isUser(void* data, char* Username);
+
+#endif
