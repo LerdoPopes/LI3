@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <glib.h>
 #include <stdarg.h>
-#include "../Include/errors.h"
 #include "../Include/rides.h"
 
 struct ride {
@@ -24,38 +23,25 @@ typedef struct data_base_rides{
     void** rides_array;
     GHashTable* rides_hashtable;
     int len;
+    int len;
 } DB_rides;
 
-void *process_ride(char** info) {
-    if(
-        empty_error(info[0])
-     && invalid_date(info[1])
-     && empty_error(info[2]) 
-     && empty_error(info[3])
-     && empty_error(info[4])
-     && invalid_Pint(info[5])
-     && invalid_Pint(info[6])
-     && invalid_Pint(info[7])
-     && invalid_Pdouble(info[8])
-    ){
-        return NULL;
-    }
-    
-    struct ride *ri = malloc(sizeof(struct ride));
-
-    ri->id = atol(info[0]);
-    ri->date = calc_Date(info[1]);
-    // memmove(ri->date, info[1], strlen(info[1]));
-    ri->driver = atoi(info[2]);
-    ri->user = strdup(info[3]);
-    ri->city = strdup(info[4]);
-    ri->distance = atoi(info[5]);
-    ri->score_user = atoi(info[6]);
-    ri->score_driver = atoi(info[7]);
-    ri->tip = atof(info[8]);
-    ri->comment = strdup(info[9]);
-    return ri;
-}
+ void *process_ride(char** info) {
+     struct ride *ri = malloc(sizeof(struct ride));
+ 
+     ri->id = atol(info[0]);
+     ri->date = calc_Date(info[1]);
+     // memmove(ri->date, info[1], strlen(info[1]));
+     ri->driver = atoi(info[2]);
+     ri->user = strdup(info[3]);
+     ri->city = strdup(info[4]);
+     ri->distance = atoi(info[5]);
+     ri->score_user = atoi(info[6]);
+     ri->score_driver = atoi(info[7]);
+     ri->tip = atof(info[8]);
+     ri->comment = strdup(info[9]);
+     return ri;
+ }
 
 void *organize_rides(void** results){
     GHashTable* gtable = g_hash_table_new(g_int_hash,g_str_equal);
@@ -159,13 +145,30 @@ double ride_get_tip(void *ride_p, int ID){
     return ride->tip;
 }
 
-int get_len_ride(void* ride_p){
-    DB_rides* rides = (DB_rides*) ride_p;
-    return rides->len;
-}
-
 char *ride_get_comment(struct ride *r){
      char *comentario = (char *)malloc(255 * sizeof(char));
      strcpy(comentario,r->comment);    
      return comentario;
 }
+
+int get_len_ride(void* ride_p){
+    DB_rides* rides = (DB_rides*) ride_p;
+    return rides->len;
+}
+
+int get_len_ride(void* rides_p){
+    DB_rides* rides = (DB_rides*) rides_p;
+    return rides->len;
+}
+
+//short ride_get_date(void* rides_p, int Id){
+//    DB_rides* rides = (DB_rides*) rides_p;
+//    gconstpointer id = (gconstpointer;
+//    gpointer ridep = g_hash_table_lookup(rides->rides_hashtable, id);
+//    Ride* ride = (Ride*) ridep;
+//    return ride->date;
+//}
+//
+//short ride_get_date(ride* rides_p, int Id){
+//return g_hash_table_lookup(rides->rides_hashtable, id)
+//}

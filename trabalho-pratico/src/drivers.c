@@ -6,7 +6,6 @@
 #include <stdarg.h>
 #include "../Include/dates.h"
 #include "../Include/drivers.h"
-#include "../Include/errors.h"
 
 struct driver
 {
@@ -37,20 +36,6 @@ struct data_base_drivers
 
 void *process_driver(char **info)
 {
-    if(
-        empty_error(info[0])
-    && empty_error(info[1]) 
-    && invalid_date(info[2])
-    && empty_error(info[3])
-    && invalid_carClass(info[4])
-    && empty_error(info[5])
-    && empty_error(info[6])
-    && invalid_date(info[7])
-    )
-    {
-        return NULL;
-    }
-
     struct driver *dr = malloc(sizeof(struct driver));
 
     dr->id = atol(info[0]);
@@ -207,33 +192,187 @@ void *order_by_aval(void *dbDrivers)
     }
 }
 
+
+//struct driver
+//{
+//    int id;
+//    char *name;
+//    unsigned short birth_date;
+//    char gender;
+//    char *car_class;
+//    char license_plate[sizeof("00-00-AA")];
+//    char *city;
+//    unsigned short account_creation;
+//    char account_status;
+//    int total_dist;
+//    unsigned short trips;
+//    unsigned short aval;
+//    double total_spent;
+//    double aval_m;
+//    unsigned short last_trip_date;
+//};
+
 int get_n_driver(void* data, int i){
    DB_drivers* drivers = (DB_drivers*) data;
    int id = drivers->drivers_array[i]->id;
    return id;
+
 }
 
-double driver_get_avalm(void* driver_p, int id){
+char *driver_get_name(void* driver_p, int ID){
     DB_drivers* drivers = (DB_drivers*) driver_p;
-    gconstpointer ID = (gconstpointer)&id;
-    gpointer driverp = g_hash_table_lookup(drivers->drivers_hashtable, ID);
-    Driver *driver = (Driver *)driverp;
-    double avalm = (double) driver->aval/driver->trips;
-    return avalm;
+    gconstpointer id = (gconstpointer)&ID;
+    gpointer driverp = g_hash_table_lookup(drivers->drivers_hashtable, id);
+    Driver* driver = (Driver*) driverp;
+    char *Name = strdup(driver->name);
+    return Name;
+
 }
 
-int driver_get_idade(void* driver_p, int id){
+unsigned short driver_get_birth_date(void* driver_p, int ID){
     DB_drivers* drivers = (DB_drivers*) driver_p;
-    gconstpointer ID = (gconstpointer)&id;
-    gpointer driverp = g_hash_table_lookup(drivers->drivers_hashtable, ID);
-    Driver *driver = (Driver *)driverp;
+    gconstpointer id = (gconstpointer)&ID;
+    gpointer driverp = g_hash_table_lookup(drivers->drivers_hashtable, id);
+    Driver* driver = (Driver*) driverp;
+    return driver->birth_date;
+
+}
+
+
+
+char driver_get_gender(void* driver_p, int ID){
+    DB_drivers* drivers = (DB_drivers*) driver_p;
+    gconstpointer id = (gconstpointer)&ID;
+    gpointer driverp = g_hash_table_lookup(drivers->drivers_hashtable, id);
+    Driver* driver = (Driver*) driverp;
+    char Gender = strdup(driver->gender);
+    return Gender;
+
+}
+
+char *driver_get_car_class(void* driver_p, int ID){
+    DB_drivers* drivers = (DB_drivers*) driver_p;
+    gconstpointer id = (gconstpointer)&ID;
+    gpointer driverp = g_hash_table_lookup(drivers->drivers_hashtable, id);
+    Driver* driver = (Driver*) driverp;
+    char *Car_Class = strdup(driver->car_class);
+    return Car_Class;
+
+}
+
+char driver_get_license_plate(void* driver_p, int ID){
+    DB_drivers* drivers = (DB_drivers*) driver_p;
+    gconstpointer id = (gconstpointer)&ID;
+    gpointer driverp = g_hash_table_lookup(drivers->drivers_hashtable, id);
+    Driver* driver = (Driver*) driverp;
+    char License_plate = strdup(driver->license_plate);
+    return License_plate;
+
+}
+
+char *driver_get_city(void* driver_p, int ID){
+    DB_drivers* drivers = (DB_drivers*) driver_p;
+    gconstpointer id = (gconstpointer)&ID;
+    gpointer driverp = g_hash_table_lookup(drivers->drivers_hashtable, id);
+    Driver* driver = (Driver*) driverp;
+    char *City = strdup(driver->city);
+    return City;
+
+}
+
+unsigned short driver_get_account_creation(void* driver_p, int ID){
+    DB_drivers* drivers = (DB_drivers*) driver_p;
+    gconstpointer id = (gconstpointer)&ID;
+    gpointer driverp = g_hash_table_lookup(drivers->drivers_hashtable, id);
+    Driver* driver = (Driver*) driverp;
+    return driver->account_creation;
+
+}
+
+
+
+
+char driver_get_account_status(void* driver_p, int ID){
+    DB_drivers* drivers = (DB_drivers*) driver_p;
+    gconstpointer id = (gconstpointer)&ID;
+    gpointer driverp = g_hash_table_lookup(drivers->drivers_hashtable, id);
+    Driver* driver = (Driver*) driverp;
+    char Account_Status = strdup(driver->account_status);
+    return Account_Status;
+    
+}
+
+int driver_get_total_dist(void *driver_p, int ID){
+    DB_drivers* drivers = (DB_drivers*) driver_p;
+    gconstpointer id = (gconstpointer)&ID;
+    gpointer driverp = g_hash_table_lookup(drivers->drivers_hashtable, id);
+    Driver *driver = (Driver*) driverp;
+    return total_dist(driver->total_dist);
+
+}
+
+unsigned short driver_get_trips(void* driver_p, int ID){
+    DB_drivers* drivers = (DB_drivers*) driver_p;
+    gconstpointer id = (gconstpointer)&ID;
+    gpointer driverp = g_hash_table_lookup(drivers->drivers_hashtable, id);
+    Driver* driver = (Driver*) driverp;
+    return driver->trips;
+
+}
+
+unsigned short driver_get_aval(void* driver_p, int ID){
+    DB_drivers* drivers = (DB_drivers*) driver_p;
+    gconstpointer id = (gconstpointer)&ID;
+    gpointer driverp = g_hash_table_lookup(drivers->drivers_hashtable, id);
+    Driver* driver = (Driver*) driverp;
+    return driver->aval;
+
+}
+
+double driver_get_total_spent(void* driver_p, int ID){
+    DB_drivers* drivers = (DB_drivers*) driver_p;
+    gconstpointer id = (gconstpointer)&ID;
+    gpointer driverp = g_hash_table_lookup(drivers->drivers_hashtable, id);
+    Driver *driver = (Driver*) driverp;
+    return driver->total_spent;
+
+}
+
+
+double driver_get_aval_m(void* driver_p, int ID){
+    DB_drivers* drivers = (DB_drivers*) driver_p;
+    gconstpointer id = (gconstpointer)&ID;
+    gpointer driverp = g_hash_table_lookup(drivers->drivers_hashtable, id);
+    Driver *driver = (Driver*) driverp;
+    double aval_m = (double) driver->aval/driver->trips;
+    return aval_m;
+
+}
+
+unsigned short last_trip_date(void* driver_p, int ID){
+    DB_drivers* drivers = (DB_drivers*) driver_p;
+    gconstpointer id = (gconstpointer)&ID;
+    gpointer driverp = g_hash_table_lookup(drivers->drivers_hashtable, id);
+    Driver* driver = (Driver*) driverp;
+    return driver->last_trip_date;
+
+}
+
+int driver_get_idade(void* driver_p, int ID){
+    DB_drivers* drivers = (DB_drivers*) driver_p;
+    gconstpointer id = (gconstpointer)&ID;
+    gpointer driverp = g_hash_table_lookup(drivers->drivers_hashtable, id);
+    Driver *driver = (Driver*) driverp;
     return idade(driver->birth_date);
+
 }
 
-int isDriver(void* driver_p, int id){
+int isDriver(void* driver_p, int ID){
     DB_drivers* drivers = (DB_drivers*) driver_p;
-    gconstpointer ID = (gconstpointer)&id;
-    gpointer driverp = g_hash_table_lookup(drivers->drivers_hashtable, ID);
-    Driver *driver = (Driver *)driverp;
+    gconstpointer id = (gconstpointer)&ID;
+    gpointer driverp = g_hash_table_lookup(drivers->drivers_hashtable, id);
+    Driver *driver = (Driver*) driverp;
     return (driver != NULL);
+
 }
+
