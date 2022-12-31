@@ -18,8 +18,6 @@ void *organize_rides(void** results);
 
 void free_rides(void* rides);
 
-int get_len_ride(void* ride_p);
-
 short ride_get_date(void* rides_p, int Id);
 
 int ride_get_driver(void *ride_p, int ID);
@@ -30,11 +28,13 @@ char *ride_get_city(void *ride_p, int ID);
 
 short ride_get_distance(void *ride_p,int ID);
 
-short ride_get_score_user(void *ride_p, int ID);
-
 short ride_get_score_driver(void *ride_p, int ID);
 
+short ride_get_score_user(void *ride_p, int ID);
+
 double ride_get_tip(void *ride_p, int ID);
+
+char *ride_get_comment(struct ride *r);
 
 int get_len_ride(void* ride_p);
 

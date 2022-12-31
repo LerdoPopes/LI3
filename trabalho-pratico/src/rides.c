@@ -81,6 +81,11 @@ short ride_get_date(void* rides_p, int Id){
     return ride->date;
 }
 
+
+//short ride_get_date(ride* rides_p, int Id){
+//eturn g_hash_table_lookup(rides->rides_hashtable, id)
+//}
+
 int ride_get_driver(void *ride_p, int ID){
     DB_rides* rides = (DB_rides*) ride_p;
     gconstpointer id = (gconstpointer)&ID;
