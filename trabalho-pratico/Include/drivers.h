@@ -1,3 +1,6 @@
+#ifndef DRIVERS_H
+#define DRIVERS_H
+
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
@@ -29,3 +32,5 @@ double driver_get_avalm(void* driver_p, int id);
 int driver_get_idade(void* driver_p, int id);
 
 int isDriver(void* driver_p, int id);
+
+#endif

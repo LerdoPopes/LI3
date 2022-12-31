@@ -3,6 +3,7 @@
         "drivers.h": "c",
         "rides.h": "c",
         "users.h": "c",
-        "dates.h": "c"
+        "dates.h": "c",
+        "ctype.h": "c"
     }
 }

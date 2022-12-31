@@ -23,7 +23,6 @@ typedef struct data_base_rides{
     void** rides_array;
     GHashTable* rides_hashtable;
     int len;
-    int len;
 } DB_rides;
 
 void *process_ride(char** info) {
@@ -149,9 +148,4 @@ char *ride_get_comment(struct ride *r){
      char *comentario = (char *)malloc(255 * sizeof(char));
      strcpy(comentario,r->comment);    
      return comentario;
-}
-
-int get_len_ride(void* rides_p){
-    DB_rides* rides = (DB_rides*) rides_p;
-    return rides->len;
 }

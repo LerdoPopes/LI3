@@ -100,8 +100,8 @@ void query2(char* N, void *dbDrivers, short i){
     order_by_aval(dbDrivers);
     for (size_t i = len-1; i>len-n-1; i--)
     {
-        int id = get_n_id(dbDrivers,i);
-        if(user_get_accStatus(dbDrivers,id) != 'a'){
+        int id = get_n_driver(dbDrivers,i);
+        if(driver_get_accStatus(dbDrivers,id) != 'a'){
             n++;
         }
         else{

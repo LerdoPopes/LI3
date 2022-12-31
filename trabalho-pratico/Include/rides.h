@@ -1,3 +1,6 @@
+#ifndef QUERIES_H
+#define QUERIES_H
+
 #include <math.h>
 #include <string.h>
 #include <stdio.h>
@@ -35,3 +38,4 @@ double ride_get_tip(void *ride_p, int ID);
 
 int get_len_ride(void* ride_p);
 
+#endif
