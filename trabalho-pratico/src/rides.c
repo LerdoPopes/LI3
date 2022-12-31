@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <glib.h>
 #include <stdarg.h>
+#include "../Include/errors.h"
 #include "../Include/rides.h"
 
 struct ride {
@@ -27,6 +28,20 @@ typedef struct data_base_rides{
 } DB_rides;
 
 void *process_ride(char** info) {
+    if(
+        empty_error(info[0])
+     && invalid_date(info[1])
+     && empty_error(info[2]) 
+     && empty_error(info[3])
+     && empty_error(info[4])
+     && invalid_Pint(info[5])
+     && invalid_Pint(info[6])
+     && invalid_Pint(info[7])
+     && invalid_Pdouble(info[8])
+    ){
+        return NULL;
+    }
+    
     struct ride *ri = malloc(sizeof(struct ride));
 
     ri->id = atol(info[0]);

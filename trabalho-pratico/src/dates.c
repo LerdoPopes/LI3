@@ -65,3 +65,21 @@ short idade(short birth_date){
     free(dateCombo);
     return idade;
 }
+
+int invalid_date(char* error){
+    if(
+        !(isdigit(error[0])) 
+        || !(isdigit(error[1])) 
+        || error[2] != '/' 
+        || isdigit(error[3]) 
+        || isdigit(error[4]) 
+        || error[5] != '/' 
+        || isdigit(error[6]) 
+        || isdigit(error[7]) 
+        || isdigit(error[8]) 
+        || isdigit(error[9]) 
+        || error[10] != "\0"){
+        return 1;
+    }
+    return 0;
+}

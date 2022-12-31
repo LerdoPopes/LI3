@@ -41,6 +41,9 @@ void* (organize_func)(void **))
             result = realloc(result, (current *= 2) * sizeof(void*)); 
         }
         result[i++] = parse_func(save); 
+        if(result[i-1] == NULL){
+            i--;
+        }
     }
     result[i] = NULL;
     return organize_func(result);
