@@ -22,6 +22,8 @@ void *answer_q1_driver(FILE *output,void *dbDrivers, char *ID);
 
 void *order_by_aval(void *dbDrivers);
 
+int driver_get_len(void* driver_p);
+
 int get_n_driver(void* data, int i);
 
 char *driver_get_name(void* driver_p, int ID);
@@ -32,7 +34,7 @@ char driver_get_gender(void* driver_p, int ID);
 
 char *driver_get_car_class(void* driver_p, int ID);
 
-char driver_get_license_plate(void* driver_p, int ID);
+char* driver_get_license_plate(void* driver_p, int ID);
 
 char *driver_get_city(void* driver_p, int ID);
 
@@ -55,5 +57,3 @@ unsigned short last_trip_date(void* driver_p, int ID);
 int isDriver(void* driver_p, int id);
 
 int driver_get_idade(void* driver_p, int id);
-
-#endif

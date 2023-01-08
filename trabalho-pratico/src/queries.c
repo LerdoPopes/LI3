@@ -55,40 +55,38 @@ void answer_queries(void** input, void* USERS, void* DRIVERS){
 void query1(char *ID, void *dbDrivers, void *dbUsers, short i){
     char *id = malloc(50);
     sprintf(id, "./Resultados/command%d_output.txt", i);
-    FILE *resultado = fopen(id, "w");    
+    FILE *resultado = fopen(id, "w");
     if(isdigit(ID[0])){
         int id = atoi(ID);
         if(isDriver(dbDrivers,id))
         {
-            if (driver_get_accStats(dbDrivers,id) == 'a' && driver_get_trips(dbDrivers,id) != 0)
+            if (driver_get_account_status(dbDrivers,id) == 'a' && driver_get_trips(dbDrivers,id) != 0)
             {
-                fprintf(resultado, "%s;%c;%d;%.3f;%d;%.3f\n", driver_get_name(dbDrivers,id), driver_get_gender(dbDrivers,id), driver_get_idade(dbDrivers,id), driver_get_avalm(dbDrivers,id), driver_get_trips(dbDrivers,id), driver_get_totalSpent(dbDrivers,id));
+                printf("aaaa\n");
+                fprintf(resultado, "%s;%c;%d;%.3f;%d;%.3f\n", driver_get_name(dbDrivers,id), driver_get_gender(dbDrivers,id), driver_get_idade(dbDrivers,id), driver_get_aval_m(dbDrivers,id), driver_get_trips(dbDrivers,id), driver_get_total_spent(dbDrivers,id));
             }
-            else if (driver_get_accStats(dbDrivers,id) == 'a' && driver_get_trips(dbDrivers,id) == 0)
+            else if (driver_get_account_status(dbDrivers,id) == 'a' && driver_get_trips(dbDrivers,id) == 0)
             {
+                printf("bbbb\n");
                 fprintf(resultado, "%s;%c;%d;%d;%d;%d\n", driver_get_name(dbDrivers,id), driver_get_gender(dbDrivers,id), driver_get_idade(dbDrivers,id), 0, 0, 0);
             }
         }
     }
-
-
-
-
-
-
-
     else{
         if(isUser(dbUsers,ID)){
             char* user = user_get_name(dbUsers,ID);
-            if(user_get_accStatus(dbUsers,user) == 'a' && user_get_trips(dbUsers,user) != 0){
-                fprintf(resultado,"%s;%c;%d;%.3f;%d;%.3f\n",user,user_get_gender(dbUsers,ID),user_get_idade(dbUsers,ID),user_get_avalm(dbUsers,ID),user_get_trips(dbUsers,ID),user_get_totalspent(dbUsers,ID));
+            if(user_get_account_status(dbUsers,ID) == 'a' && user_get_trips(dbUsers,ID) != 0){
+                printf("aaaa\n");
+                fprintf(resultado,"%s;%c;%d;%.3f;%d;%.3f\n",user,user_get_gender(dbUsers,ID),user_get_idade(dbUsers,ID),user_get_aval_m(dbUsers,ID),user_get_trips(dbUsers,ID),user_get_total_spent(dbUsers,ID));
             }
-            else if(user_get_accStatus(dbUsers,user) == 'a' && user_get_trips(dbUsers,user) == 0){
+            else if(user_get_account_status(dbUsers,ID) == 'a' && user_get_trips(dbUsers,ID) == 0){
+                printf("bbbb\n");
                 fprintf(resultado,"%s;%c;%d;%d;%d;%d\n",user,user_get_gender(dbUsers,ID),user_get_idade(dbUsers,ID),0,0,0);
             } 
         }
     }
     fclose(resultado);
+    printf("end\n");
 }
 
 void query2(char* N, void *dbDrivers, short i){
@@ -96,16 +94,16 @@ void query2(char* N, void *dbDrivers, short i){
     sprintf(id, "./Resultados/command%d_output.txt", i);
     FILE *resultado = fopen(id, "w");   
     int n = atoi(N);
-    int len = get_len_driver(dbDrivers);
+    int len = driver_get_len(dbDrivers);
     order_by_aval(dbDrivers);
     for (size_t i = len-1; i>len-n-1; i--)
     {
         int id = get_n_driver(dbDrivers,i);
-        if(driver_get_accStatus(dbDrivers,id) != 'a'){
+        if(driver_get_account_status(dbDrivers,id) != 'a'){
             n++;
         }
         else{
-            fprintf(resultado,"%d;%s;%d\n",id,driver_get_name(dbDrivers,id),get_driver_avalm(dbDrivers,id));
+            fprintf(resultado,"%d;%s;%d\n",id,driver_get_name(dbDrivers,id),driver_get_aval_m(dbDrivers,id));
         }        
     }
     fclose(resultado);
@@ -121,12 +119,12 @@ void query3(char *Num, void *dbUsers, short i){
     order_by_dist(dbUsers);
     for (size_t i = len-1; i>len-n-1; i--)
     {
-        char* User = get_n_username(dbUsers,i);
-        if(user_get_accStatus(dbUsers,User) != 'a'){
+        char* User = get_n_user(dbUsers,i);
+        if(user_get_account_status(dbUsers,User) != 'a'){
             n++;
         }
         else{
-            fprintf(resultado,"%s;%s;%d\n",User,user_get_name(dbUsers,User),get_user_totalDist(dbUsers,User));
+            fprintf(resultado,"%s;%s;%d\n",User,user_get_name(dbUsers,User),user_get_total_dist(dbUsers,User));
         }        
     }
     fclose(resultado);

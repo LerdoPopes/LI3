@@ -21,3 +21,5 @@ short idade(short birth_date);
 dateCombo* conv_Days_to_Date(short days);
 
 int invalid_date(char* error);
+
+#endif

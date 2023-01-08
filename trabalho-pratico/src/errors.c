@@ -7,14 +7,17 @@
 #include "../Include/errors.h"
 
 int empty_error(char* error){
-    if(error[0] == "\0" || error == NULL){
+    if(error[0] == '\0' || error == NULL){
         return 1;
     }
     return 0;
 }
 
 int invalid_accStats(char* error){
-    if (strcmp(tolower(error),"active") != 0 && strcmp(tolower(error),"inactive") != 0)
+    for(int i = 0; error[i]; i++){
+        error[i] = tolower(error[i]);
+    }
+    if (strcmp(error,"active") != 0 && strcmp(error,"inactive") != 0)
     {
         return 1;
     }
@@ -22,7 +25,10 @@ int invalid_accStats(char* error){
 }
 
 int invalid_carClass(char* error){
-    if (strcmp(tolower(error),"basic") != 0 && strcmp(tolower(error),"premium") != 0 && strcmp(tolower(error),"green") != 0)
+    for(int i = 0; error[i]; i++){
+        error[i] = tolower(error[i]);
+    }
+    if (strcmp(error,"basic") != 0 && strcmp(error,"premium") != 0 && strcmp(error,"green") != 0)
     {
         return 1;
     }

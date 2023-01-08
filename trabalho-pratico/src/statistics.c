@@ -23,7 +23,7 @@ double total_money_notip;
 
 
  void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
-     int n = get_len_ride(dbRides);    
+     int n = get_len_ride(dbRides); 
          for(int i = 1; i <= n; i++){
             int driver_ID = ride_get_driver(dbRides,i);
             char *user = ride_get_user(dbRides,i);
@@ -34,7 +34,7 @@ double total_money_notip;
             short score_driver = ride_get_score_driver(dbRides,i);
             short score_user = ride_get_score_user(dbRides,i);
             double *money = (double *) set_driver_stats(dbDrivers,&distance,&score_driver,&driver_ID,&tip,&date);
-            set_user_stats(dbUsers,&distance,&score_user,&user,&money,&date);
+            set_user_stats(dbUsers,&distance,&score_user,user,money,&date);
 
             free(money);
             free(city);

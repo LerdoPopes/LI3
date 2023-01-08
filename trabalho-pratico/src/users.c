@@ -188,9 +188,9 @@ int isUser(void* data, char* Username){
     return (user != NULL);
 }
 
-char *user_get_name(void* user_p, int ID){
+char *user_get_name(void* user_p, char* ID){
     DB_users* users = (DB_users*) user_p;
-    gconstpointer id = (gconstpointer)&ID;
+    gconstpointer id = (gconstpointer)ID;
     gpointer userp = g_hash_table_lookup(users->users_hashtable, id);
     User* user = (User*) userp;
     char *Name = strdup(user->name);
@@ -198,91 +198,91 @@ char *user_get_name(void* user_p, int ID){
 
 }
 
-char user_get_gender(void* user_p, int ID){
+char user_get_gender(void* user_p, char*ID){
     DB_users* users = (DB_users*) user_p;
-    gconstpointer id = (gconstpointer)&ID;
+    gconstpointer id = (gconstpointer)ID;
     gpointer userp = g_hash_table_lookup(users->users_hashtable, id);
     User* user = (User*) userp;
-    char GEnder = strdup(user->gender);
+    char GEnder = user->gender;
     return GEnder;
 
 }
 
-unsigned short user_get_birth_date(void* user_p, int ID){
+unsigned short user_get_birth_date(void* user_p, char*ID){
     DB_users* users = (DB_users*) user_p;
-    gconstpointer id = (gconstpointer)&ID;
+    gconstpointer id = (gconstpointer)ID;
     gpointer userp = g_hash_table_lookup(users->users_hashtable, id);
-    User* user = (user*) userp;
+    User* user = (User*) userp;
     return user->birth_date;
 
 }
 
-short user_get_account_creation(void *user_p, int ID){
+short user_get_account_creation(void *user_p, char*ID){
     DB_users* users = (DB_users*) user_p;
-    gconstpointer id = (gconstpointer)&ID;
+    gconstpointer id = (gconstpointer)ID;
     gpointer userp = g_hash_table_lookup(users->users_hashtable, id);
-    User* user = (user*) userp;
+    User* user = (User*) userp;
     return user->account_creation;
 }
 
-enum user_get_pay_method(void *user_p, int ID){
+char user_get_pay_method(void *user_p, char*ID){
     DB_users* users = (DB_users*) user_p;
-    gconstpointer id = (gconstpointer)&ID;
+    gconstpointer id = (gconstpointer)ID;
     gpointer userp = g_hash_table_lookup(users->users_hashtable, id);
-    User* user = (user*) userp;
+    User* user = (User*) userp;
     return user->pay_method;
 }
 
-char user_get_account_status(void* user_p, int ID){
+char user_get_account_status(void* user_p, char*ID){
     DB_users* users = (DB_users*) user_p;
-    gconstpointer id = (gconstpointer)&ID;
+    gconstpointer id = (gconstpointer)ID;
     gpointer userp = g_hash_table_lookup(users->users_hashtable, id);
-    user* user = (user*) userp;
-    char Account_Status = strdup(user->account_status);
+    User* user = (User*) userp;
+    char Account_Status = user->account_status;
     return Account_Status;
     
 }
 
-short user_get_trips(void *user_p, int ID){
+short user_get_trips(void *user_p, char*ID){
     DB_users* users = (DB_users*) user_p;
-    gconstpointer id = (gconstpointer)&ID;
+    gconstpointer id = (gconstpointer)ID;
     gpointer userp = g_hash_table_lookup(users->users_hashtable, id);
-    User* user = (user*) userp;
+    User* user = (User*) userp;
     return user->trips;
 }
 
-double user_get_total_spent(void* user_p, int ID){
+double user_get_total_spent(void* user_p, char*ID){
     DB_users* users = (DB_users*) user_p;
-    gconstpointer id = (gconstpointer)&ID;
+    gconstpointer id = (gconstpointer)ID;
     gpointer userp = g_hash_table_lookup(users->users_hashtable, id);
-    user *user = (user*) userp;
+    User *user = (User*) userp;
     return user->total_spent;
 
 }
 
-double user_get_total_spent_notip(void* user_p, int ID){
+double user_get_total_spent_notip(void* user_p, char*ID){
     DB_users* users = (DB_users*) user_p;
-    gconstpointer id = (gconstpointer)&ID;
+    gconstpointer id = (gconstpointer)ID;
     gpointer userp = g_hash_table_lookup(users->users_hashtable, id);
-    user *user = (user*) userp;
+    User *user = (User*) userp;
     return user->total_spent_notip;
 
 }
 
-unsigned short user_get_total_dist(void* user_p, int ID){
+unsigned short user_get_total_dist(void* user_p, char*ID){
     DB_users* users = (DB_users*) user_p;
-    gconstpointer id = (gconstpointer)&ID;
+    gconstpointer id = (gconstpointer)ID;
     gpointer userp = g_hash_table_lookup(users->users_hashtable, id);
-    User* user = (user*) userp;
+    User* user = (User*) userp;
     return user->total_dist;
 
 }
 
-short user_get_aval(void *user_p, int ID){
+short user_get_aval(void *user_p, char*ID){
     DB_users* users = (DB_users*) user_p;
-    gconstpointer id = (gconstpointer)&ID;
+    gconstpointer id = (gconstpointer)ID;
     gpointer userp = g_hash_table_lookup(users->users_hashtable, id);
-    User* user = (user*) userp;
+    User* user = (User*) userp;
     return user->aval;
 }
 
@@ -295,11 +295,11 @@ short user_get_aval_m(void* data, char* Username){
     return aval_m;
 }
 
-unsigned short user_get_last_trip_date(void* user_p, int ID){
+unsigned short user_get_last_trip_date(void* user_p, char*ID){
     DB_users* users = (DB_users*) user_p;
-    gconstpointer id = (gconstpointer)&ID;
+    gconstpointer id = (gconstpointer)ID;
     gpointer userp = g_hash_table_lookup(users->users_hashtable, id);
-    User* user = (user*) userp;
+    User* user = (User*) userp;
     return user->last_trip_date;
 
 }

@@ -125,7 +125,6 @@ void *set_driver_stats(void *dbDrivers, void *distp, void *avalp, void *id, void
         driver->total_spent += (3.25 + 0.62 * (*dist) + (*tip));
         *money = (3.25 + 0.62 * (*dist) + (*tip));
     }
-    int* x = (int*) idp;
     return money;
 }
 
@@ -212,6 +211,11 @@ void *order_by_aval(void *dbDrivers)
 //    unsigned short last_trip_date;
 //};
 
+int driver_get_len(void* driver_p){
+    DB_drivers* drivers = (DB_drivers*) driver_p;
+    return drivers->len;
+}
+
 int get_n_driver(void* data, int i){
    DB_drivers* drivers = (DB_drivers*) data;
    int id = drivers->drivers_array[i]->id;
@@ -245,7 +249,7 @@ char driver_get_gender(void* driver_p, int ID){
     gconstpointer id = (gconstpointer)&ID;
     gpointer driverp = g_hash_table_lookup(drivers->drivers_hashtable, id);
     Driver* driver = (Driver*) driverp;
-    char Gender = strdup(driver->gender);
+    char Gender = driver->gender;
     return Gender;
 
 }
@@ -260,12 +264,12 @@ char *driver_get_car_class(void* driver_p, int ID){
 
 }
 
-char driver_get_license_plate(void* driver_p, int ID){
+char* driver_get_license_plate(void* driver_p, int ID){
     DB_drivers* drivers = (DB_drivers*) driver_p;
     gconstpointer id = (gconstpointer)&ID;
     gpointer driverp = g_hash_table_lookup(drivers->drivers_hashtable, id);
     Driver* driver = (Driver*) driverp;
-    char License_plate = strdup(driver->license_plate);
+    char* License_plate = strdup(driver->license_plate);
     return License_plate;
 
 }
@@ -297,7 +301,7 @@ char driver_get_account_status(void* driver_p, int ID){
     gconstpointer id = (gconstpointer)&ID;
     gpointer driverp = g_hash_table_lookup(drivers->drivers_hashtable, id);
     Driver* driver = (Driver*) driverp;
-    char Account_Status = strdup(driver->account_status);
+    char Account_Status = driver->account_status;
     return Account_Status;
     
 }
@@ -307,7 +311,7 @@ int driver_get_total_dist(void *driver_p, int ID){
     gconstpointer id = (gconstpointer)&ID;
     gpointer driverp = g_hash_table_lookup(drivers->drivers_hashtable, id);
     Driver *driver = (Driver*) driverp;
-    return total_dist(driver->total_dist);
+    return driver->total_dist;
 
 }
 

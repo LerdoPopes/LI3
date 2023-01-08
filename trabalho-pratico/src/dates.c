@@ -78,7 +78,7 @@ int invalid_date(char* error){
         || isdigit(error[7]) 
         || isdigit(error[8]) 
         || isdigit(error[9]) 
-        || error[10] != "\0"){
+        || error[10] != '\0'){
         return 1;
     }
     return 0;

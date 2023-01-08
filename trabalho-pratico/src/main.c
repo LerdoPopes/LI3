@@ -8,6 +8,7 @@
 #include "../Include/rides.h"
 #include "../Include/parser.h"
 #include "../Include/queries.h"
+#include "../Include/statistics.h"
 
 int main(int argc, char **argv){
     if(argc < 2){
@@ -50,6 +51,7 @@ int main(int argc, char **argv){
         void **INPUT = parse_query(input,process_query);
         fclose(input);
 
+    organize_statistics(USERS,RIDES,DRIVERS);
     answer_queries(INPUT,USERS,DRIVERS);
     free_rides(RIDES);
     free_driver(DRIVERS);
