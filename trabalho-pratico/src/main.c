@@ -51,8 +51,10 @@ int main(int argc, char **argv){
         void **INPUT = parse_query(input,process_query);
         fclose(input);
 
-    organize_statistics(USERS,RIDES,DRIVERS);
+    void* STATS = organize_statistics(USERS,RIDES,DRIVERS);
     answer_queries(INPUT,USERS,DRIVERS);
+    // print_braga(STATS);
+    //print_date(STATS);
     free_rides(RIDES);
     free_driver(DRIVERS);
     free_user(USERS);

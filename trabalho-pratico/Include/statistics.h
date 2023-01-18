@@ -8,4 +8,8 @@
 
 void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers);
 
+void print_braga(void* STATS);
+
+void print_date(void* STATS);
+
 #endif
