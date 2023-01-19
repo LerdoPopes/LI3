@@ -6,6 +6,7 @@
 #include "../Include/users.h"
 #include "../Include/rides.h"
 #include "../Include/dates.h"
+#include "../Include/statistics.h"
 #include "../Include/queries.h"
 #include <ctype.h>
 #include <math.h>
@@ -15,7 +16,8 @@ struct city{
     
     char* city_name;
     double total_money;
-    double total_money_notip;
+    short num_rides;
+    // double total_money_notip;
     //GHashTable* driversTmp;
     //GTree* drivers;
 };
@@ -80,12 +82,14 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
             cities[city_counter]->total_money = 0;
             char* c = strdup(city);
             cities[city_counter]->city_name = c;
+            cities[city_counter]->num_rides = 0;
             g_hash_table_insert(cities_hashtable,cities[city_counter]->city_name,cities[city_counter]);
             city_counter++;
             cityGP = g_hash_table_lookup(cities_hashtable,city);
         }
         struct city* cityP = (struct city*) cityGP;
         cityP->total_money += *money-tip;
+        cityP->num_rides++;
 
 
         //Estatisticas da query 5
@@ -145,3 +149,27 @@ void print_date(void* STATS){
     eachDay* braga = (eachDay*) BRAGA;
     printf("%d\n",braga->num_trips);
 }
+
+double city_get_money(void *stats_d,char *ID){
+    Stats* stats = (Stats*) stats_d;
+    gconstpointer id = (gconstpointer)ID;
+    gpointer cityp = g_hash_table_lookup(stats->cities, id);
+    City* city = (City*) cityp;
+    return city->total_money;
+}
+
+short city_get_num_rides(void *stats_d,char *ID){
+    Stats* stats = (Stats*) stats_d;
+    gconstpointer id = (gconstpointer)ID;
+    gpointer cityp = g_hash_table_lookup(stats->cities, id);
+    City* city = (City*) cityp;
+    return city->num_rides;
+}
+
+// double city_get_money_notip(void *stats_p,char *ID){
+//     Stats* stats = (Stats*) stats_p;
+//     gconstpointer id = (gconstpointer)ID;
+//     gpointer cityp = g_hash_table_lookup(stats->cities, id);
+//     City* city = (City*) cityp;
+//     return city->total_money_notip;
+// }

@@ -7,6 +7,7 @@
 #include "../Include/rides.h"
 #include "../Include/dates.h"
 #include "../Include/queries.h"
+#include "../Include/statistics.h"
 #include <ctype.h>
 #include <math.h>
 
@@ -35,19 +36,64 @@ void free_queries(void** queries_p){
 }
 
 
-void answer_queries(void** input, void* USERS, void* DRIVERS){
+void answer_queries(void** input, void* USERS, void* DRIVERS, void* STATS){
     char*** INPUT = (char***) input;
     for(short i = 0, j = 1; INPUT[i] != NULL;i++,j++){
-         switch(atoi(INPUT[i][0])){
-             case(1):                                              
-                 query1(INPUT[i][1],DRIVERS,USERS,j);
-                 break;
-             case(2):
-                 query2(INPUT[i][1],DRIVERS,j);
-                 break;
-             case(3):
-                 query3(INPUT[i][1],USERS,j);
-                 break;
+        switch(atoi(INPUT[i][0])){
+            case(1):
+                clock_t start1 = clock();
+                query1(INPUT[i][1],DRIVERS,USERS,j);
+                clock_t end1 = clock();
+                printf("Query 1: %f\n",((float)(end1 - start1))/CLOCKS_PER_SEC);  
+                break;
+            case(2):
+                clock_t start2 = clock();
+                query2(INPUT[i][1],DRIVERS,j);
+                clock_t end2 = clock();
+                printf("Query 2: %f\n",((float)(end2 - start2))/CLOCKS_PER_SEC);
+                break;
+            case(3):
+                clock_t start3 = clock();
+                query3(INPUT[i][1],USERS,j);
+                clock_t end3 = clock();
+                printf("Query 3: %f\n",((float)(end3 - start3))/CLOCKS_PER_SEC);
+                break;
+            case(4):
+                clock_t start4 = clock();
+                query4(INPUT[i][1],STATS,j);
+                clock_t end4 = clock();
+                printf("Query 4: %f\n",((float)(end4 - start4))/CLOCKS_PER_SEC);
+                break;
+            // case(5):
+            //     clock_t start5 = clock();
+            //     query5(INPUT[i][1],USERS,j);
+            //     clock_t end5 = clock();
+            //     printf("Query 5: %f\n",((float)(end5 - start5))/CLOCKS_PER_SEC);
+            //     break;
+            // case(6):
+            //     clock_t start6 = clock();
+            //     query6(INPUT[i][1],USERS,j);
+            //     clock_t end6 = clock();
+            //     printf("Query 6: %f\n",((float)(end6 - start6))/CLOCKS_PER_SEC);
+            //     break;
+            // case(7):
+            //     clock_t start7 = clock();
+            //     query7(INPUT[i][1],USERS,j);
+            //     clock_t end7 = clock();
+            //     printf("Query 7: %f\n",((float)(end7 - start7))/CLOCKS_PER_SEC);
+            //     break;
+            // case(8):
+            //     clock_t start8 = clock();
+            //     query8(INPUT[i][1],USERS,j);
+            //     clock_t end8 = clock();
+            //     printf("Query 8: %f\n",((float)(end8 - start8))/CLOCKS_PER_SEC);
+            //     break;
+            // case(9):
+            //     clock_t start9 = clock();
+            //     query9(INPUT[i][1],USERS,j);
+            //     clock_t end9 = clock();
+            //     printf("Query 9: %f\n",((float)(end9 - start9))/CLOCKS_PER_SEC);
+            //     break;
          }
     }
 }
@@ -125,6 +171,13 @@ void query3(char *Num, void *dbUsers, short i){
     fclose(resultado);
 }
 
+void query4(char *Cidade,void * dbStats,short i){
+    char *id = malloc(50);
+    sprintf(id, "./Resultados/command%d_output.txt", i);
+    FILE *resultado = fopen(id, "w");
+    fprintf(resultado,"%.3f",(city_get_money(dbStats,Cidade)/city_get_num_rides(dbStats,Cidade)));
+    fclose(resultado);
+}
 // for (size_t i = n-1; i>n-N-1; i--)
 //     {
 //         User *user = users[i];

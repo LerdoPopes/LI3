@@ -4,6 +4,7 @@
         "rides.h": "c",
         "users.h": "c",
         "dates.h": "c",
-        "ctype.h": "c"
+        "ctype.h": "c",
+        "queries.h": "c"
     }
 }

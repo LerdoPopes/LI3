@@ -52,8 +52,8 @@ int main(int argc, char **argv){
         fclose(input);
 
     void* STATS = organize_statistics(USERS,RIDES,DRIVERS);
-    answer_queries(INPUT,USERS,DRIVERS);
-    // print_braga(STATS);
+    answer_queries(INPUT,USERS,DRIVERS,STATS);
+    //print_braga(STATS);
     //print_date(STATS);
     free_rides(RIDES);
     free_driver(DRIVERS);
@@ -61,8 +61,8 @@ int main(int argc, char **argv){
     free_queries(INPUT);
     free(aux);
     free(Input);
-    int time = clock();
-    printf("%f\n",(float)time/CLOCKS_PER_SEC);  
+    clock_t time = clock();
+    printf("Tempo total de Execução: %f\n",(float)time/CLOCKS_PER_SEC);  
 }
 }
 
