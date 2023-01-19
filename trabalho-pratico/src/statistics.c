@@ -16,7 +16,7 @@ struct city{
     
     char* city_name;
     double total_money;
-    short num_rides;
+    int num_rides;
     // double total_money_notip;
     //GHashTable* driversTmp;
     //GTree* drivers;
@@ -88,6 +88,9 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
             cityGP = g_hash_table_lookup(cities_hashtable,city);
         }
         struct city* cityP = (struct city*) cityGP;
+        //if(strcmp("Braga",cityP->city_name)==0){
+        //    printf("%d");
+        //}
         cityP->total_money += *money-tip;
         cityP->num_rides++;
 
@@ -155,14 +158,16 @@ double city_get_money(void *stats_d,char *ID){
     gconstpointer id = (gconstpointer)ID;
     gpointer cityp = g_hash_table_lookup(stats->cities, id);
     City* city = (City*) cityp;
+    printf("%.3f\n",city->total_money);
     return city->total_money;
 }
 
-short city_get_num_rides(void *stats_d,char *ID){
+int city_get_num_rides(void *stats_d,char *ID){
     Stats* stats = (Stats*) stats_d;
     gconstpointer id = (gconstpointer)ID;
     gpointer cityp = g_hash_table_lookup(stats->cities, id);
     City* city = (City*) cityp;
+    //printf("%u\n",city->num_rides);
     return city->num_rides;
 }
 
