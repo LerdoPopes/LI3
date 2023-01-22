@@ -16,7 +16,7 @@ struct city{
     
     char* city_name;
     double total_money;
-    short num_rides;
+    int num_rides;
     // double total_money_notip;
     //GHashTable* driversTmp;
     //GTree* drivers;
@@ -158,7 +158,7 @@ double city_get_money(void *stats_d,char *ID){
     return city->total_money;
 }
 
-short city_get_num_rides(void *stats_d,char *ID){
+int city_get_num_rides(void *stats_d,char *ID){
     Stats* stats = (Stats*) stats_d;
     gconstpointer id = (gconstpointer)ID;
     gpointer cityp = g_hash_table_lookup(stats->cities, id);
