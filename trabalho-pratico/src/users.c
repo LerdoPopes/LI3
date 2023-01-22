@@ -70,6 +70,7 @@ void *organize_user(void** results){
     db_users->users_hashtable = gtable;
     db_users->len=i;
     db_users->order = 0;
+    order_by_dist(db_users);
     return db_users;
 }
 
@@ -286,12 +287,12 @@ short user_get_aval(void *user_p, char*ID){
     return user->aval;
 }
 
-short user_get_aval_m(void* data, char* Username){
+double user_get_aval_m(void* data, char* Username){
     DB_Users* db_users = (DB_Users*) data;
     gconstpointer id = (gconstpointer) Username;
     gpointer userp = g_hash_table_lookup(db_users->users_hashtable,id);
     User* user = (User*) userp;
-    short aval_m = (short) user->aval/user->trips;
+    double aval_m = (double) user->aval/user->trips;
     return aval_m;
 }
 

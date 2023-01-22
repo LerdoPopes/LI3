@@ -158,7 +158,6 @@ double city_get_money(void *stats_d,char *ID){
     gconstpointer id = (gconstpointer)ID;
     gpointer cityp = g_hash_table_lookup(stats->cities, id);
     City* city = (City*) cityp;
-    printf("%.3f\n",city->total_money);
     return city->total_money;
 }
 
@@ -169,6 +168,14 @@ int city_get_num_rides(void *stats_d,char *ID){
     City* city = (City*) cityp;
     //printf("%u\n",city->num_rides);
     return city->num_rides;
+}
+
+int cityValid(void* STATS, char* Cidade){
+    Stats* stats = (Stats*) STATS;
+    gconstpointer id = (gconstpointer)Cidade;
+    gpointer cityp = g_hash_table_lookup(stats->cities, id);
+    City* city = (City*) cityp;
+    return (city!=NULL);
 }
 
 // double city_get_money_notip(void *stats_p,char *ID){

@@ -24,4 +24,5 @@ double city_get_money_notip(void *stats_p,char *ID);
 
 int city_get_num_rides(void *stats_d,char *ID);
 
+int cityValid(void* STATS, char* Cidade);
 #endif

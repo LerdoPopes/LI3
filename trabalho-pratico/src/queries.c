@@ -144,7 +144,7 @@ void query2(char* N, void *dbDrivers, short i){
             n++;
         }
         else{
-            fprintf(resultado,"%d;%s;%d\n",id,driver_get_name(dbDrivers,id),driver_get_aval_m(dbDrivers,id));
+            fprintf(resultado,"%d;%s;%.3f\n",id,driver_get_name(dbDrivers,id),driver_get_aval_m(dbDrivers,id));
         }        
     }
     fclose(resultado);
@@ -175,7 +175,9 @@ void query4(char *Cidade,void * dbStats,short i){
     char *id = malloc(50);
     sprintf(id, "./Resultados/command%d_output.txt", i);
     FILE *resultado = fopen(id, "w");
-    fprintf(resultado,"%.3f",(double)(city_get_money(dbStats,Cidade)/city_get_num_rides(dbStats,Cidade)));
+    if(cityValid(dbStats,Cidade)){
+        fprintf(resultado,"%.3f",(double)(city_get_money(dbStats,Cidade)/city_get_num_rides(dbStats,Cidade)));
+    }
     fclose(resultado);
 }
 // for (size_t i = n-1; i>n-N-1; i--)
