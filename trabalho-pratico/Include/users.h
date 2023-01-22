@@ -49,7 +49,7 @@ unsigned short user_get_total_dist(void* user_p, char* ID);
 
 short user_get_aval(void *user_p, char* ID);
 
-short user_get_aval_m(void* data, char* Username);
+double user_get_aval_m(void* data, char* Username);
 
 unsigned short user_get_last_trip_date(void* user_p, char* ID);
 
