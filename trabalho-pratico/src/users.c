@@ -5,6 +5,7 @@
 #include <stdarg.h>
 #include "../Include/users.h"
 #include "../Include/dates.h"
+#include "../Include/errors.h"
 
 enum method {
     cash = 'a',
@@ -38,6 +39,16 @@ typedef struct data_base_users{
 
 void *process_user(char** info) 
 {
+    if(invalid_date(info[3]) 
+       && invalid_date(info[4])
+       && empty_error(info[0])
+       && empty_error(info[1])
+       && empty_error(info[2])
+       && invalid_accStats(info[6])
+       && empty_error(info[5])
+    ){
+        return NULL;
+    }
     struct user *us = malloc(sizeof(struct user));
 
     us->username = strdup(info[0]);

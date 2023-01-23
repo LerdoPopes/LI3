@@ -6,6 +6,7 @@
 #include <stdarg.h>
 #include "../Include/dates.h"
 #include "../Include/drivers.h"
+#include "../Include/errors.h"
 
 struct driver
 {
@@ -36,6 +37,19 @@ struct data_base_drivers
 
 void *process_driver(char **info)
 {
+    if(
+        empty_error(info[0])
+    && empty_error(info[1]) 
+    && invalid_date(info[2])
+    && empty_error(info[3])
+    && invalid_carClass(info[4])
+    && empty_error(info[5])
+    && empty_error(info[6])
+    && invalid_date(info[7])
+    )
+    {
+        return NULL;
+    }
     struct driver *dr = malloc(sizeof(struct driver));
 
     dr->id = atol(info[0]);

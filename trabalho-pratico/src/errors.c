@@ -7,10 +7,10 @@
 #include "../Include/errors.h"
 
 int empty_error(char* error){
-    if(error[0] == '\0' || error == NULL){
-        return 1;
+    if(error[0]){
+        return 0;
     }
-    return 0;
+    return 1;
 }
 
 int invalid_accStats(char* error){
@@ -37,7 +37,7 @@ int invalid_carClass(char* error){
 
 
 int invalid_Pint(char* error){
-    for(int i = 0; error[i] != '\0'; i++){
+    for(int i = 0; error[i]; i++){
         if(!(isdigit(error[i]))){
             return 1;
         }
@@ -47,7 +47,7 @@ int invalid_Pint(char* error){
 
 int invalid_Pdouble(char* error){
     int counter = 0;
-    for (int i = 0; error[i] != '\0'; i++)
+    for (int i = 0; error[i]; i++)
     {
         if(error[i] == '.'){
             counter++;

@@ -56,75 +56,78 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
     GHashTable* dates_hashtable = g_hash_table_new(g_int_hash,g_int_equal);
     eachDay** eachday = malloc(sizeof(eachDay*)*size_dates);
     int dates_counter = 0;
-
     for(int i = 1; i <= n; i++){
+        if(isRide(dbRides,i)){
+            int driver_ID = ride_get_driver(dbRides,i);
+            char *user = ride_get_user(dbRides,i);
+            short date = ride_get_date(dbRides,i);
+            char *city = ride_get_city(dbRides,i);
+            double tip = ride_get_tip(dbRides,i);
+            short distance = ride_get_distance(dbRides,i);
+            short score_driver = ride_get_score_driver(dbRides,i);
+            short score_user = ride_get_score_user(dbRides,i);
 
-        int driver_ID = ride_get_driver(dbRides,i);
-        char *user = ride_get_user(dbRides,i);
-        short date = ride_get_date(dbRides,i);
-        char *city = ride_get_city(dbRides,i);
-        double tip = ride_get_tip(dbRides,i);
-        short distance = ride_get_distance(dbRides,i);
-        short score_driver = ride_get_score_driver(dbRides,i);
-        short score_user = ride_get_score_user(dbRides,i);
+
+            double *money = (double *) set_driver_stats(dbDrivers,&distance,&score_driver,&driver_ID,&tip,&date);
+            set_user_stats(dbUsers,&distance,&score_user,user,money,&date);
+            
+            //Estatisticas da query 4
+            if(size_cities == city_counter){
+                cities = realloc(cities, (size_cities*=2) * sizeof(struct city*));
+            }
+            gpointer cityGP = g_hash_table_lookup(cities_hashtable,city);
+            if (cityGP == NULL){
+                cities[city_counter] =  malloc(sizeof(struct city));
+                cities[city_counter]->total_money = 0;
+                char* c = strdup(city);
+                cities[city_counter]->city_name = c;
+                cities[city_counter]->num_rides = 0;
+                g_hash_table_insert(cities_hashtable,cities[city_counter]->city_name,cities[city_counter]);
+                city_counter++;
+                cityGP = g_hash_table_lookup(cities_hashtable,city);
+            }
+            struct city* cityP = (struct city*) cityGP;
+            //if(strcmp("Braga",cityP->city_name)==0){
+            //    printf("%d");
+            //}
+            cityP->total_money += *money-tip;
+            cityP->num_rides++;
 
 
-        double *money = (double *) set_driver_stats(dbDrivers,&distance,&score_driver,&driver_ID,&tip,&date);
-        set_user_stats(dbUsers,&distance,&score_user,user,money,&date);
-        
-        //Estatisticas da query 4
-        if(size_cities == city_counter){
-            cities = realloc(cities, (size_cities*=2) * sizeof(struct city*));
+            //Estatisticas da query 5
+            if(size_dates == dates_counter){
+                eachday = realloc(eachday, (size_dates*=2) * sizeof(eachDay*));
+            }
+            int dayte = (int) date;
+            gpointer datesGP = g_hash_table_lookup(dates_hashtable,&dayte);
+            if (datesGP == NULL){
+                eachday[dates_counter] =  malloc(sizeof(eachDay));
+                eachday[dates_counter]->money = 0;
+                eachday[dates_counter]->day = dayte;
+                eachday[dates_counter]->num_trips = 0;
+                eachday[dates_counter]->size = 128;
+                eachday[dates_counter]->rides = malloc(sizeof(int)*128);
+                g_hash_table_insert(dates_hashtable,&(eachday[dates_counter]->day),eachday[dates_counter]);
+                dates_counter++;
+                datesGP = g_hash_table_lookup(dates_hashtable,&dayte);
+            }
+            eachDay* datesP = (eachDay*) datesGP;
+            if(datesP->size == datesP->num_trips){
+                datesP->rides = realloc(datesP->rides, (datesP->size*=2) * sizeof(int));
+            }
+            datesP->rides[datesP->num_trips] = i;
+            datesP->num_trips++;
+            datesP->money += *money;
+
+
+
+            free(money);
+            free(city);
+            free(user);
         }
-        gpointer cityGP = g_hash_table_lookup(cities_hashtable,city);
-        if (cityGP == NULL){
-            cities[city_counter] =  malloc(sizeof(struct city));
-            cities[city_counter]->total_money = 0;
-            char* c = strdup(city);
-            cities[city_counter]->city_name = c;
-            cities[city_counter]->num_rides = 0;
-            g_hash_table_insert(cities_hashtable,cities[city_counter]->city_name,cities[city_counter]);
-            city_counter++;
-            cityGP = g_hash_table_lookup(cities_hashtable,city);
+        else{
+            n++;
         }
-        struct city* cityP = (struct city*) cityGP;
-        //if(strcmp("Braga",cityP->city_name)==0){
-        //    printf("%d");
-        //}
-        cityP->total_money += *money-tip;
-        cityP->num_rides++;
-
-
-        //Estatisticas da query 5
-        if(size_dates == dates_counter){
-            eachday = realloc(eachday, (size_dates*=2) * sizeof(eachDay*));
-        }
-        int dayte = (int) date;
-        gpointer datesGP = g_hash_table_lookup(dates_hashtable,&dayte);
-        if (datesGP == NULL){
-            eachday[dates_counter] =  malloc(sizeof(eachDay));
-            eachday[dates_counter]->money = 0;
-            eachday[dates_counter]->day = dayte;
-            eachday[dates_counter]->num_trips = 0;
-            eachday[dates_counter]->size = 128;
-            eachday[dates_counter]->rides = malloc(sizeof(int)*128);
-            g_hash_table_insert(dates_hashtable,&(eachday[dates_counter]->day),eachday[dates_counter]);
-            dates_counter++;
-            datesGP = g_hash_table_lookup(dates_hashtable,&dayte);
-        }
-        eachDay* datesP = (eachDay*) datesGP;
-        if(datesP->size == datesP->num_trips){
-            datesP->rides = realloc(datesP->rides, (datesP->size*=2) * sizeof(int));
-        }
-        datesP->rides[datesP->num_trips] = i;
-        datesP->num_trips++;
-        datesP->money += *money;
-
-
-
-        free(money);
-        free(city);
-        free(user);
     }
     stats->cities = cities_hashtable;
     stats->cities_p = cities;
