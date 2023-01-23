@@ -5,6 +5,7 @@
 #include <glib.h>
 #include <stdarg.h>
 #include "../Include/rides.h"
+#include "../Include/errors.h"
 
 struct ride {
     int id;
@@ -26,6 +27,19 @@ typedef struct data_base_rides{
 } DB_rides;
 
  void *process_ride(char** info) {
+     if(
+        empty_error(info[0])
+     && invalid_date(info[1])
+     && empty_error(info[2]) 
+     && empty_error(info[3])
+     && empty_error(info[4])
+     && invalid_Pint(info[5])
+     && invalid_Pint(info[6])
+     && invalid_Pint(info[7])
+     && invalid_Pdouble(info[8])
+    ){
+        return NULL;
+    }
      struct ride *ri = malloc(sizeof(struct ride));
  
      ri->id = atol(info[0]);
@@ -39,6 +53,11 @@ typedef struct data_base_rides{
      ri->score_driver = atoi(info[7]);
      ri->tip = atof(info[8]);
      ri->comment = strdup(info[9]);
+     for(int i = 0; ri->comment[i];i++){
+        if(ri->id == 1){
+            printf("aa\n");
+        }
+     }
      return ri;
  }
 
@@ -160,6 +179,15 @@ int ride_get_idArray(void *ride_p, int i){
     Ride* ride = (Ride*) rides->rides_array[i];
     return ride->id;
 }
+
+int isRide(void* ride_p, int ID){
+    DB_rides* rides = (DB_rides*) ride_p;
+    gconstpointer id = (gconstpointer)&ID;
+    gpointer driverp = g_hash_table_lookup(rides->rides_hashtable, id);
+    Ride *driver = (Ride*) driverp;
+    return (driver != NULL);
+}
+
 
 //short ride_get_date(void* rides_p, int Id){
 //    DB_rides* rides = (DB_rides*) rides_p;

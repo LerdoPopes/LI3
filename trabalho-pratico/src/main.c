@@ -50,7 +50,7 @@ int main(int argc, char **argv){
         }
         void **INPUT = parse_query(input,process_query);
         fclose(input);
-
+    printf("aa%d\n",isDriver(DRIVERS,45));
     void* STATS = organize_statistics(USERS,RIDES,DRIVERS);
     answer_queries(INPUT,USERS,DRIVERS,STATS);
     //print_braga(STATS);

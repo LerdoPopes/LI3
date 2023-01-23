@@ -69,9 +69,9 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
         short score_driver = ride_get_score_driver(dbRides,id);
         short score_user = ride_get_score_user(dbRides,id);
 
-
         double *money = (double *) set_driver_stats(dbDrivers,&distance,&score_driver,&driver_ID,&tip,&date);
         set_user_stats(dbUsers,&distance,&score_user,user,money,&date);
+        
         
         //Estatisticas da query 4
         if(size_cities == city_counter){
@@ -94,8 +94,8 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
         //}
         cityP->total_money += *money-tip;
         cityP->num_rides++;
-
-
+        
+        
         //Estatisticas da query 5
         if(size_dates == dates_counter){
             eachday = realloc(eachday, (size_dates*=2) * sizeof(eachDay*));
@@ -117,15 +117,14 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
         if(datesP->size == datesP->num_trips){
             datesP->rides = realloc(datesP->rides, (datesP->size*=2) * sizeof(int));
         }
+        
         datesP->rides[datesP->num_trips] = i;
         datesP->num_trips++;
         datesP->money += *money;
-
-
-
         free(money);
         free(city);
         free(user);
+    
     }
     stats->cities = cities_hashtable;
     stats->cities_p = cities;

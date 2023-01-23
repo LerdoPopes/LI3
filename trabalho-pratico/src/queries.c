@@ -180,6 +180,14 @@ void query4(char *Cidade,void * dbStats,short i){
     }
     fclose(resultado);
 }
+
+void query5(char* data1, char* data2, void *dbStats,short i){
+    char *id = malloc(50);
+    sprintf(id, "./Resultados/command%d_output.txt", i);
+    FILE *resultado = fopen(id, "w");
+    
+
+}
 // for (size_t i = n-1; i>n-N-1; i--)
 //     {
 //         User *user = users[i];
