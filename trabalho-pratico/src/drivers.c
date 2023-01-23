@@ -36,8 +36,21 @@ struct data_base_drivers
 
 void *process_driver(char **info)
 {
+    if(
+        empty_error(info[0])
+    && empty_error(info[1]) 
+    && invalid_date(info[2])
+    && empty_error(info[3])
+    && invalid_carClass(info[4])
+    && empty_error(info[5])
+    && empty_error(info[6])
+    && invalid_date(info[7])
+    )
+    {
+        return NULL;
+    }
     struct driver *dr = malloc(sizeof(struct driver));
-
+    
     dr->id = atol(info[0]);
     dr->name = strdup(info[1]);
     dr->birth_date = calc_Date(info[2]);
