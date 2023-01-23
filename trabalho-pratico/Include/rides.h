@@ -35,5 +35,6 @@ char *ride_get_comment(struct ride *r);
 
 int get_len_ride(void* rides_p);
 
+int ride_get_idArray(void *ride_p, int i);
 //int get_len_ride(void* ride_p);
 

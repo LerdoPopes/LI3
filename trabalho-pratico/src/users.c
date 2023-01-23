@@ -70,7 +70,6 @@ void *organize_user(void** results){
     db_users->users_hashtable = gtable;
     db_users->len=i;
     db_users->order = 0;
-    order_by_dist(db_users);
     return db_users;
 }
 

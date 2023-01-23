@@ -57,16 +57,17 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
     eachDay** eachday = malloc(sizeof(eachDay*)*size_dates);
     int dates_counter = 0;
 
-    for(int i = 1; i <= n; i++){
+    for(int i = 0; i < n; i++){
 
-        int driver_ID = ride_get_driver(dbRides,i);
-        char *user = ride_get_user(dbRides,i);
-        short date = ride_get_date(dbRides,i);
-        char *city = ride_get_city(dbRides,i);
-        double tip = ride_get_tip(dbRides,i);
-        short distance = ride_get_distance(dbRides,i);
-        short score_driver = ride_get_score_driver(dbRides,i);
-        short score_user = ride_get_score_user(dbRides,i);
+        int id = ride_get_idArray(dbRides,i);
+        int driver_ID = ride_get_driver(dbRides,id);
+        char *user = ride_get_user(dbRides,id);
+        short date = ride_get_date(dbRides,id);
+        char *city = ride_get_city(dbRides,id);
+        double tip = ride_get_tip(dbRides,id);
+        short distance = ride_get_distance(dbRides,id);
+        short score_driver = ride_get_score_driver(dbRides,id);
+        short score_user = ride_get_score_user(dbRides,id);
 
 
         double *money = (double *) set_driver_stats(dbDrivers,&distance,&score_driver,&driver_ID,&tip,&date);

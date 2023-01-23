@@ -36,6 +36,7 @@ struct data_base_drivers
 
 void *process_driver(char **info)
 {
+    
     struct driver *dr = malloc(sizeof(struct driver));
 
     dr->id = atol(info[0]);
@@ -72,7 +73,6 @@ void *organize_driver(void **results)
     db_drivers->drivers_hashtable = gtable;
     db_drivers->order = 0;
     db_drivers->len = i;
-    order_by_aval(db_drivers);
     return db_drivers;
 }
 

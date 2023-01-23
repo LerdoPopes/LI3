@@ -155,6 +155,12 @@ int get_len_ride(void* ride_p){
     return rides->len;
 }
 
+int ride_get_idArray(void *ride_p, int i){
+    DB_rides* rides = (DB_rides*) ride_p;
+    Ride* ride = (Ride*) rides->rides_array[i];
+    return ride->id;
+}
+
 //short ride_get_date(void* rides_p, int Id){
 //    DB_rides* rides = (DB_rides*) rides_p;
 //    gconstpointer id = (gconstpointer;
