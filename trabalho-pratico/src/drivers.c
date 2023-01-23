@@ -51,7 +51,7 @@ void *process_driver(char **info)
         return NULL;
     }
     struct driver *dr = malloc(sizeof(struct driver));
-
+    
     dr->id = atol(info[0]);
     dr->name = strdup(info[1]);
     dr->birth_date = calc_Date(info[2]);
