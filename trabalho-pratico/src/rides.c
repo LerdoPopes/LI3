@@ -29,14 +29,14 @@ typedef struct data_base_rides{
  void *process_ride(char** info) {
      if(
         empty_error(info[0])
-     && invalid_date(info[1])
-     && empty_error(info[2]) 
-     && empty_error(info[3])
-     && empty_error(info[4])
-     && invalid_Pint(info[5])
-     && invalid_Pint(info[6])
-     && invalid_Pint(info[7])
-     && invalid_Pdouble(info[8])
+     || invalid_date(info[1])
+     || empty_error(info[2]) 
+     || empty_error(info[3])
+     || empty_error(info[4])
+     || invalid_Pint(info[5])
+     || invalid_Pint(info[6])
+     || invalid_Pint(info[7])
+     || invalid_Pdouble(info[8])
     ){
         return NULL;
     }
@@ -54,9 +54,6 @@ typedef struct data_base_rides{
      ri->tip = atof(info[8]);
      ri->comment = strdup(info[9]);
      for(int i = 0; ri->comment[i];i++){
-        if(ri->id == 1){
-            printf("aa\n");
-        }
      }
      return ri;
  }
@@ -73,6 +70,7 @@ void *organize_rides(void** results){
     db_rides->rides_array = results;
     db_rides->rides_hashtable = gtable;
     db_rides->len = i;
+    printf("%d\n", i);
     return db_rides;
 }
 

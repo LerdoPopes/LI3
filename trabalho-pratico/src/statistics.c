@@ -12,6 +12,11 @@
 #include <math.h>
 
 
+//typedef struct info{
+//    int id;
+//    double money;
+//}
+
 struct city{
     
     char* city_name;
@@ -19,7 +24,7 @@ struct city{
     int num_rides;
     // double total_money_notip;
     //GHashTable* driversTmp;
-    //GTree* drivers;
+    //Info** info;
 };
 
 typedef struct each_day{

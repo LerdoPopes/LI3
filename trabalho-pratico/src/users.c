@@ -40,12 +40,12 @@ typedef struct data_base_users{
 void *process_user(char** info) 
 {
     if(invalid_date(info[3]) 
-       && invalid_date(info[4])
-       && empty_error(info[0])
-       && empty_error(info[1])
-       && empty_error(info[2])
-       && invalid_accStats(info[6])
-       && empty_error(info[5])
+       || invalid_date(info[4])
+       || empty_error(info[0])
+       || empty_error(info[1])
+       || empty_error(info[2])
+       || invalid_accStats(info[6])
+       || empty_error(info[5])
     ){
         return NULL;
     }
@@ -57,7 +57,7 @@ void *process_user(char** info)
     us->birth_date = calc_Date(info[3]);
     us->account_creation = calc_Date(info[4]);
     us->pay_method = info[5][1]; 
-    us->account_status = info[6][0];
+    us->account_status = tolower(info[6][0]);
     us->aval = 0;
     us->total_dist = 0;
     us->total_spent = 0;
@@ -81,6 +81,7 @@ void *organize_user(void** results){
     db_users->users_hashtable = gtable;
     db_users->len=i;
     db_users->order = 0;
+    printf("%d\n", i);
     return db_users;
 }
 

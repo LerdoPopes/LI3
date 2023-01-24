@@ -67,21 +67,29 @@ short idade(short birth_date){
 }
 
 int invalid_date(char* error){
-    if(
-        !(isdigit(error[0])) 
-        || !(isdigit(error[1])) 
-        || error[2] != '/' 
-        || isdigit(error[3]) 
-        || isdigit(error[4]) 
-        || error[5] != '/' 
-        || isdigit(error[6]) 
-        || isdigit(error[7]) 
-        || isdigit(error[8]) 
-        || isdigit(error[9]) 
-        || error[10] != '\0'){
-        return 1;
+    if( strlen(error) == 10 &&
+        error[2] == '/' &&
+        error[5] == '/')
+        {
+            char* token;
+            char cycle = 0;
+            while((token = strtok_r(error,"/",&error))!= NULL){
+                if(cycle == 0  && (!isdigit(token[0]) || !isdigit(token[1]) || atoi(token) > 31)){
+                    return 1;
+                }
+                else if(cycle == 1 && (!isdigit(token[0]) || !isdigit(token[1]) || atoi(token) > 12)){
+                    printf("%s\n",token);
+                    return 1;
+                }
+                else if(cycle == 2 && (!isdigit(token[0]) || !isdigit(token[1]) || !isdigit(token[2]) || !isdigit(token[3]))){
+                    printf("%s\n",token);
+                    return 1;
+                }
+                cycle++;
+            }
+            return 0;
     }
-    return 0;
+    return 1;
 }
 
 //short ride_get_date(void* rides_p, int Id){

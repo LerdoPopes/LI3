@@ -39,13 +39,13 @@ void *process_driver(char **info)
 {
     if(
         empty_error(info[0])
-    && empty_error(info[1]) 
-    && invalid_date(info[2])
-    && empty_error(info[3])
-    && invalid_carClass(info[4])
-    && empty_error(info[5])
-    && empty_error(info[6])
-    && invalid_date(info[7])
+    || empty_error(info[1]) 
+    || invalid_date(info[2])
+    || empty_error(info[3])
+    || invalid_carClass(info[4])
+    || empty_error(info[5])
+    || empty_error(info[6])
+    || invalid_date(info[7])
     )
     {
         return NULL;
@@ -62,7 +62,7 @@ void *process_driver(char **info)
     dr->city = strdup(info[6]);
     dr->account_creation = calc_Date(info[7]);
     // memmove(dr->account_creation, info[7], size);
-    dr->account_status = info[8][0];
+    dr->account_status = tolower(info[8][0]);
     dr->aval = 0;
     dr->total_dist = 0;
     dr->total_spent = 0;
@@ -86,6 +86,7 @@ void *organize_driver(void **results)
     db_drivers->drivers_hashtable = gtable;
     db_drivers->order = 0;
     db_drivers->len = i;
+    printf("%d\n", i);
     return db_drivers;
 }
 
