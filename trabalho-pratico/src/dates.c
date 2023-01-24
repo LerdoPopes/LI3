@@ -67,22 +67,23 @@ short idade(short birth_date){
 }
 
 int invalid_date(char* error){
-    if( strlen(error) == 10 &&
-        error[2] == '/' &&
-        error[5] == '/')
+    char dup[20] = {0}; 
+    strncpy(dup,error,19);
+    char* tmp = dup;
+    if( strlen(tmp) == 10 &&
+        tmp[2] == '/' &&
+        tmp[5] == '/')
         {
             char* token;
             char cycle = 0;
-            while((token = strtok_r(error,"/",&error))!= NULL){
+            while((token = strtok_r(tmp,"/",&tmp))!= NULL){
                 if(cycle == 0  && (!isdigit(token[0]) || !isdigit(token[1]) || atoi(token) > 31)){
                     return 1;
                 }
                 else if(cycle == 1 && (!isdigit(token[0]) || !isdigit(token[1]) || atoi(token) > 12)){
-                    printf("%s\n",token);
                     return 1;
                 }
                 else if(cycle == 2 && (!isdigit(token[0]) || !isdigit(token[1]) || !isdigit(token[2]) || !isdigit(token[3]))){
-                    printf("%s\n",token);
                     return 1;
                 }
                 cycle++;

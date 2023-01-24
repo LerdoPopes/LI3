@@ -37,6 +37,9 @@ int invalid_carClass(char* error){
 
 
 int invalid_Pint(char* error){
+    if(!error[0]){
+        return 1;
+    }
     for(int i = 0; error[i]; i++){
         if(!(isdigit(error[i]))){
             return 1;
@@ -47,6 +50,9 @@ int invalid_Pint(char* error){
 
 int invalid_Pdouble(char* error){
     int counter = 0;
+    if(!error[0]){
+        return 1;
+    }
     for (int i = 0; error[i]; i++)
     {
         if(error[i] == '.'){

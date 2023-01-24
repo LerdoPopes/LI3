@@ -70,7 +70,6 @@ void *organize_rides(void** results){
     db_rides->rides_array = results;
     db_rides->rides_hashtable = gtable;
     db_rides->len = i;
-    printf("%d\n", i);
     return db_rides;
 }
 
