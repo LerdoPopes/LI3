@@ -28,5 +28,7 @@ int date_get_num_trips(void *stats_d,int ID);
 
 double date_get_money(void *stats_d,int ID);
 
+int date_get_ride(void *stats_d,int ID,int i);
+
 int cityValid(void* STATS, char* Cidade);
 #endif

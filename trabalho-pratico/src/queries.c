@@ -36,7 +36,7 @@ void free_queries(void** queries_p){
 }
 
 
-void answer_queries(void** input, void* USERS, void* DRIVERS, void* STATS){
+void answer_queries(void** input, void* USERS, void* DRIVERS, void* RIDES, void* STATS){
     char*** INPUT = (char***) input;
     for(short i = 0, j = 1; INPUT[i] != NULL;i++,j++){
         switch(atoi(INPUT[i][0])){
@@ -70,12 +70,12 @@ void answer_queries(void** input, void* USERS, void* DRIVERS, void* STATS){
                 clock_t end5 = clock();
                 printf("Query 5: %f\n",((float)(end5 - start5))/CLOCKS_PER_SEC);
                 break;
-            // case(6):
-            //     clock_t start6 = clock();
-            //     query6(INPUT[i][1],USERS,j);
-            //     clock_t end6 = clock();
-            //     printf("Query 6: %f\n",((float)(end6 - start6))/CLOCKS_PER_SEC);
-            //     break;
+            case(6):
+                clock_t start6 = clock();
+                query6(INPUT[i][1],INPUT[i][2],INPUT[i][3],STATS,RIDES,j);
+                clock_t end6 = clock();
+                printf("Query 6: %f\n",((float)(end6 - start6))/CLOCKS_PER_SEC);
+                break;
             // case(7):
             //     clock_t start7 = clock();
             //     query7(INPUT[i][1],USERS,j);
@@ -195,6 +195,24 @@ void query5(char* data1, char* data2, void *dbStats,short i){
     }
     printf("%d\n",num_rides);
     fprintf(resultado,"%.3f\n",(double)(total_money/num_rides));
+    fclose(resultado);
+}
+
+void query6(char* cidade, char* data1, char* data2, void *dbStats, void *dbRides,short i){
+    char *id = malloc(50);
+    int num_rides = 0;
+    double total_distance = 0;
+    sprintf(id, "./Resultados/command%d_output.txt", i);
+    FILE *resultado = fopen(id, "w");
+    int date1 = (int) calc_Date(data1);
+    int date2 = (int) calc_Date(data2);
+    for(int i = date1; i <= date2; i++){
+        for(int j = 0; j < date_get_num_trips(dbStats,i);j++){
+            total_distance += (double)ride_get_distance(dbRides,date_get_ride(dbStats,i,j));
+        }
+        num_rides += date_get_num_trips(dbStats,i);
+    }
+    fprintf(resultado,"%.3f\n",(double)(total_distance/num_rides));
     fclose(resultado);
 }
 // for (size_t i = n-1; i>n-N-1; i--)

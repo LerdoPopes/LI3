@@ -52,7 +52,7 @@ int main(int argc, char **argv){
         fclose(input);
     printf("aa%d\n",isDriver(DRIVERS,45));
     void* STATS = organize_statistics(USERS,RIDES,DRIVERS);
-    answer_queries(INPUT,USERS,DRIVERS,STATS);
+    answer_queries(INPUT,USERS,DRIVERS,RIDES,STATS);
     //print_braga(STATS);
     //print_date(STATS);
     free_rides(RIDES);

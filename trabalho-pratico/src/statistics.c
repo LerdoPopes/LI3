@@ -201,6 +201,14 @@ double date_get_money(void *stats_d,int ID){
     return date->money;
 }
 
+int date_get_ride(void *stats_d,int ID,int i){
+    Stats* stats = (Stats*) stats_d;
+    gconstpointer id = (gconstpointer)&ID;
+    gpointer datep = g_hash_table_lookup(stats->dates, id);
+    eachDay* date = (eachDay*) datep;
+    if(date == NULL) return 0;
+    return date->rides[i];
+}
 
 // double city_get_money_notip(void *stats_p,char *ID){
 //     Stats* stats = (Stats*) stats_p;
