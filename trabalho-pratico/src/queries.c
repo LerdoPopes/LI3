@@ -208,9 +208,11 @@ void query6(char* cidade, char* data1, char* data2, void *dbStats, void *dbRides
     int date2 = (int) calc_Date(data2);
     for(int i = date1; i <= date2; i++){
         for(int j = 0; j < date_get_num_trips(dbStats,i);j++){
+            if(strcmp(cidade,ride_get_city(dbRides,date_get_ride(dbStats,i,j))) == 0){
             total_distance += (double)ride_get_distance(dbRides,date_get_ride(dbStats,i,j));
+            num_rides++;
+            }
         }
-        num_rides += date_get_num_trips(dbStats,i);
     }
     fprintf(resultado,"%.3f\n",(double)(total_distance/num_rides));
     fclose(resultado);
