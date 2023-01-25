@@ -193,6 +193,7 @@ void query5(char* data1, char* data2, void *dbStats,short i){
         total_money += date_get_money(dbStats,i);
         num_rides += date_get_num_trips(dbStats,i);
     }
+    printf("%d\n",num_rides);
     fprintf(resultado,"%.3f\n",(double)(total_money/num_rides));
     fclose(resultado);
 }

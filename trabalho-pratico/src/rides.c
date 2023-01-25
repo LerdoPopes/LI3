@@ -40,6 +40,9 @@ typedef struct data_base_rides{
     ){
         return NULL;
     }
+    if(atoi(info[5]) == 0 || atoi(info[6]) == 0 || atoi(info[7]) == 0){
+        return NULL;
+    }
      struct ride *ri = malloc(sizeof(struct ride));
  
      ri->id = atol(info[0]);

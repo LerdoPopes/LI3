@@ -125,7 +125,7 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
         
         datesP->rides[datesP->num_trips] = i;
         datesP->num_trips++;
-        datesP->money += *money;
+        datesP->money += *money-tip;
         free(money);
         free(city);
         free(user);

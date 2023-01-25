@@ -14,6 +14,9 @@ int empty_error(char* error){
 }
 
 int invalid_accStats(char* error){
+    if(!error[0]){
+        return 1;
+    }
     for(int i = 0; error[i]; i++){
         error[i] = tolower(error[i]);
     }
@@ -25,6 +28,9 @@ int invalid_accStats(char* error){
 }
 
 int invalid_carClass(char* error){
+    if(!error[0]){
+        return 1;
+    }
     for(int i = 0; error[i]; i++){
         error[i] = tolower(error[i]);
     }

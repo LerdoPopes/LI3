@@ -123,9 +123,6 @@ void set_user_stats(void* dbUsers, void* distp, void* avalp, void* username, voi
     user->total_dist += *dist;
     user->aval += *aval;
     user->trips++;
-    if(strcmp(user->username,"AfoCastro81")== 0){
-        printf("%d\n",user->trips);
-    }
     user->total_spent += *money;
 }
 
