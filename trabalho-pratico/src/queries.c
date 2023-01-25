@@ -64,12 +64,12 @@ void answer_queries(void** input, void* USERS, void* DRIVERS, void* STATS){
                 clock_t end4 = clock();
                 printf("Query 4: %f\n",((float)(end4 - start4))/CLOCKS_PER_SEC);
                 break;
-            // case(5):
-            //     clock_t start5 = clock();
-            //     query5(INPUT[i][1],USERS,j);
-            //     clock_t end5 = clock();
-            //     printf("Query 5: %f\n",((float)(end5 - start5))/CLOCKS_PER_SEC);
-            //     break;
+            case(5):
+                clock_t start5 = clock();
+                query5(INPUT[i][1],INPUT[i][2],STATS,j);
+                clock_t end5 = clock();
+                printf("Query 5: %f\n",((float)(end5 - start5))/CLOCKS_PER_SEC);
+                break;
             // case(6):
             //     clock_t start6 = clock();
             //     query6(INPUT[i][1],USERS,j);
@@ -183,10 +183,18 @@ void query4(char *Cidade,void * dbStats,short i){
 
 void query5(char* data1, char* data2, void *dbStats,short i){
     char *id = malloc(50);
+    int num_rides = 0;
+    double total_money = 0;
     sprintf(id, "./Resultados/command%d_output.txt", i);
     FILE *resultado = fopen(id, "w");
-    
-
+    int date1 = (int) calc_Date(data1);
+    int date2 = (int) calc_Date(data2);
+    for(int i = date1; i <= date2; i++){
+        total_money += date_get_money(dbStats,i);
+        num_rides += date_get_num_trips(dbStats,i);
+    }
+    fprintf(resultado,"%.3f\n",(double)(total_money/num_rides));
+    fclose(resultado);
 }
 // for (size_t i = n-1; i>n-N-1; i--)
 //     {

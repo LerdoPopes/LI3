@@ -183,6 +183,25 @@ int cityValid(void* STATS, char* Cidade){
     return (city!=NULL);
 }
 
+int date_get_num_trips(void *stats_d,int ID){
+    Stats* stats = (Stats*) stats_d;
+    gconstpointer id = (gconstpointer)&ID;
+    gpointer datep = g_hash_table_lookup(stats->dates, id);
+    eachDay* date = (eachDay*) datep;
+    if(date == NULL) return 0;
+    return date->num_trips;
+}
+
+double date_get_money(void *stats_d,int ID){
+    Stats* stats = (Stats*) stats_d;
+    gconstpointer id = (gconstpointer)&ID;
+    gpointer datep = g_hash_table_lookup(stats->dates, id);
+    eachDay* date = (eachDay*) datep;
+    if(date == NULL) return 0; 
+    return date->money;
+}
+
+
 // double city_get_money_notip(void *stats_p,char *ID){
 //     Stats* stats = (Stats*) stats_p;
 //     gconstpointer id = (gconstpointer)ID;
