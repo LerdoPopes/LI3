@@ -18,8 +18,6 @@ void* set_driver_stats(void* dbDrivers, void* dist, void* aval, void* id, void* 
 
 void print_driver(void* driversDB);
 
-void *answer_q1_driver(FILE *output,void *dbDrivers, char *ID);
-
 void *order_by_aval(void *dbDrivers);
 
 int driver_get_len(void* driver_p);

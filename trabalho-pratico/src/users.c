@@ -126,23 +126,6 @@ void set_user_stats(void* dbUsers, void* distp, void* avalp, void* username, voi
     user->total_spent += *money;
 }
 
-void *answer_q1_user(FILE *output,void *dbUsers, char *ID){
-    DB_Users* db_users = (DB_Users*) dbUsers;
-    gconstpointer id = (gconstpointer) ID;
-    gpointer userp = g_hash_table_lookup(db_users->users_hashtable,id);
-    User* user = (User*) userp;
-    if(user){
-        short Idade = idade(user->birth_date);
-        double media = (double) (user->aval)/(user->trips);
-        if(user->account_status == 'a' && user->trips != 0){
-            fprintf(output,"%s;%c;%d;%.3f;%d;%.3f\n",user->name,user->gender,Idade,media,user->trips,user->total_spent);    
-        }
-        else if(user->account_status == 'a' && user->trips == 0){
-            fprintf(output,"%s;%c;%d;%d;%d;%d\n",user->name,user->gender,Idade,0,user->trips,0);
-        }   
-    }
-    fclose(output);
-}
 
 
 void *order_by_dist(void *dbUsers)

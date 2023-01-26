@@ -158,28 +158,7 @@ void print_driver(void *driversDB)
     // printf("%d,%s,%c,%u,%u\n",driver->id,driver->name,driver->gender,driver->birth_date,driver->account_creation);
 }
 
-void *answer_q1_driver(FILE *output, void *dbDrivers, char *ID)
-{
-    int Id = atoi(ID);
-    DB_drivers *db_drivers = (DB_drivers *)dbDrivers;
-    gconstpointer id = (gconstpointer)&Id;
-    gpointer driverp = g_hash_table_lookup(db_drivers->drivers_hashtable, id);
-    Driver *driver = (Driver *)driverp;
-    if (driver)
-    {
-        unsigned short Idade = idade(driver->birth_date);
-        double media = (double)(driver->aval) / (driver->trips);
-        if (driver->account_status == 'a' && driver->trips != 0)
-        {
-            fprintf(output, "%s;%c;%d;%.3f;%d;%.3f\n", driver->name, driver->gender, Idade, media, driver->trips, driver->total_spent);
-        }
-        else if (driver->account_status == 'a' && driver->trips == 0)
-        {
-            fprintf(output, "%s;%c;%d;%d;%d;%d\n", driver->name, driver->gender, Idade, 0, driver->trips, 0);
-        }
-    }
-    fclose(output);
-}
+
 
 void *order_by_aval(void *dbDrivers)
 {
@@ -196,7 +175,9 @@ void *order_by_aval(void *dbDrivers)
                 double media = (double) (temp->aval)/(temp->trips);
 
                 int j;           
-                for (j = i; j >= gap && ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)>media || ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)==media && (drivers[j - gap]->last_trip_date)>temp->last_trip_date)); j -= gap)
+                for (j = i; j >= gap 
+                && ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)>media 
+                || ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)==media && (drivers[j - gap]->last_trip_date)>temp->last_trip_date)); j -= gap)
                     drivers[j] = drivers[j - gap];
 
                 drivers[j] = temp;

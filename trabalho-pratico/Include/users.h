@@ -19,8 +19,6 @@ void print_user(void* key, void* usersDB);
 
 void set_user_stats(void* dbUsers, void* dist, void* aval, void* username, void* money ,void* last_trip);
 
-void *answer_q1_user(FILE *output,void *dbUsers, char *ID);
-
 void *order_by_dist(void *dbUsers);
 
 char* get_n_user(void* data, int i);

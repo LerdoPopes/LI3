@@ -123,7 +123,7 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
             datesP->rides = realloc(datesP->rides, (datesP->size*=2) * sizeof(int));
         }
         
-        datesP->rides[datesP->num_trips] = i;
+        datesP->rides[datesP->num_trips] = id;
         datesP->num_trips++;
         datesP->money += *money-tip;
         free(money);
@@ -136,26 +136,6 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
     stats->dates = dates_hashtable;
     stats->dates_p = eachday;
     return stats;
-}
-
-void print_braga(void* STATS){
-    Stats* stats = (Stats*) STATS;
-
-    gpointer braga = g_hash_table_lookup(stats->cities, "Braga");
-    struct city* BRAGA = (struct city*) braga; 
-    printf("%.3f\n", BRAGA->total_money);
-
-    printf("%.3f\n",stats->cities_p[3]->total_money);
-}
-
-void print_date(void* STATS){
-    Stats* stats = (Stats*) STATS;
-    int day = 23321;
-    dateCombo* aaaa= conv_Days_to_Date(23321);
-    printf("%u/%u/%u\n",aaaa->day,aaaa->month,aaaa->year);
-    gpointer BRAGA = g_hash_table_lookup(stats->dates,&day);
-    eachDay* braga = (eachDay*) BRAGA;
-    printf("%d\n",braga->num_trips);
 }
 
 double city_get_money(void *stats_d,char *ID){
@@ -208,6 +188,60 @@ int date_get_ride(void *stats_d,int ID,int i){
     eachDay* date = (eachDay*) datep;
     if(date == NULL) return 0;
     return date->rides[i];
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void print_braga(void* STATS){
+    Stats* stats = (Stats*) STATS;
+
+    gpointer braga = g_hash_table_lookup(stats->cities, "Braga");
+    struct city* BRAGA = (struct city*) braga; 
+    printf("%.3f\n", BRAGA->total_money);
+
+    printf("%.3f\n",stats->cities_p[3]->total_money);
+}
+
+void print_date(void* STATS){
+    Stats* stats = (Stats*) STATS;
+    int day = 23321;
+    dateCombo* aaaa= conv_Days_to_Date(23321);
+    printf("%u/%u/%u\n",aaaa->day,aaaa->month,aaaa->year);
+    gpointer BRAGA = g_hash_table_lookup(stats->dates,&day);
+    eachDay* braga = (eachDay*) BRAGA;
+    printf("%d\n",braga->num_trips);
 }
 
 // double city_get_money_notip(void *stats_p,char *ID){

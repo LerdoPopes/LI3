@@ -206,13 +206,20 @@ void query6(char* cidade, char* data1, char* data2, void *dbStats, void *dbRides
     FILE *resultado = fopen(id, "w");
     int date1 = (int) calc_Date(data1);
     int date2 = (int) calc_Date(data2);
-    for(int i = date1; i <= date2; i++){
-        for(int j = 0; j < date_get_num_trips(dbStats,i);j++){
-            if(strcmp(cidade,ride_get_city(dbRides,date_get_ride(dbStats,i,j))) == 0){
-            total_distance += (double)ride_get_distance(dbRides,date_get_ride(dbStats,i,j));
-            num_rides++;
+    for(int i = date1 +1; i <= date2; i++){
+        printf("%d\n",i);
+        int max = date_get_num_trips(dbStats,i);
+        printf("%d\n", max);
+
+        for(int j = 0; j < max;j++){
+            int id = date_get_ride(dbStats,i,j);
+            if(strcmp(cidade,ride_get_city(dbRides,id)) == 0){
+                total_distance += (double) ride_get_distance(dbRides,id);
+                num_rides++;
             }
         }
+
+
     }
     fprintf(resultado,"%.3f\n",(double)(total_distance/num_rides));
     fclose(resultado);
