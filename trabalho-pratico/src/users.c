@@ -26,7 +26,6 @@ struct user{
     double total_spent_notip;
     unsigned short total_dist;
     short aval;
-    short aval_m;
     unsigned short last_trip_date;
 };
 
@@ -63,7 +62,6 @@ void *process_user(char** info)
     us->total_spent = 0;
     us->total_spent_notip = 0;
     us->trips = 0;
-    us->aval_m;
     us->last_trip_date = 0;
     return us;
 }
@@ -81,7 +79,6 @@ void *organize_user(void** results){
     db_users->users_hashtable = gtable;
     db_users->len=i;
     db_users->order = 0;
-    printf("%d\n", i);
     return db_users;
 }
 
@@ -127,7 +124,6 @@ void set_user_stats(void* dbUsers, void* distp, void* avalp, void* username, voi
 }
 
 
-
 void *order_by_dist(void *dbUsers)
 {
     DB_users *db_users = (DB_users *)dbUsers;
@@ -142,7 +138,10 @@ void *order_by_dist(void *dbUsers)
                 double media = (double) (temp->aval)/(temp->trips);
 
                 int j;           
-                for (j = i; j >= gap && (((users[j - gap]->total_dist)>temp->total_dist) || ((users[j - gap]->total_dist)==temp->total_dist && (users[j - gap]->last_trip_date)>temp->last_trip_date) || ((users[j - gap]->total_dist)==temp->total_dist && (users[j - gap]->last_trip_date)==temp->last_trip_date && (double)(users[j - gap]->aval)/(users[j - gap]->trips)>media)); j -= gap)
+                for (j = i; j >= gap 
+                && (((users[j - gap]->total_dist)>temp->total_dist) 
+                || ((users[j - gap]->total_dist)==temp->total_dist && (users[j - gap]->last_trip_date)>temp->last_trip_date) 
+                || ((users[j - gap]->total_dist)==temp->total_dist && (users[j - gap]->last_trip_date)==temp->last_trip_date && (strcmp(users[j - gap]->username,temp->username)<=0))); j -= gap)
                     users[j] = users[j - gap];
 
                 users[j] = temp;

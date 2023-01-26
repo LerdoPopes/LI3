@@ -23,7 +23,6 @@ struct driver
     unsigned short trips;
     unsigned short aval;
     double total_spent;
-    double aval_m;
     unsigned short last_trip_date;
 };
 
@@ -67,7 +66,6 @@ void *process_driver(char **info)
     dr->total_dist = 0;
     dr->total_spent = 0;
     dr->trips = 0;
-    dr->aval_m = 0;
     dr->last_trip_date = 0;
     return dr;
 }
@@ -174,10 +172,11 @@ void *order_by_aval(void *dbDrivers)
                 Driver* temp = drivers[i];
                 double media = (double) (temp->aval)/(temp->trips);
 
-                int j;           
+                int j;
                 for (j = i; j >= gap 
                 && ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)>media 
-                || ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)==media && (drivers[j - gap]->last_trip_date)>temp->last_trip_date)); j -= gap)
+                || ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)==media && (drivers[j - gap]->last_trip_date)>temp->last_trip_date)
+                || ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)==media && (drivers[j - gap]->last_trip_date) == temp->last_trip_date) && (drivers[j - gap]->id) > temp->id); j -= gap)
                     drivers[j] = drivers[j - gap];
 
                 drivers[j] = temp;

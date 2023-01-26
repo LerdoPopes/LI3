@@ -193,8 +193,9 @@ void query5(char* data1, char* data2, void *dbStats,short i){
         total_money += date_get_money(dbStats,i);
         num_rides += date_get_num_trips(dbStats,i);
     }
-    printf("%d\n",num_rides);
-    fprintf(resultado,"%.3f\n",(double)(total_money/num_rides));
+    if(num_rides > 0){
+        fprintf(resultado,"%.3f\n",(double)(total_money/num_rides));
+    }
     fclose(resultado);
 }
 
@@ -207,9 +208,7 @@ void query6(char* cidade, char* data1, char* data2, void *dbStats, void *dbRides
     int date1 = (int) calc_Date(data1);
     int date2 = (int) calc_Date(data2);
     for(int i = date1 +1; i <= date2; i++){
-        printf("%d\n",i);
         int max = date_get_num_trips(dbStats,i);
-        printf("%d\n", max);
 
         for(int j = 0; j < max;j++){
             int id = date_get_ride(dbStats,i,j);
