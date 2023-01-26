@@ -12,19 +12,21 @@
 #include <math.h>
 
 
-//typedef struct info{
-//    int id;
-//    double money;
-//}
+typedef struct info{
+    int id;
+    int aval;
+    int num_trips;
+} Info;
 
 struct city{
     
     char* city_name;
     double total_money;
     int num_rides;
-    // double total_money_notip;
-    //GHashTable* driversTmp;
-    //Info** info;
+    int size;
+    int num_drivers;
+    GHashTable* driversTmp;
+    Info** info;
 };
 
 typedef struct each_day{
@@ -89,18 +91,44 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
             char* c = strdup(city);
             cities[city_counter]->city_name = c;
             cities[city_counter]->num_rides = 0;
+            cities[city_counter]->num_drivers = 0;
+            cities[city_counter]->size = 256;
+            Info** drivers_array = malloc(sizeof(Info*)* 256);
+            GHashTable* drivers = g_hash_table_new(g_int_hash,g_int_equal);
+            cities[city_counter]->info  = drivers_array;
+            cities[city_counter]->driversTmp = drivers;
             g_hash_table_insert(cities_hashtable,cities[city_counter]->city_name,cities[city_counter]);
             city_counter++;
             cityGP = g_hash_table_lookup(cities_hashtable,city);
+
         }
         struct city* cityP = (struct city*) cityGP;
-        //if(strcmp("Braga",cityP->city_name)==0){
-        //    printf("%d");
-        //}
         cityP->total_money += *money-tip;
         cityP->num_rides++;
-        
-        
+
+        if(cityP->num_drivers == cityP->size){
+            cityP->info = realloc(cityP->info, (cityP->size*=2) * sizeof(Info*));
+        }
+
+        gpointer driverGP = g_hash_table_lookup(cityP->driversTmp,&driver_ID);
+        if(driverGP == NULL){
+            cityP->info[cityP->num_drivers] = malloc(sizeof(Info));
+            cityP->info[cityP->num_drivers]->aval = 0;
+            cityP->info[cityP->num_drivers]->num_trips = 0;
+            cityP->info[cityP->num_drivers]->id = driver_ID;
+            g_hash_table_insert(cityP->driversTmp,&cityP->info[cityP->num_drivers]->id,cityP->info[cityP->num_drivers]);
+            cityP->num_drivers++;
+            driverGP = g_hash_table_lookup(cityP->driversTmp,&driver_ID);
+        }
+        Info* driverP = (Info*) driverGP;
+        driverP->aval += score_driver;
+        driverP->num_trips++;
+
+
+
+
+
+
         //Estatisticas da query 5
         if(size_dates == dates_counter){
             eachday = realloc(eachday, (size_dates*=2) * sizeof(eachDay*));

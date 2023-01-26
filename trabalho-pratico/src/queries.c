@@ -207,7 +207,7 @@ void query6(char* cidade, char* data1, char* data2, void *dbStats, void *dbRides
     FILE *resultado = fopen(id, "w");
     int date1 = (int) calc_Date(data1);
     int date2 = (int) calc_Date(data2);
-    for(int i = date1 +1; i <= date2; i++){
+    for(int i = date1 +1 ; i <= date2; i++){
         int max = date_get_num_trips(dbStats,i);
 
         for(int j = 0; j < max;j++){
@@ -220,7 +220,9 @@ void query6(char* cidade, char* data1, char* data2, void *dbStats, void *dbRides
 
 
     }
-    fprintf(resultado,"%.3f\n",(double)(total_distance/num_rides));
+    if(num_rides){
+        fprintf(resultado,"%.3f\n",(double)(total_distance/num_rides));
+    }
     fclose(resultado);
 }
 // for (size_t i = n-1; i>n-N-1; i--)
