@@ -27,6 +27,7 @@ struct city{
     int num_drivers;
     GHashTable* driversTmp;
     Info** info;
+    int order;
 };
 
 typedef struct each_day{
@@ -166,6 +167,42 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
     return stats;
 }
 
+void *order_by_aval_m(void *info, char *cidade)
+{
+    Stats *INFO = (Stats *)info;
+    City *Cidade = g_hash_table_lookup(INFO->cities,cidade);
+    Info **infos = Cidade->info;
+    int n = Cidade->num_drivers;
+     if (Cidade->order != 1){
+        for (int gap = n/2; gap > 0; gap /= 2)
+        {
+            for (int i = gap; i < n; i += 1)
+            {
+                Info* temp = infos[i];
+                double media = (double) (temp->aval)/(temp->num_trips);
+
+                int j;
+                for (j = i; j >= gap 
+                && ((double)(infos[j - gap]->aval)/(infos[j - gap]->num_trips)>media 
+                || ((double)(infos[j - gap]->aval)/(infos[j - gap]->num_trips)==media && (infos[j - gap]->id)<temp->id)); j -= gap)
+                    infos[j] = infos[j - gap];
+
+                infos[j] = temp;
+            }
+        }
+         Cidade->order = 1;
+    }
+}
+
+
+int city_get_num_drivers(void *stats_d,char *ID){
+    Stats* stats = (Stats*) stats_d;
+    gconstpointer id = (gconstpointer)ID;
+    gpointer cityp = g_hash_table_lookup(stats->cities, id);
+    City* city = (City*) cityp;
+    return city->num_drivers;
+}
+
 double city_get_money(void *stats_d,char *ID){
     Stats* stats = (Stats*) stats_d;
     gconstpointer id = (gconstpointer)ID;
@@ -181,6 +218,30 @@ int city_get_num_rides(void *stats_d,char *ID){
     City* city = (City*) cityp;
     //printf("%u\n",city->num_rides);
     return city->num_rides;
+}
+
+int city_get_info_id(void *stats_d,char *ID, short i){
+    Stats* stats = (Stats*) stats_d;
+    gconstpointer id = (gconstpointer)ID;
+    gpointer cityp = g_hash_table_lookup(stats->cities, id);
+    City* city = (City*) cityp;
+    return city->info[i]->id;
+}
+
+int city_get_info_aval(void *stats_d,char *ID, short i){
+    Stats* stats = (Stats*) stats_d;
+    gconstpointer id = (gconstpointer)ID;
+    gpointer cityp = g_hash_table_lookup(stats->cities, id);
+    City* city = (City*) cityp;
+    return city->info[i]->aval;
+}
+
+int city_get_info_num_trips(void *stats_d,char *ID, short i){
+    Stats* stats = (Stats*) stats_d;
+    gconstpointer id = (gconstpointer)ID;
+    gpointer cityp = g_hash_table_lookup(stats->cities, id);
+    City* city = (City*) cityp;
+    return city->info[i]->num_trips;
 }
 
 int cityValid(void* STATS, char* Cidade){
@@ -218,7 +279,14 @@ int date_get_ride(void *stats_d,int ID,int i){
     return date->rides[i];
 }
 
-
+int info_get_id(void *stats_d,int ID,int i){
+    Stats* stats = (Stats*) stats_d;
+    gconstpointer id = (gconstpointer)&ID;
+    gpointer datep = g_hash_table_lookup(stats->dates, id);
+    eachDay* date = (eachDay*) datep;
+    if(date == NULL) return 0;
+    return date->rides[i];
+}
 
 
 

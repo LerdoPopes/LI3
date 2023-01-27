@@ -17,7 +17,6 @@ struct ride {
     short score_user;
     short score_driver;
     double tip;
-    char *comment;
 };
 
 typedef struct data_base_rides{
@@ -55,9 +54,6 @@ typedef struct data_base_rides{
      ri->score_user = atoi(info[6]);
      ri->score_driver = atoi(info[7]);
      ri->tip = atof(info[8]);
-     ri->comment = strdup(info[9]);
-     for(int i = 0; ri->comment[i];i++){
-     }
      return ri;
  }
 
@@ -83,7 +79,6 @@ void free_rides(void* rides){
         Ride* rides = (Ride*) db_rides->rides_array[i];
         free(rides->user);
         free(rides->city);
-        free(rides->comment);
         free(rides);
     }
     GHashTable* gtable = (GHashTable*) db_rides->rides_hashtable;
@@ -161,12 +156,6 @@ double ride_get_tip(void *ride_p, int ID){
     gpointer ridep = g_hash_table_lookup(rides->rides_hashtable, id);
     Ride* ride = (Ride*) ridep;
     return ride->tip;
-}
-
-char *ride_get_comment(struct ride *r){
-     char *comentario = (char *)malloc(255 * sizeof(char));
-     strcpy(comentario,r->comment);    
-     return comentario;
 }
 
 int get_len_ride(void* ride_p){

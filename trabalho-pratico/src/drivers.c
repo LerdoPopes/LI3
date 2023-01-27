@@ -15,8 +15,6 @@ struct driver
     unsigned short birth_date;
     char gender;
     char *car_class;
-    char license_plate[sizeof("00-00-AA")];
-    char *city;
     unsigned short account_creation;
     char account_status;
     int total_dist;
@@ -57,8 +55,6 @@ void *process_driver(char **info)
     // memmove(dr->birth_date, info[2], size);
     dr->gender = *info[3];
     dr->car_class = strdup(info[4]);
-    memmove(dr->license_plate, info[5], strlen(info[5]));
-    dr->city = strdup(info[6]);
     dr->account_creation = calc_Date(info[7]);
     // memmove(dr->account_creation, info[7], size);
     dr->account_status = tolower(info[8][0]);
@@ -95,7 +91,6 @@ void free_driver(void *driver)
     {
         Driver *drivers = (Driver *)db_drivers->drivers_array[i];
         free(drivers->car_class);
-        free(drivers->city);
         free(drivers->name);
         free(drivers);
     }
@@ -256,26 +251,6 @@ char *driver_get_car_class(void* driver_p, int ID){
     Driver* driver = (Driver*) driverp;
     char *Car_Class = strdup(driver->car_class);
     return Car_Class;
-
-}
-
-char* driver_get_license_plate(void* driver_p, int ID){
-    DB_drivers* drivers = (DB_drivers*) driver_p;
-    gconstpointer id = (gconstpointer)&ID;
-    gpointer driverp = g_hash_table_lookup(drivers->drivers_hashtable, id);
-    Driver* driver = (Driver*) driverp;
-    char* License_plate = strdup(driver->license_plate);
-    return License_plate;
-
-}
-
-char *driver_get_city(void* driver_p, int ID){
-    DB_drivers* drivers = (DB_drivers*) driver_p;
-    gconstpointer id = (gconstpointer)&ID;
-    gpointer driverp = g_hash_table_lookup(drivers->drivers_hashtable, id);
-    Driver* driver = (Driver*) driverp;
-    char *City = strdup(driver->city);
-    return City;
 
 }
 

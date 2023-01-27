@@ -76,12 +76,12 @@ void answer_queries(void** input, void* USERS, void* DRIVERS, void* RIDES, void*
                 clock_t end6 = clock();
                 printf("Query 6: %f\n",((float)(end6 - start6))/CLOCKS_PER_SEC);
                 break;
-            // case(7):
-            //     clock_t start7 = clock();
-            //     query7(INPUT[i][1],USERS,j);
-            //     clock_t end7 = clock();
-            //     printf("Query 7: %f\n",((float)(end7 - start7))/CLOCKS_PER_SEC);
-            //     break;
+            case(7):
+                clock_t start7 = clock();
+                query7(INPUT[i][1],INPUT[i][2],STATS,DRIVERS,j);
+                clock_t end7 = clock();
+                printf("Query 7: %f\n",((float)(end7 - start7))/CLOCKS_PER_SEC);
+                break;
             // case(8):
             //     clock_t start8 = clock();
             //     query8(INPUT[i][1],USERS,j);
@@ -207,7 +207,7 @@ void query6(char* cidade, char* data1, char* data2, void *dbStats, void *dbRides
     FILE *resultado = fopen(id, "w");
     int date1 = (int) calc_Date(data1);
     int date2 = (int) calc_Date(data2);
-    for(int i = date1 +1 ; i <= date2; i++){
+    for(int i = date1; i <= date2; i++){
         int max = date_get_num_trips(dbStats,i);
 
         for(int j = 0; j < max;j++){
@@ -222,6 +222,21 @@ void query6(char* cidade, char* data1, char* data2, void *dbStats, void *dbRides
     }
     if(num_rides){
         fprintf(resultado,"%.3f\n",(double)(total_distance/num_rides));
+    }
+    fclose(resultado);
+}
+
+void query7(char * N, char * cidade, void *dbStats, void *dbDrivers, short i){
+    char *id = malloc(50);
+    int n = atoi(N);
+    sprintf(id, "./Resultados/command%d_output.txt", i);
+    FILE *resultado = fopen(id, "w");    
+    order_by_aval_m(dbStats,cidade);
+    for(int i = 0; i < n;i++){
+        int num_drivers = city_get_num_drivers(dbStats,cidade)-i-1;
+        int id = city_get_info_id(dbStats,cidade,num_drivers);
+        double aval_m = (double) ((double)city_get_info_aval(dbStats,cidade,num_drivers)/(double)city_get_info_num_trips(dbStats,cidade,num_drivers));
+        fprintf(resultado,"%012d,%s,%.3f\n",id,driver_get_name(dbDrivers,id),aval_m);
     }
     fclose(resultado);
 }

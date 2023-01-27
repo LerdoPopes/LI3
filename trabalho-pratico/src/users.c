@@ -19,11 +19,9 @@ struct user{
     char gender;
     unsigned short birth_date;
     short account_creation;
-    enum method pay_method;
     char account_status;
     short trips;
     double total_spent;
-    double total_spent_notip;
     unsigned short total_dist;
     short aval;
     unsigned short last_trip_date;
@@ -55,12 +53,10 @@ void *process_user(char** info)
     us->gender = *info[2];
     us->birth_date = calc_Date(info[3]);
     us->account_creation = calc_Date(info[4]);
-    us->pay_method = info[5][1]; 
     us->account_status = tolower(info[6][0]);
     us->aval = 0;
     us->total_dist = 0;
     us->total_spent = 0;
-    us->total_spent_notip = 0;
     us->trips = 0;
     us->last_trip_date = 0;
     return us;
@@ -219,14 +215,6 @@ short user_get_account_creation(void *user_p, char*ID){
     return user->account_creation;
 }
 
-char user_get_pay_method(void *user_p, char*ID){
-    DB_users* users = (DB_users*) user_p;
-    gconstpointer id = (gconstpointer)ID;
-    gpointer userp = g_hash_table_lookup(users->users_hashtable, id);
-    User* user = (User*) userp;
-    return user->pay_method;
-}
-
 char user_get_account_status(void* user_p, char*ID){
     DB_users* users = (DB_users*) user_p;
     gconstpointer id = (gconstpointer)ID;
@@ -251,15 +239,6 @@ double user_get_total_spent(void* user_p, char*ID){
     gpointer userp = g_hash_table_lookup(users->users_hashtable, id);
     User *user = (User*) userp;
     return user->total_spent;
-
-}
-
-double user_get_total_spent_notip(void* user_p, char*ID){
-    DB_users* users = (DB_users*) user_p;
-    gconstpointer id = (gconstpointer)ID;
-    gpointer userp = g_hash_table_lookup(users->users_hashtable, id);
-    User *user = (User*) userp;
-    return user->total_spent_notip;
 
 }
 

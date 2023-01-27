@@ -30,5 +30,15 @@ double date_get_money(void *stats_d,int ID);
 
 int date_get_ride(void *stats_d,int ID,int i);
 
+void *order_by_aval_m(void *info, char *cidade);
+
+int city_get_num_drivers(void *stats_d,char *ID);
+
+int city_get_info_id(void *stats_d,char *ID, short i);
+
+int city_get_info_aval(void *stats_d,char *ID, short i);
+
+int city_get_info_num_trips(void *stats_d,char *ID, short i);
+
 int cityValid(void* STATS, char* Cidade);
 #endif
