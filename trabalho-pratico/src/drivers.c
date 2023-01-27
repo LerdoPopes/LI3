@@ -43,6 +43,7 @@ void *process_driver(char **info)
     || empty_error(info[5])
     || empty_error(info[6])
     || invalid_date(info[7])
+    || invalid_accStats(info[8])
     )
     {
         return NULL;
@@ -135,6 +136,7 @@ void *set_driver_stats(void *dbDrivers, void *distp, void *avalp, void *id, void
     }
     return money;
 }
+
 
 void print_driver(void *driversDB)
 {

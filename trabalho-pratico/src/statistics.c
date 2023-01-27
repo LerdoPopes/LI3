@@ -160,6 +160,11 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
         free(user);
     
     }
+    for (size_t i = 0; i < city_counter; i++)
+    {
+        g_hash_table_destroy(cities[i]->driversTmp);
+    }
+    
     stats->cities = cities_hashtable;
     stats->cities_p = cities;
     stats->dates = dates_hashtable;
@@ -171,6 +176,9 @@ void *order_by_aval_m(void *info, char *cidade)
 {
     Stats *INFO = (Stats *)info;
     City *Cidade = g_hash_table_lookup(INFO->cities,cidade);
+    if(Cidade == NULL){
+        return NULL;
+    }
     Info **infos = Cidade->info;
     int n = Cidade->num_drivers;
      if (Cidade->order != 1){
@@ -200,6 +208,9 @@ int city_get_num_drivers(void *stats_d,char *ID){
     gconstpointer id = (gconstpointer)ID;
     gpointer cityp = g_hash_table_lookup(stats->cities, id);
     City* city = (City*) cityp;
+    if(city == NULL){
+        return 0;
+    }
     return city->num_drivers;
 }
 

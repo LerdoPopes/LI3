@@ -234,6 +234,9 @@ void query7(char * N, char * cidade, void *dbStats, void *dbDrivers, short i){
     order_by_aval_m(dbStats,cidade);
     for(int i = 0; i < n;i++){
         int num_drivers = city_get_num_drivers(dbStats,cidade)-i-1;
+        if(num_drivers == -1){
+            break;
+        }
         int id = city_get_info_id(dbStats,cidade,num_drivers);
         double aval_m = (double) ((double)city_get_info_aval(dbStats,cidade,num_drivers)/(double)city_get_info_num_trips(dbStats,cidade,num_drivers));
         fprintf(resultado,"%012d,%s,%.3f\n",id,driver_get_name(dbDrivers,id),aval_m);
