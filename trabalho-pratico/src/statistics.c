@@ -184,7 +184,7 @@ void *order_by_aval_m(void *info, char *cidade)
                 int j;
                 for (j = i; j >= gap 
                 && ((double)(infos[j - gap]->aval)/(infos[j - gap]->num_trips)>media 
-                || ((double)(infos[j - gap]->aval)/(infos[j - gap]->num_trips)==media && (infos[j - gap]->id)<temp->id)); j -= gap)
+                || ((double)(infos[j - gap]->aval)/(infos[j - gap]->num_trips)==media && (infos[j - gap]->id)>temp->id)); j -= gap)
                     infos[j] = infos[j - gap];
 
                 infos[j] = temp;
