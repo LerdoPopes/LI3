@@ -240,6 +240,31 @@ void query7(char * N, char * cidade, void *dbStats, void *dbDrivers, short i){
     }
     fclose(resultado);
 }
+
+void query9(char* data1, char* data2, void *dbStats, void *dbRides,short i){
+    char *id = malloc(50);
+    int num_rides = 0;
+    double total_distance = 0;
+    sprintf(id, "./Resultados/command%d_output.txt", i);
+    FILE *resultado = fopen(id, "w");
+    int date1 = (int) calc_Date(data1);
+    int date2 = (int) calc_Date(data2);
+    for(int i = date1; i <= date2; i++){
+        int max = date_get_num_trips(dbStats,i);
+        for(int j = 0; j < max;j++){
+            int id = date_get_ride(dbStats,i,j);
+            if(ride_get_tip(dbRides,id) != 0){
+                short data= ride_get_date(dbRides,id);
+                short distancia = ride_get_distance(dbRides,id);
+                char *cidade = ride_get_city(dbRides,id);
+                double tip = ride_get_tip(dbRides,id);
+                fprintf(resultado,"%012d,%d,%d,%s,%.3f\n",id,data,distancia,cidade,tip);
+            }
+        }
+
+
+    }
+}
 // for (size_t i = n-1; i>n-N-1; i--)
 //     {
 //         User *user = users[i];

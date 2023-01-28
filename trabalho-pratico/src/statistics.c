@@ -194,6 +194,35 @@ void *order_by_aval_m(void *info, char *cidade)
     }
 }
 
+void *order_by_distance(void *dbStats)
+{
+    Stats *INFO = (Stats *)dbStats;
+    int *rides = ;
+    // qsort(drivers, 10000, sizeof(Driver *), comparador);
+    int n = db_drivers->len;
+    if (db_drivers->order != 1){
+        for (int gap = n/2; gap > 0; gap /= 2)
+        {
+            for (int i = gap; i < n; i += 1)
+            {
+                Driver* temp = drivers[i];
+                double media = (double) (temp->aval)/(temp->trips);
+
+                int j;
+                for (j = i; j >= gap 
+                && ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)>media 
+                || ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)==media && (drivers[j - gap]->last_trip_date)>temp->last_trip_date)
+                || ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)==media && (drivers[j - gap]->last_trip_date) == temp->last_trip_date) && (drivers[j - gap]->id) > temp->id); j -= gap)
+                    drivers[j] = drivers[j - gap];
+
+                drivers[j] = temp;
+            }
+        }
+        db_drivers->order = 1;
+    }
+}
+
+
 
 int city_get_num_drivers(void *stats_d,char *ID){
     Stats* stats = (Stats*) stats_d;
