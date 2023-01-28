@@ -165,9 +165,14 @@ void *order_by_aval(void *dbDrivers)
         {
             for (int i = gap; i < n; i += 1)
             {
+                double media;
                 Driver* temp = drivers[i];
-                double media = (double) (temp->aval)/(temp->trips);
-
+                if(temp->trips > 0){
+                    media = (double) (temp->aval)/(temp->trips);
+                }
+                else{
+                    media = 0;
+                }
                 int j;
                 for (j = i; j >= gap 
                 && ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)>media 

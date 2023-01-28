@@ -58,7 +58,6 @@ typedef struct info{
 
 typedef struct sexo{
     int id;
-    char* username;
     short idade_d;
     short idade_u;
 }Sexo;
@@ -93,8 +92,10 @@ typedef struct Statistics{
     GHashTable* dates;
     eachDay** dates_p;
 
-    //Sexo* males;
-    //Sexo* shemales; 
+    int nM;
+    int nF;
+    Sexo* males;
+    Sexo* shemales; 
 } Stats;
 
 
@@ -113,9 +114,12 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
     eachDay** eachday = malloc(sizeof(eachDay*)*size_dates);
     int dates_counter = 0;
 
-    //int males_size = 256;
-    //int shemales_size = 256;
-
+    int males_size = 256;
+    int shemales_size = 256;
+    int num_M = 0;
+    int num_F = 0;
+    Sexo* males = malloc(sizeof(Sexo*)*256);
+    Sexo* shemales = malloc(sizeof(Sexo*)*256);
     for(int i = 0; i < n; i++){
 
         GETTERS
@@ -170,15 +174,27 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
         datesP->money += money-tip;
         
         //Estatisticas da Q8
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        char gender_D = driver_get_gender(dbDrivers,driver_ID);
+        char gender_U = user_get_gender(dbUsers,user); 
+        if(males_size == num_M){
+            males = realloc(males,(males_size *=2)*sizeof(Sexo));
+        }
+        if(males_size == num_M){
+            shemales = realloc(shemales,(shemales_size *=2)*sizeof(Sexo));
+        }
+        if(gender_D == gender_U){
+            if(gender_D == 'M'){
+                males[num_M].id = id;
+                males[num_M].idade_d = (int) idade(driver_get_account_creation(dbDrivers,driver_ID));
+                males[num_M].idade_u = (int) idade(user_get_account_creation(dbUsers,user));
+            }
+            else{
+                shemales[num_F].id = id;
+                shemales[num_F].idade_d = (int) idade(driver_get_account_creation(dbDrivers,driver_ID));
+                shemales[num_F].idade_u = (int) idade(user_get_account_creation(dbUsers,user));
+            }
+        }
+
         free(city);
         free(user);
 
@@ -193,6 +209,8 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
     stats->cities_p = cities;
     stats->dates = dates_hashtable;
     stats->dates_p = eachday;
+    stats->males = males;
+    stats->shemales = shemales;
     return stats;
 }
 
@@ -212,6 +230,8 @@ void *order_by_aval_m(void *info, char *cidade)
             {
                 Info* temp = infos[i];
                 double media = (double) (temp->aval)/(temp->num_trips);
+                //printf("%.3f\n",media);
+
 
                 int j;
                 for (j = i; j >= gap 
