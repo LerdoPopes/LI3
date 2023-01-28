@@ -136,7 +136,6 @@ void query2(char* N, void *dbDrivers, short i){
     FILE *resultado = fopen(id, "w");   
     int n = atoi(N);
     int len = driver_get_len(dbDrivers);
-    order_by_aval(dbDrivers);
     for (size_t i = len-1; i>len-n-1; i--)
     {
         int id = get_n_driver(dbDrivers,i);
@@ -157,7 +156,6 @@ void query3(char *Num, void *dbUsers, short i){
     FILE *resultado = fopen(id, "w");
     int n = atoi(Num);
     int len = get_len_user(dbUsers);
-    order_by_dist(dbUsers);
     for (size_t i = len-1; i>len-n-1; i--)
     {
         char* User = get_n_user(dbUsers,i);
@@ -234,9 +232,17 @@ void query7(char * N, char * cidade, void *dbStats, void *dbDrivers, short i){
     order_by_aval_m(dbStats,cidade);
     for(int i = 0; i < n;i++){
         int num_drivers = city_get_num_drivers(dbStats,cidade)-i-1;
+        if(num_drivers == -1){
+            break;
+        }
         int id = city_get_info_id(dbStats,cidade,num_drivers);
-        double aval_m = (double) ((double)city_get_info_aval(dbStats,cidade,num_drivers)/(double)city_get_info_num_trips(dbStats,cidade,num_drivers));
-        fprintf(resultado,"%012d,%s,%.3f\n",id,driver_get_name(dbDrivers,id),aval_m);
+        if(driver_get_account_status(dbDrivers,id) != 'a'){
+            n++;
+        }
+        else{
+            double aval_m = (double) ((double)city_get_info_aval(dbStats,cidade,num_drivers)/(double)city_get_info_num_trips(dbStats,cidade,num_drivers));
+            fprintf(resultado,"%012d;%s;%.3f\n",id,driver_get_name(dbDrivers,id),aval_m);
+        }
     }
     fclose(resultado);
 }

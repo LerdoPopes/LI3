@@ -43,6 +43,7 @@ void *process_driver(char **info)
     || empty_error(info[5])
     || empty_error(info[6])
     || invalid_date(info[7])
+    || invalid_accStats(info[8])
     )
     {
         return NULL;
@@ -80,7 +81,6 @@ void *organize_driver(void **results)
     db_drivers->drivers_hashtable = gtable;
     db_drivers->order = 0;
     db_drivers->len = i;
-    printf("%d\n", i);
     return db_drivers;
 }
 
@@ -100,7 +100,7 @@ void free_driver(void *driver)
     free(db_drivers);
 }
 
-void *set_driver_stats(void *dbDrivers, void *distp, void *avalp, void *id, void *tips, void *last_tripp)
+double set_driver_stats(void *dbDrivers, void *distp, void *avalp, void *id, void *tips, void *last_tripp)
 {
     DB_drivers *db_drivers = (DB_drivers *)dbDrivers;
     gconstpointer idp = (gconstpointer)id;
@@ -117,24 +117,25 @@ void *set_driver_stats(void *dbDrivers, void *distp, void *avalp, void *id, void
         driver->last_trip_date = *last_trip;
     }
     double *tip = (double *)tips;
-    double *money = malloc(sizeof(double));
+    double money;
     if (driver->car_class[0] == 'g' || driver->car_class[0] == 'G')
     {
         driver->total_spent += (4 + 0.79 * (*dist) + (*tip));
-        *money = (4 + 0.79 * (*dist) + (*tip));
+        money = (4 + 0.79 * (*dist) + (*tip));
     }
     else if (driver->car_class[0] == 'p' || driver->car_class[0] == 'P')
     {
         driver->total_spent += (5.2 + 0.94 * (*dist) + (*tip));
-        *money = (5.2 + 0.94 * (*dist) + (*tip));
+        money = (5.2 + 0.94 * (*dist) + (*tip));
     }
     else
     {
         driver->total_spent += (3.25 + 0.62 * (*dist) + (*tip));
-        *money = (3.25 + 0.62 * (*dist) + (*tip));
+        money = (3.25 + 0.62 * (*dist) + (*tip));
     }
     return money;
 }
+
 
 void print_driver(void *driversDB)
 {
@@ -164,14 +165,19 @@ void *order_by_aval(void *dbDrivers)
         {
             for (int i = gap; i < n; i += 1)
             {
+                double media;
                 Driver* temp = drivers[i];
-                double media = (double) (temp->aval)/(temp->trips);
-
+                if(temp->trips > 0){
+                    media = (double) (temp->aval)/(temp->trips);
+                }
+                else{
+                    media = 0;
+                }
                 int j;
                 for (j = i; j >= gap 
                 && ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)>media 
                 || ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)==media && (drivers[j - gap]->last_trip_date)>temp->last_trip_date)
-                || ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)==media && (drivers[j - gap]->last_trip_date) == temp->last_trip_date) && (drivers[j - gap]->id) > temp->id); j -= gap)
+                || ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)==media && (drivers[j - gap]->last_trip_date) == temp->last_trip_date) && (drivers[j - gap]->id) < temp->id); j -= gap)
                     drivers[j] = drivers[j - gap];
 
                 drivers[j] = temp;
