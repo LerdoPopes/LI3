@@ -14,7 +14,7 @@ void *organize_driver(void** results);
 
 void free_driver(void* driver);
 
-void* set_driver_stats(void* dbDrivers, void* dist, void* aval, void* id, void* tips, void* last_trip);
+double set_driver_stats(void* dbDrivers, void* dist, void* aval, void* id, void* tips, void* last_trip);
 
 void print_driver(void* driversDB);
 

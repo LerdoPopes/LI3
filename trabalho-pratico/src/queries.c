@@ -136,7 +136,6 @@ void query2(char* N, void *dbDrivers, short i){
     FILE *resultado = fopen(id, "w");   
     int n = atoi(N);
     int len = driver_get_len(dbDrivers);
-    order_by_aval(dbDrivers);
     for (size_t i = len-1; i>len-n-1; i--)
     {
         int id = get_n_driver(dbDrivers,i);
@@ -157,7 +156,6 @@ void query3(char *Num, void *dbUsers, short i){
     FILE *resultado = fopen(id, "w");
     int n = atoi(Num);
     int len = get_len_user(dbUsers);
-    order_by_dist(dbUsers);
     for (size_t i = len-1; i>len-n-1; i--)
     {
         char* User = get_n_user(dbUsers,i);

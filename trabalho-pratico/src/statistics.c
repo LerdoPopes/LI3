@@ -18,6 +18,10 @@ typedef struct info{
     int num_trips;
 } Info;
 
+// typedef struct sex{
+
+// };
+
 struct city{
     
     char* city_name;
@@ -77,8 +81,8 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
         short score_driver = ride_get_score_driver(dbRides,id);
         short score_user = ride_get_score_user(dbRides,id);
 
-        double *money = (double *) set_driver_stats(dbDrivers,&distance,&score_driver,&driver_ID,&tip,&date);
-        set_user_stats(dbUsers,&distance,&score_user,user,money,&date);
+        double money = set_driver_stats(dbDrivers,&distance,&score_driver,&driver_ID,&tip,&date);
+        set_user_stats(dbUsers,&distance,&score_user,user,&money,&date);
         
         
         //Estatisticas da query 4
@@ -104,7 +108,7 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
 
         }
         struct city* cityP = (struct city*) cityGP;
-        cityP->total_money += *money-tip;
+        cityP->total_money += money-tip;
         cityP->num_rides++;
 
         if(cityP->num_drivers == cityP->size){
@@ -154,8 +158,7 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
         
         datesP->rides[datesP->num_trips] = id;
         datesP->num_trips++;
-        datesP->money += *money-tip;
-        free(money);
+        datesP->money += money-tip;
         free(city);
         free(user);
     
@@ -164,7 +167,8 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
     {
         g_hash_table_destroy(cities[i]->driversTmp);
     }
-    
+    order_by_dist(dbUsers);
+    order_by_aval(dbDrivers);
     stats->cities = cities_hashtable;
     stats->cities_p = cities;
     stats->dates = dates_hashtable;
