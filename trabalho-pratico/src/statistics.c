@@ -50,6 +50,8 @@
         short score_driver = ride_get_score_driver(dbRides,id);\
         short score_user = ride_get_score_user(dbRides,id);
 
+
+
 typedef struct info{
     int id;
     int aval;
@@ -180,7 +182,7 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
         if(males_size == num_M){
             males = realloc(males,(males_size *=2)*sizeof(Sexo));
         }
-        if(males_size == num_M){
+        if(shemales_size == num_F){
             shemales = realloc(shemales,(shemales_size *=2)*sizeof(Sexo));
         }
         if(gender_D == gender_U){
@@ -188,11 +190,13 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
                 males[num_M].id = id;
                 males[num_M].idade_d = (int) idade(driver_get_account_creation(dbDrivers,driver_ID));
                 males[num_M].idade_u = (int) idade(user_get_account_creation(dbUsers,user));
+                num_M++;
             }
             else{
                 shemales[num_F].id = id;
                 shemales[num_F].idade_d = (int) idade(driver_get_account_creation(dbDrivers,driver_ID));
                 shemales[num_F].idade_u = (int) idade(user_get_account_creation(dbUsers,user));
+                num_F++;
             }
         }
 
@@ -212,6 +216,8 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
     stats->dates_p = eachday;
     stats->males = males;
     stats->shemales = shemales;
+    stats->nF = num_F;
+    stats->nM = num_M;
     return stats;
 }
 
@@ -245,7 +251,15 @@ void *order_by_account_age(void *info, char *gender)
                     Gender[j] = genero;
                 }
             }
-             INFO->order = 1;
+            INFO->order = 1;
+            char* name = malloc(50);
+            sprintf(name,"./Resultados/IdadeD-IdadeU.txt");
+            FILE *resultado = fopen(name, "w");
+            for(int i = 0; i< n;i++){
+                Sexo genero = Gender[i];
+                fprintf(resultado,"%d %d\n",genero.idade_d,genero.idade_u);
+            }
+            fclose(resultado);
         }
     }
     else if(strcmp(gender,"F")==0){
@@ -430,12 +444,12 @@ int info_get_id(void *stats_d,int ID,int i){
     return date->rides[i];
 }
 
-int ride_male_get_id(void *stats_d,short i){
+int ride_male_get_id(void *stats_d,int i){
     Stats* stats = (Stats*) stats_d;
     return stats->males[i].id;
 }
 
-int ride_shemale_get_id(void *stats_d,short i){
+int ride_shemale_get_id(void *stats_d,int i){
     Stats* stats = (Stats*) stats_d;
     return stats->shemales[i].id;
 }
@@ -450,22 +464,24 @@ int gender_get_nF(void *stats_d){
     return stats->nF;
 }
 
-short male_driver_get_age(void *stats_d,short i){
+short male_driver_get_age(void *stats_d,int i){
     Stats* stats = (Stats*) stats_d;
+    printf("%u\n",stats->males[i].idade_d);
     return stats->males[i].idade_d;
 }
 
-short male_user_get_age(void *stats_d,short i){
+short male_user_get_age(void *stats_d,int i){
     Stats* stats = (Stats*) stats_d;
+    printf("%u\n",stats->males[i].idade_u);
     return stats->males[i].idade_u;
 }
 
-short shemale_driver_get_age(void *stats_d,short i){
+short shemale_driver_get_age(void *stats_d,int i){
     Stats* stats = (Stats*) stats_d;
     return stats->shemales[i].idade_d;
 }
 
-short shemale_user_get_age(void *stats_d,short i){
+short shemale_user_get_age(void *stats_d,int i){
     Stats* stats = (Stats*) stats_d;
     return stats->shemales[i].idade_u;
 }

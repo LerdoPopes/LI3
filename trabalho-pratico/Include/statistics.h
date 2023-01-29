@@ -44,20 +44,20 @@ int city_get_info_num_trips(void *stats_d,char *ID, short i);
 
 int cityValid(void* STATS, char* Cidade);
 
-int ride_male_get_id(void *stats_d,short i);
+int ride_male_get_id(void *stats_d,int i);
 
-int ride_shemale_get_id(void *stats_d,short i);
+int ride_shemale_get_id(void *stats_d,int i);
 
 int gender_get_nM(void *stats_d);
 
 int gender_get_nF(void *stats_d);
 
-short male_driver_get_age(void *stats_d,short i);
+short male_driver_get_age(void *stats_d,int i);
 
-short male_user_get_age(void *stats_d,short i);
+short male_user_get_age(void *stats_d,int i);
 
-short shemale_driver_get_age(void *stats_d,short i);
+short shemale_driver_get_age(void *stats_d,int i);
 
-short shemale_user_get_age(void *stats_d,short i);
+short shemale_user_get_age(void *stats_d,int i);
 
 #endif

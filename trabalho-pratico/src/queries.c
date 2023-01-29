@@ -255,20 +255,21 @@ void query8(char* gender, char* X, void *dbStats, void *dbRides, void *dbDrivers
     order_by_account_age(dbStats,gender);
     if(strcmp(gender,"M") == 0){
         int nM = gender_get_nM(dbStats);
-        for(int i = 0; i < nM; i++){
+        for(int i = nM-1; i > 0; i--){
             short driver_age = male_driver_get_age(dbStats,i);
             short user_age = male_user_get_age(dbStats,i);
-            if(driver_age >= x && user_age >= x){
-                int id = ride_male_get_id(dbStats,i);
-                int id_driver = ride_get_driver(dbRides,id);
-                char *name_driver = driver_get_name(dbDrivers,id_driver);
-                char *username_user = ride_get_user(dbRides,id);
-                char *name_user = user_get_name(dbUsers,username_user);
-                fprintf(resultado,"%d,%s,%s,%s\n",id_driver,name_driver,username_user,name_user);
+            if(driver_age < x || user_age < x){
+                break;
             }
+            int id = ride_male_get_id(dbStats,i);
+            int id_driver = ride_get_driver(dbRides,id);
+            char *name_driver = driver_get_name(dbDrivers,id_driver);
+            char *username_user = ride_get_user(dbRides,id);
+            char *name_user = user_get_name(dbUsers,username_user);
+            fprintf(resultado,"%d,%s,%s,%s\n",id_driver,name_driver,username_user,name_user);
         }
     }
-    else{ 
+    else if(strcmp(gender,"F") == 0){ 
         int nF = gender_get_nF(dbStats);
         for(int i = 0; i < nF; i++){
             short driver_age = shemale_driver_get_age(dbStats,i);
