@@ -55,3 +55,4 @@ int user_get_idade(void* data, char* Username);
 
 int get_len_user(void* user_p);
 
+char *user_get_username(void* user_p, char* ID);

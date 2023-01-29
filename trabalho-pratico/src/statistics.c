@@ -96,6 +96,7 @@ typedef struct Statistics{
     int nF;
     Sexo* males;
     Sexo* shemales; 
+    int order;
 } Stats;
 
 
@@ -214,6 +215,72 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
     return stats;
 }
 
+void *order_by_account_age(void *info, char *gender)
+{
+    Stats *INFO = (Stats *)info;
+    if(strcmp(gender,"M")==0){
+        Sexo *Gender = INFO->males;
+        if(Gender == NULL){
+        return NULL;
+        }
+        int n = INFO->nM;
+         if (INFO->order != 1){
+            for (int gap = n/2; gap > 0; gap /= 2)
+            {
+                for (int i = gap; i < n; i += 1)
+                {
+                    Sexo genero = Gender[i];
+                    short driver_age = genero.idade_d;
+                    short user_age = genero.idade_u;
+                    int id = genero.id;
+
+
+                    int j;
+                    for (j = i; j >= gap 
+                    && ((Gender[j - gap].idade_d)>driver_age 
+                    || ((Gender[j - gap].idade_d)==driver_age && (Gender[j - gap].idade_u)>user_age)
+                    || ((Gender[j - gap].idade_d)==driver_age && (Gender[j - gap].idade_u)==user_age && (Gender[j - gap].id) > id)); j -= gap)
+                        Gender[j] = Gender[j - gap];
+
+                    Gender[j] = genero;
+                }
+            }
+             INFO->order = 1;
+        }
+    }
+    else if(strcmp(gender,"F")==0){
+        Sexo *Gender = INFO->shemales;
+        if(Gender == NULL){
+        return NULL;
+        }
+        int n = INFO->nF;
+         if (INFO->order != 1){
+            for (int gap = n/2; gap > 0; gap /= 2)
+            {
+                for (int i = gap; i < n; i += 1)
+                {
+                    Sexo genero = Gender[i];
+                    short driver_age = genero.idade_d;
+                    short user_age = genero.idade_u;
+                    int id = genero.id;
+
+
+                    int j;
+                    for (j = i; j >= gap 
+                    && ((Gender[j - gap].idade_d)>driver_age 
+                    || ((Gender[j - gap].idade_d)==driver_age && (Gender[j - gap].idade_u)>user_age)
+                    || ((Gender[j - gap].idade_d)==driver_age && (Gender[j - gap].idade_u)==user_age && (Gender[j - gap].id) > id)); j -= gap)
+                        Gender[j] = Gender[j - gap];
+
+                    Gender[j] = genero;
+                }
+            }
+             INFO->order = 1;
+        }
+    }
+    else return NULL;
+}
+
 void *order_by_aval_m(void *info, char *cidade)
 {
     Stats *INFO = (Stats *)info;
@@ -246,33 +313,24 @@ void *order_by_aval_m(void *info, char *cidade)
     }
 }
 
-void *order_by_distance(void *dbStats)
-{
-    Stats *INFO = (Stats *)dbStats;
-    int *rides = ;
-    // qsort(drivers, 10000, sizeof(Driver *), comparador);
-    int n = db_drivers->len;
-    if (db_drivers->order != 1){
-        for (int gap = n/2; gap > 0; gap /= 2)
-        {
-            for (int i = gap; i < n; i += 1)
-            {
-                Driver* temp = drivers[i];
-                double media = (double) (temp->aval)/(temp->trips);
-
-                int j;
-                for (j = i; j >= gap 
-                && ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)>media 
-                || ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)==media && (drivers[j - gap]->last_trip_date)>temp->last_trip_date)
-                || ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)==media && (drivers[j - gap]->last_trip_date) == temp->last_trip_date) && (drivers[j - gap]->id) > temp->id); j -= gap)
-                    drivers[j] = drivers[j - gap];
-
-                drivers[j] = temp;
-            }
-        }
-        db_drivers->order = 1;
-    }
-}
+// void *order_by_distance(void *dbStats,int Num)
+// {
+//     for (int gap = Num/2; gap > 0; gap /= 2)
+//     {
+//         for (int i = gap; i < Num; i += 1)
+//         {
+//             Ride* temp = drivers[i];
+//             short distance = temp->distance;
+//             int j;
+//             for (j = i; j >= gap 
+//             && ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)>distance
+//             || ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)==media && (drivers[j - gap]->last_trip_date)>temp->last_trip_date)
+//             || ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)==media && (drivers[j - gap]->last_trip_date) == temp->last_trip_date) && (drivers[j - gap]->id) > temp->id); j -= gap)
+//                 drivers[j] = drivers[j - gap];
+//             drivers[j] = temp;
+//         }
+//     } 
+// }
 
 
 
@@ -372,17 +430,45 @@ int info_get_id(void *stats_d,int ID,int i){
     return date->rides[i];
 }
 
+int ride_male_get_id(void *stats_d,short i){
+    Stats* stats = (Stats*) stats_d;
+    return stats->males[i].id;
+}
 
+int ride_shemale_get_id(void *stats_d,short i){
+    Stats* stats = (Stats*) stats_d;
+    return stats->shemales[i].id;
+}
 
+int gender_get_nM(void *stats_d){
+    Stats* stats = (Stats*) stats_d;
+    return stats->nM;
+}
 
+int gender_get_nF(void *stats_d){
+    Stats* stats = (Stats*) stats_d;
+    return stats->nF;
+}
 
+short male_driver_get_age(void *stats_d,short i){
+    Stats* stats = (Stats*) stats_d;
+    return stats->males[i].idade_d;
+}
 
+short male_user_get_age(void *stats_d,short i){
+    Stats* stats = (Stats*) stats_d;
+    return stats->males[i].idade_u;
+}
 
+short shemale_driver_get_age(void *stats_d,short i){
+    Stats* stats = (Stats*) stats_d;
+    return stats->shemales[i].idade_d;
+}
 
-
-
-
-
+short shemale_user_get_age(void *stats_d,short i){
+    Stats* stats = (Stats*) stats_d;
+    return stats->shemales[i].idade_u;
+}
 
 
 
