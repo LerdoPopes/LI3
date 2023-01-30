@@ -88,12 +88,12 @@ void answer_queries(void** input, void* USERS, void* DRIVERS, void* RIDES, void*
                 clock_t end8 = clock();
                 printf("Query 8: %f\n",((float)(end8 - start8))/CLOCKS_PER_SEC);
                 break;
-            // case(9):
-            //     clock_t start9 = clock();
-            //     query9(INPUT[i][1],USERS,j);
-            //     clock_t end9 = clock();
-            //     printf("Query 9: %f\n",((float)(end9 - start9))/CLOCKS_PER_SEC);
-            //     break;
+            case(9):
+                clock_t start9 = clock();
+                query9(INPUT[i][1],INPUT[i][2],STATS,RIDES,j);
+                clock_t end9 = clock();
+                printf("Query 9: %f\n",((float)(end9 - start9))/CLOCKS_PER_SEC);
+                break;
          }
     }
 }
@@ -266,7 +266,7 @@ void query8(char* gender, char* X, void *dbStats, void *dbRides, void *dbDrivers
             char *name_driver = driver_get_name(dbDrivers,id_driver);
             char *username_user = ride_get_user(dbRides,id);
             char *name_user = user_get_name(dbUsers,username_user);
-            fprintf(resultado,"%d,%s,%s,%s\n",id_driver,name_driver,username_user,name_user);
+            fprintf(resultado,"%d;%s;%s;%s\n",id_driver,name_driver,username_user,name_user);
         }
     }
     else if(strcmp(gender,"F") == 0){ 
@@ -280,7 +280,7 @@ void query8(char* gender, char* X, void *dbStats, void *dbRides, void *dbDrivers
                 char *name_driver = driver_get_name(dbDrivers,id_driver);
                 char *username_user = ride_get_user(dbRides,id);
                 char *name_user = user_get_name(dbUsers,username_user);
-                fprintf(resultado,"%d,%s,%s,%s\n",id_driver,name_driver,username_user,name_user);
+                fprintf(resultado,"%d;%s;%s;%s\n",id_driver,name_driver,username_user,name_user);
             }
         }
     }
@@ -288,35 +288,35 @@ void query8(char* gender, char* X, void *dbStats, void *dbRides, void *dbDrivers
 }
 
 
-// void query9(char* data1, char* data2, void *dbStats, void *dbRides,short i){
-//     char *id = malloc(50);
-//     int num = 0;
-//     int current = 256;
-//     int *ride_ids = malloc(sizeof(int) * current);
-//     // double total_distance = 0;
-//     sprintf(id, "./Resultados/command%d_output.txt", i);
-//     FILE *resultado = fopen(id, "w");
-//     int date1 = (int) calc_Date(data1);
-//     int date2 = (int) calc_Date(data2);
-//     for(int i = date1; i <= date2; i++){
-//         int max = date_get_num_trips(dbStats,i);
-//         for(int j = 0; j < max;j++){
-//             int id = date_get_ride(dbStats,i,j);
-//             if(num + 1 == current) ride_ids = realloc(ride_ids, (current *= 2) * sizeof(int)); 
-//             if(ride_get_tip(dbRides,id) != 0){
-//                 ride_ids[num++] = id;
-//             }
-//         }
-//     }
-    
-// }
-
-//                 short data= ride_get_date(dbRides,id);
-//                 short distancia = ride_get_distance(dbRides,id);
-//                 char *cidade = ride_get_city(dbRides,id);
-//                 double tip = ride_get_tip(dbRides,id);
-//                 fprintf(resultado,"%012d,%d,%d,%s,%.3f\n",id,data,distancia,cidade,tip);
-
+void query9(char* data1, char* data2, void *dbStats, void *dbRides,short i){
+    char *id = malloc(50);
+    int num = 0;
+    int current = 256;
+    int *ride_ids = malloc(sizeof(int) * current);
+    sprintf(id, "./Resultados/command%d_output.txt", i);
+    FILE *resultado = fopen(id, "w");
+    int date1 = (int) calc_Date(data1);
+    int date2 = (int) calc_Date(data2);
+    for(int i = date1; i <= date2; i++){
+        int max = date_get_num_trips(dbStats,i);
+        for(int j = 0; j < max;j++){
+            int id = date_get_ride(dbStats,i,j);
+            if(num + 1 == current) ride_ids = realloc(ride_ids, (current *= 2) * sizeof(int)); 
+            if(ride_get_tip(dbRides,id) != 0){
+                ride_ids[num++] = id;
+            }
+        }
+    }
+    order_by_distance(dbRides,ride_ids,num);
+    for(int n = num - 1; n >= 0; n--){
+        dateCombo *data = conv_Days_to_Date(ride_get_date(dbRides,ride_ids[n]));
+        short distancia = ride_get_distance(dbRides,ride_ids[n]);
+        char *cidade = ride_get_city(dbRides,ride_ids[n]);
+        double tip = ride_get_tip(dbRides,ride_ids[n]);
+        fprintf(resultado,"%012d;%d/%d/%d;%d;%s;%.3f\n",ride_ids[n],data->day,data->month,data->year,distancia,cidade,tip);
+    }
+    fclose(resultado);
+}
 
 // for (size_t i = n-1; i>n-N-1; i--)
 //     {

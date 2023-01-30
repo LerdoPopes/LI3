@@ -327,24 +327,31 @@ void *order_by_aval_m(void *info, char *cidade)
     }
 }
 
-// void *order_by_distance(void *dbStats,int Num)
-// {
-//     for (int gap = Num/2; gap > 0; gap /= 2)
-//     {
-//         for (int i = gap; i < Num; i += 1)
-//         {
-//             Ride* temp = drivers[i];
-//             short distance = temp->distance;
-//             int j;
-//             for (j = i; j >= gap 
-//             && ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)>distance
-//             || ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)==media && (drivers[j - gap]->last_trip_date)>temp->last_trip_date)
-//             || ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)==media && (drivers[j - gap]->last_trip_date) == temp->last_trip_date) && (drivers[j - gap]->id) > temp->id); j -= gap)
-//                 drivers[j] = drivers[j - gap];
-//             drivers[j] = temp;
-//         }
-//     } 
+// int compar_int(const void *a, const void *b) {
+//     int _a = * (int*) a;
+//     int _b = * (int*) b;
+//     return (_a > _b) - (_a < _b);
 // }
+
+void *order_by_distance(void *dbRides,int *bla, int Num)
+{
+    for (int gap = Num/2; gap > 0; gap /= 2)
+    {
+        for (int i = gap; i < Num; i += 1)
+        {
+            int temp = bla[i];
+            short distance = ride_get_distance(dbRides,temp);
+            short date = ride_get_date(dbRides,temp);
+            int j;
+            for (j = i; j >= gap 
+            && ((ride_get_distance(dbRides,bla[j - gap])) > distance
+            || ((ride_get_distance(dbRides,bla[j - gap])) == distance && (ride_get_date(dbRides,bla[j - gap])) > date)
+            || ((ride_get_distance(dbRides,bla[j - gap])) == distance && (ride_get_date(dbRides,bla[j - gap])) == date && bla[j - gap] > temp)); j -= gap)
+                bla[j] = bla[j - gap];
+            bla[j] = temp;
+        }
+    } 
+}
 
 
 
@@ -466,13 +473,13 @@ int gender_get_nF(void *stats_d){
 
 short male_driver_get_age(void *stats_d,int i){
     Stats* stats = (Stats*) stats_d;
-    printf("%u\n",stats->males[i].idade_d);
+    //printf("%u\n",stats->males[i].idade_d);
     return stats->males[i].idade_d;
 }
 
 short male_user_get_age(void *stats_d,int i){
     Stats* stats = (Stats*) stats_d;
-    printf("%u\n",stats->males[i].idade_u);
+    //printf("%u\n",stats->males[i].idade_u);
     return stats->males[i].idade_u;
 }
 

@@ -19,6 +19,8 @@ void query7(char * N, char * cidade, void *dbStats, void *dbDrivers, short i);
 
 void query8(char* gender, char* X, void *dbStats, void *dbRides, void *dbDrivers, void *dbUsers,short i);
 
+void query9(char* data1, char* data2, void *dbStats, void *dbRides,short i);
+
 void answer_queries(void** input, void* USERS, void* DRIVERS, void* RIDES, void* STATS);
 
 void free_queries(void** queries_p);

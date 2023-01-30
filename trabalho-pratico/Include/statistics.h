@@ -34,6 +34,8 @@ void *order_by_aval_m(void *info, char *cidade);
 
 void *order_by_account_age(void *info, char *gender);
 
+void *order_by_distance(void *dbRides,int *bla, int Num);
+
 int city_get_num_drivers(void *stats_d,char *ID);
 
 int city_get_info_id(void *stats_d,char *ID, short i);
@@ -59,5 +61,7 @@ short male_user_get_age(void *stats_d,int i);
 short shemale_driver_get_age(void *stats_d,int i);
 
 short shemale_user_get_age(void *stats_d,int i);
+
+int compar_int(const void *a, const void *b);
 
 #endif

@@ -87,15 +87,6 @@ void free_rides(void* rides){
     free(db_rides);
 }
 
-short ride_get_date(void* rides_p, int Id){
-    DB_rides* rides = (DB_rides*) rides_p;
-    gconstpointer id = (gconstpointer)&Id;
-    gpointer ridep = g_hash_table_lookup(rides->rides_hashtable, id);
-    Ride* ride = (Ride*) ridep;
-    return ride->date;
-}
-
-
 //short ride_get_date(ride* rides_p, int Id){
 //eturn g_hash_table_lookup(rides->rides_hashtable, id)
 //}
@@ -167,6 +158,14 @@ int ride_get_idArray(void *ride_p, int i){
     DB_rides* rides = (DB_rides*) ride_p;
     Ride* ride = (Ride*) rides->rides_array[i];
     return ride->id;
+}
+
+short ride_get_date(void* rides_p, int Id){
+   DB_rides* rides = (DB_rides*) rides_p;
+   gconstpointer id = (gconstpointer)&Id;
+   gpointer ridep = g_hash_table_lookup(rides->rides_hashtable, id);
+   Ride* ride = (Ride*) ridep;
+   return ride->date;
 }
 
 int isRide(void* ride_p, int ID){

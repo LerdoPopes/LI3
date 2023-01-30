@@ -93,14 +93,6 @@ int invalid_date(char* error){
     return 1;
 }
 
-//short ride_get_date(void* rides_p, int Id){
-//    DB_rides* rides = (DB_rides*) rides_p;
-//    gconstpointer id = (gconstpointer)&Id;
-//    gpointer ridep = g_hash_table_lookup(rides->rides_hashtable, id);
-//    Ride* ride = (Ride*) ridep;
-//    return ride->date;
-//}
-//
 //short ride_get_date(ride* rides_p, int Id){
 //return g_hash_table_lookup(rides->rides_hashtable, id)
 //}
