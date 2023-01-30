@@ -313,7 +313,7 @@ void query9(char* data1, char* data2, void *dbStats, void *dbRides,short i){
         short distancia = ride_get_distance(dbRides,ride_ids[n]);
         char *cidade = ride_get_city(dbRides,ride_ids[n]);
         double tip = ride_get_tip(dbRides,ride_ids[n]);
-        fprintf(resultado,"%012d;%d/%02d/%d;%d;%s;%.3f\n",ride_ids[n],data->day,data->month,data->year,distancia,cidade,tip);
+        fprintf(resultado,"%012d;%02d/%02d/%d;%d;%s;%.3f\n",ride_ids[n],data->day,data->month,data->year,distancia,cidade,tip);
     }
     fclose(resultado);
 }
