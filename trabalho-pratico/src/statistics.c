@@ -21,12 +21,12 @@
             cities[city_counter]->size = 256;\
             Info** drivers_array = malloc(sizeof(Info*)* 256);\
             GHashTable* drivers = g_hash_table_new(g_int_hash,g_int_equal);\
-            cities[city_counter]->info  = drivers_array;\
+            cities[city_counter]->info = drivers_array;\
             cities[city_counter]->driversTmp = drivers;\
             g_hash_table_insert(cities_hashtable,cities[city_counter]->city_name,cities[city_counter]);\
             city_counter++;\
             cityGP = g_hash_table_lookup(cities_hashtable,city);\
-        }
+        }       
 
 #define INIT_DATES if (datesGP == NULL){\
             eachday[dates_counter] =  malloc(sizeof(eachDay));\
@@ -107,7 +107,7 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
     int n = get_len_ride(dbRides);
     int size_cities = 16;
     
-    Stats* stats = malloc(sizeof(Stats*));
+    Stats* stats = malloc(sizeof(Stats));
     GHashTable* cities_hashtable = g_hash_table_new(g_str_hash,g_str_equal);
     struct city** cities= malloc(sizeof(struct city*)*size_cities);
     int city_counter= 0;
@@ -188,14 +188,14 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
         if(gender_D == gender_U){
             if(gender_D == 'M'){
                 males[num_M].id = id;
-                males[num_M].idade_d = (int) idade(driver_get_account_creation(dbDrivers,driver_ID));
-                males[num_M].idade_u = (int) idade(user_get_account_creation(dbUsers,user));
+                males[num_M].idade_d = idade(driver_get_account_creation(dbDrivers,driver_ID));
+                males[num_M].idade_u = idade(user_get_account_creation(dbUsers,user));
                 num_M++;
             }
             else{
                 shemales[num_F].id = id;
-                shemales[num_F].idade_d = (int) idade(driver_get_account_creation(dbDrivers,driver_ID));
-                shemales[num_F].idade_u = (int) idade(user_get_account_creation(dbUsers,user));
+                shemales[num_F].idade_d = idade(driver_get_account_creation(dbDrivers,driver_ID));
+                shemales[num_F].idade_u = idade(user_get_account_creation(dbUsers,user));
                 num_F++;
             }
         }

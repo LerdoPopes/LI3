@@ -224,11 +224,11 @@ void query6(char* cidade, char* data1, char* data2, void *dbStats, void *dbRides
     fclose(resultado);
 }
 
-void query7(char * N, char * cidade, void *dbStats, void *dbDrivers, short i){
+void query7(char * N, char * cidade, void *dbStats, void *dbDrivers, short a){
     char *id = malloc(50);
     int n = atoi(N);
-    sprintf(id, "./Resultados/command%d_output.txt", i);
-    FILE *resultado = fopen(id, "w");    
+    sprintf(id, "./Resultados/command%d_output.txt", a);
+    FILE *resultado = fopen(id, "w");
     order_by_aval_m(dbStats,cidade);
     for(int i = 0; i < n;i++){
         int num_drivers = city_get_num_drivers(dbStats,cidade)-i-1;
