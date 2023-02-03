@@ -33,6 +33,8 @@ void query7_UI(char * N, char * cidade, void *dbStats, void *dbDrivers, void *db
 
 void query8(char* gender, char* X, void *dbStats, void *dbRides, void *dbDrivers, void *dbUsers,short i);
 
+void query8_UI(char* gender, char* X, void *dbStats, void *dbRides, void *dbDrivers, void *dbUsers);
+
 void query9(char* data1, char* data2, void *dbStats, void *dbRides,short i);
 
 void query9_UI(char* data1, char* data2, void *dbStats, void *dbRides, void *dbUsers, void *dbDrivers);

@@ -110,7 +110,8 @@ void query_menu(int opçao,void *DRIVERS,void *USERS,void *RIDES,void *STATS){
             clear();
             mvprintw(yMax/2,xMax/2 - strlen("Insira agora a idade mínima dos perfis em anos:")/2,"Insira agora a idade mínima dos perfis em anos:");
             mvgetstr(yMax/2 + 4,(xMax/2) - strlen(Idade)/2,Idade);  
-            clear();          
+            clear();
+            query8_UI(Gender,Idade,STATS,RIDES,DRIVERS,USERS);          
             // answer_queries_interativo(bla);
             break;
         case(9):
@@ -135,6 +136,7 @@ void query_menu(int opçao,void *DRIVERS,void *USERS,void *RIDES,void *STATS){
 void queries_menu(void *DRIVERS,void *USERS, void *RIDES, void *STATS){
     int yMax, xMax;
     getmaxyx(stdscr,yMax,xMax);
+    mvprintw(50, xMax/2 - strlen("Pressione 'Enter' para selecionar, 'Ctrl + C' para sair")/2 ,"Pressione 'Enter' para selecionar, 'Ctrl + C' para sair");    
     mvprintw(7,(xMax/2) - 8,"Query Selector");
     WINDOW * opcoes = newwin(30,40,15,xMax/2 - 20);
     refresh();
