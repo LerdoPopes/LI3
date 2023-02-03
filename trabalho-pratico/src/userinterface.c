@@ -97,7 +97,7 @@ void query_menu(int opçao,void *DRIVERS,void *USERS,void *RIDES,void *STATS){
             mvprintw(yMax/2,xMax/2-strlen("Insira agora a cidade:"),"Insira agora a cidade:");
             mvgetstr(yMax/2+4,(xMax/2)-strlen(Cidade)/2,Cidade);
             clear();
-            query7_UI(N,Cidade,STATS,DRIVERS,USERS,RIDES);
+            // query7_UI(N,Cidade,STATS,DRIVERS,USERS,RIDES);
             // answer_queries_interativo(bla);
             break;
         case(8):
