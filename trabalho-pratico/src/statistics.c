@@ -303,7 +303,7 @@ void *order_by_account_age(void *info, char *gender, void* dbUsers, void* dbDriv
                     for (j = i; j >= gap 
                     && ((Gender[j - gap].idade_d)>driver_age 
                     || ((Gender[j - gap].idade_d)==driver_age && (Gender[j - gap].idade_u)>user_age)
-                    || ((Gender[j - gap].idade_d)==driver_age && (Gender[j - gap].idade_u)==user_age && (Gender[j - gap].id) > id)); j -= gap)
+                    || ((Gender[j - gap].idade_d)==driver_age && (Gender[j - gap].idade_u)==user_age && (Gender[j - gap].id) < id)); j -= gap)
                         Gender[j] = Gender[j - gap];
 
                     Gender[j] = genero;
@@ -317,7 +317,6 @@ void *order_by_account_age(void *info, char *gender, void* dbUsers, void* dbDriv
         if(Gender == NULL){
         return NULL;
         }
-        printf("aa\n");
         int n = INFO->nF;
          if (INFO->order2 != 1){
             for (int gap = n/2; gap > 0; gap /= 2)
@@ -334,7 +333,7 @@ void *order_by_account_age(void *info, char *gender, void* dbUsers, void* dbDriv
                     for (j = i; j >= gap 
                     && ((Gender[j - gap].idade_d)>driver_age 
                     || ((Gender[j - gap].idade_d)==driver_age && (Gender[j - gap].idade_u)>user_age)
-                    || ((Gender[j - gap].idade_d)==driver_age && (Gender[j - gap].idade_u)==user_age && (Gender[j - gap].id) > id)); j -= gap)
+                    || ((Gender[j - gap].idade_d)==driver_age && (Gender[j - gap].idade_u)==user_age && (Gender[j - gap].id) < id)); j -= gap)
                         Gender[j] = Gender[j - gap];
 
                     Gender[j] = genero;
