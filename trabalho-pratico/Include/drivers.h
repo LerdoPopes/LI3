@@ -24,17 +24,13 @@ int driver_get_len(void* driver_p);
 
 int get_n_driver(void* data, int i);
 
-char *driver_get_name(void* driver_p, int ID);
+char *driver_get_name(void* driver_p, int ID,char* dest, int* size);
 
 unsigned short driver_get_birth_date(void* driver_p, int ID);
 
 char driver_get_gender(void* driver_p, int ID);
 
-char *driver_get_car_class(void* driver_p, int ID);
-
-char* driver_get_license_plate(void* driver_p, int ID);
-
-char *driver_get_city(void* driver_p, int ID);
+char *driver_get_car_class(void* driver_p, int ID,char* dest, int* size);
 
 unsigned short driver_get_account_creation(void* driver_p, int ID);
 

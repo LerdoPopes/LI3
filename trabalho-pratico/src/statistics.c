@@ -42,9 +42,9 @@
 
 #define GETTERS int id = ride_get_idArray(dbRides,i);\
         int driver_ID = ride_get_driver(dbRides,id);\
-        char *user = ride_get_user(dbRides,id);\
+        ride_get_user(dbRides,id,user,&size_user);\
         short date = ride_get_date(dbRides,id);\
-        char *city = ride_get_city(dbRides,id);\
+        ride_get_city(dbRides,id,city,&size_city);\
         double tip = ride_get_tip(dbRides,id);\
         short distance = ride_get_distance(dbRides,id);\
         short score_driver = ride_get_score_driver(dbRides,id);\
@@ -123,6 +123,11 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
     int num_F = 0;
     Sexo* males = malloc(sizeof(Sexo*)*256);
     Sexo* shemales = malloc(sizeof(Sexo*)*256);
+
+    char* user = malloc(50);
+    char* city = malloc(30);
+    int size_user = 50;
+    int size_city = 30;
     for(int i = 0; i < n; i++){
 
         GETTERS
@@ -188,20 +193,20 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
         if(gender_D == gender_U){
             if(gender_D == 'M'){
                 males[num_M].id = id;
-                males[num_M].idade_d = idade(driver_get_account_creation(dbDrivers,driver_ID));
-                males[num_M].idade_u = idade(user_get_account_creation(dbUsers,user));
+                males[num_M].idade_d = driver_get_account_creation(dbDrivers,driver_ID);
+                males[num_M].idade_u = user_get_account_creation(dbUsers,user);
                 num_M++;
             }
             else{
                 shemales[num_F].id = id;
-                shemales[num_F].idade_d = idade(driver_get_account_creation(dbDrivers,driver_ID));
-                shemales[num_F].idade_u = idade(user_get_account_creation(dbUsers,user));
+                shemales[num_F].idade_d = driver_get_account_creation(dbDrivers,driver_ID);
+                shemales[num_F].idade_u = user_get_account_creation(dbUsers,user);
                 num_F++;
             }
         }
 
-        free(city);
-        free(user);
+        //free(city);
+        //free(user);
 
     }
     for (size_t i = 0; i < city_counter; i++)
@@ -221,7 +226,7 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
     return stats;
 }
 
-void *order_by_account_age(void *info, char *gender)
+void *order_by_account_age(void *info, char *gender, void* dbUsers, void* dbDrivers, void* dbRides)
 {
     Stats *INFO = (Stats *)info;
     if(strcmp(gender,"M")==0){
@@ -230,22 +235,23 @@ void *order_by_account_age(void *info, char *gender)
         return NULL;
         }
         int n = INFO->nM;
+
          if (INFO->order != 1){
             for (int gap = n/2; gap > 0; gap /= 2)
             {
                 for (int i = gap; i < n; i += 1)
                 {
                     Sexo genero = Gender[i];
-                    short driver_age = genero.idade_d;
-                    short user_age = genero.idade_u;
+
                     int id = genero.id;
-
-
+                    short user_age = genero.idade_u;
+                    short driver_age = genero.idade_d;
                     int j;
+
                     for (j = i; j >= gap 
                     && ((Gender[j - gap].idade_d)>driver_age 
                     || ((Gender[j - gap].idade_d)==driver_age && (Gender[j - gap].idade_u)>user_age)
-                    || ((Gender[j - gap].idade_d)==driver_age && (Gender[j - gap].idade_u)==user_age && (Gender[j - gap].id) > id)); j -= gap)
+                    || ((Gender[j - gap].idade_d)==driver_age && (Gender[j - gap].idade_u)==user_age && (Gender[j - gap].id) < id)); j -= gap)
                         Gender[j] = Gender[j - gap];
 
                     Gender[j] = genero;

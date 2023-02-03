@@ -32,7 +32,7 @@ int date_get_ride(void *stats_d,int ID,int i);
 
 void *order_by_aval_m(void *info, char *cidade);
 
-void *order_by_account_age(void *info, char *gender);
+void *order_by_account_age(void *info, char *gender, void* dbUsers, void* dbDrivers, void* dbRides);
 
 void *order_by_distance(void *dbRides,int *bla, int Num);
 

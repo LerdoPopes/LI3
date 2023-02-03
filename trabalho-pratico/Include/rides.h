@@ -19,9 +19,9 @@ short ride_get_date(void* rides_p, int Id);
 
 int ride_get_driver(void *ride_p, int ID);
 
-char *ride_get_user(void *ride_p, int ID);
+char *ride_get_user(void *ride_p, int ID, char* dest, int* size);
 
-char *ride_get_city(void *ride_p, int ID);
+char *ride_get_city(void *ride_p, int ID, char* dest, int* size);
 
 short ride_get_distance(void *ride_p,int ID);
 

@@ -106,29 +106,33 @@ void query1(char *ID, void *dbDrivers, void *dbUsers, short i){
         int id = atoi(ID);
         if(isDriver(dbDrivers,id))
         {
+            char* driver = malloc(50);
+            int size_d = 50;
             if (driver_get_account_status(dbDrivers,id) == 'a' && driver_get_trips(dbDrivers,id) != 0)
             {
-                char* dName = driver_get_name(dbDrivers,id);
-                fprintf(resultado, "%s;%c;%d;%.3f;%d;%.3f\n",dName, driver_get_gender(dbDrivers,id), driver_get_idade(dbDrivers,id), driver_get_aval_m(dbDrivers,id), driver_get_trips(dbDrivers,id), driver_get_total_spent(dbDrivers,id));
-                free(dName);
+                driver_get_name(dbDrivers,id,driver,&size_d);
+                fprintf(resultado, "%s;%c;%d;%.3f;%d;%.3f\n",driver, driver_get_gender(dbDrivers,id), driver_get_idade(dbDrivers,id), driver_get_aval_m(dbDrivers,id), driver_get_trips(dbDrivers,id), driver_get_total_spent(dbDrivers,id));
+                free(driver);
             }
             else if (driver_get_account_status(dbDrivers,id) == 'a' && driver_get_trips(dbDrivers,id) == 0)
             {
-                char* dName = driver_get_name(dbDrivers,id);
-                fprintf(resultado, "%s;%c;%d;%d;%d;%d\n", dName, driver_get_gender(dbDrivers,id), driver_get_idade(dbDrivers,id), 0, 0, 0);
-                free(dName);
+                driver_get_name(dbDrivers,id,driver,&size_d);
+                fprintf(resultado, "%s;%c;%d;%d;%d;%d\n", driver, driver_get_gender(dbDrivers,id), driver_get_idade(dbDrivers,id), 0, 0, 0);
+                free(driver);
             }
         }
     }
     else{
         if(isUser(dbUsers,ID)){
+            char* user = malloc(50);
+            int size_user = 50;
             if(user_get_account_status(dbUsers,ID) == 'a' && user_get_trips(dbUsers,ID) != 0){
-                char* user = user_get_name(dbUsers,ID);
+                user_get_name(dbUsers,ID,user,&size_user);
                 fprintf(resultado,"%s;%c;%d;%.3f;%d;%.3f\n",user,user_get_gender(dbUsers,ID),user_get_idade(dbUsers,ID),user_get_aval_m(dbUsers,ID),user_get_trips(dbUsers,ID),user_get_total_spent(dbUsers,ID));
                 free(user);
             }
             else if(user_get_account_status(dbUsers,ID) == 'a' && user_get_trips(dbUsers,ID) == 0){
-                char* user = user_get_name(dbUsers,ID);
+                user_get_name(dbUsers,ID,user,&size_user);
                 fprintf(resultado,"%s;%c;%d;%d;%d;%d\n",user,user_get_gender(dbUsers,ID),user_get_idade(dbUsers,ID),0,0,0);
                 free(user);
             } 
@@ -144,6 +148,8 @@ void query2(char* N, void *dbDrivers, short i){
     FILE *resultado = fopen(id, "w");   
     int n = atoi(N);
     int len = driver_get_len(dbDrivers);
+    char* driver = malloc(50);
+    int size_d = 50;
     for (size_t i = len-1; i>len-n-1; i--)
     {
         int id = get_n_driver(dbDrivers,i);
@@ -151,7 +157,7 @@ void query2(char* N, void *dbDrivers, short i){
             n++;
         }
         else{
-            fprintf(resultado,"%012d;%s;%.3f\n",id,driver_get_name(dbDrivers,id),driver_get_aval_m(dbDrivers,id));
+            fprintf(resultado,"%012d;%s;%.3f\n",id,driver_get_name(dbDrivers,id,driver,&size_d),driver_get_aval_m(dbDrivers,id));
         }        
     }
     fclose(resultado);
@@ -164,14 +170,18 @@ void query3(char *Num, void *dbUsers, short i){
     FILE *resultado = fopen(id, "w");
     int n = atoi(Num);
     int len = get_len_user(dbUsers);
+    char* username = malloc(50);
+    int size_user = 50;
+    char* name = malloc(50);
+    int size_name = 50;
     for (size_t i = len-1; i>len-n-1; i--)
     {
-        char* User = get_n_user(dbUsers,i);
+        char* User = get_n_user(dbUsers,i,username,&size_user);
         if(user_get_account_status(dbUsers,User) != 'a'){
             n++;
         }
         else{
-            fprintf(resultado,"%s;%s;%d\n",User,user_get_name(dbUsers,User),user_get_total_dist(dbUsers,User));
+            fprintf(resultado,"%s;%s;%d\n",User,user_get_name(dbUsers,User,name,&size_name),user_get_total_dist(dbUsers,User));
         }        
     }
     fclose(resultado);
@@ -213,20 +223,21 @@ void query6(char* cidade, char* data1, char* data2, void *dbStats, void *dbRides
     FILE *resultado = fopen(id, "w");
     int date1 = (int) calc_Date(data1);
     int date2 = (int) calc_Date(data2);
+
+    char* ride_c = malloc(30);
+    int city_size = 30;
+    
     for(int i = date1; i <= date2; i++){
         int max = date_get_num_trips(dbStats,i);
 
         for(int j = 0; j < max;j++){
             int id = date_get_ride(dbStats,i,j);
-            char* ride_c = ride_get_city(dbRides,id);
+            ride_get_city(dbRides,id,ride_c,&city_size);
             if(strcmp(cidade,ride_c) == 0){
                 total_distance += (double) ride_get_distance(dbRides,id);
                 num_rides++;
             }
-            free(ride_c);
         }
-
-
     }
     if(num_rides){
         fprintf(resultado,"%.3f\n",(double)(total_distance/num_rides));
@@ -239,6 +250,8 @@ void query7(char * N, char * cidade, void *dbStats, void *dbDrivers, short a){
     int n = atoi(N);
     sprintf(id, "./Resultados/command%d_output.txt", a);
     FILE *resultado = fopen(id, "w");
+    char* driver = malloc(50);
+    int size_d = 50;
     order_by_aval_m(dbStats,cidade);
     for(int i = 0; i < n;i++){
         int num_drivers = city_get_num_drivers(dbStats,cidade)-i-1;
@@ -251,7 +264,7 @@ void query7(char * N, char * cidade, void *dbStats, void *dbDrivers, short a){
         }
         else{
             double aval_m = (double) ((double)city_get_info_aval(dbStats,cidade,num_drivers)/(double)city_get_info_num_trips(dbStats,cidade,num_drivers));
-            fprintf(resultado,"%012d;%s;%.3f\n",id,driver_get_name(dbDrivers,id),aval_m);
+            fprintf(resultado,"%012d;%s;%.3f\n",id,driver_get_name(dbDrivers,id,driver,&size_d),aval_m);
         }
     }
     fclose(resultado);
@@ -262,21 +275,31 @@ void query8(char* gender, char* X, void *dbStats, void *dbRides, void *dbDrivers
     short x = atoi(X);
     sprintf(id, "./Resultados/command%d_output.txt", i);
     FILE *resultado = fopen(id, "w");  
-    order_by_account_age(dbStats,gender);
+    order_by_account_age(dbStats,gender,dbUsers,dbDrivers,dbRides);
+    
+    char* user = malloc(50);
+    int size_user = 50;
+    
+    char* name_user = malloc(50);
+    int size_nameU = 50;
+
+    char* driver = malloc(50);
+    int size_driver = 50;
+    
     if(strcmp(gender,"M") == 0){
         int nM = gender_get_nM(dbStats);
-        for(int i = nM-1; i > 0; i--){
-            short driver_age = male_driver_get_age(dbStats,i);
-            short user_age = male_user_get_age(dbStats,i);
-            if(driver_age < x || user_age < x){
-                break;
+        for(int i = 0; i < nM; i++){
+            short driver_age = idade(male_driver_get_age(dbStats,i));
+            short user_age = idade(male_user_get_age(dbStats,i));
+            if(driver_age >= x && user_age >= x){
+                int id = ride_male_get_id(dbStats,i);
+                int id_driver = ride_get_driver(dbRides,id);
+                driver_get_name(dbDrivers,id_driver,driver,&size_driver);
+                ride_get_user(dbRides,id,user,&size_user);
+                user_get_name(dbUsers,user,name_user,&size_nameU);
+
+                fprintf(resultado,"%d;%s;%s;%s\n",id_driver,driver,user,name_user,driver_age,user_age);
             }
-            int id = ride_male_get_id(dbStats,i);
-            int id_driver = ride_get_driver(dbRides,id);
-            char *name_driver = driver_get_name(dbDrivers,id_driver);
-            char *username_user = ride_get_user(dbRides,id);
-            char *name_user = user_get_name(dbUsers,username_user);
-            fprintf(resultado,"%d;%s;%s;%s\n",id_driver,name_driver,username_user,name_user);
         }
     }
     else if(strcmp(gender,"F") == 0){ 
@@ -287,10 +310,10 @@ void query8(char* gender, char* X, void *dbStats, void *dbRides, void *dbDrivers
             if(driver_age >= x && user_age >= x){
                 int id = ride_shemale_get_id(dbStats,i);
                 int id_driver = ride_get_driver(dbRides,id);
-                char *name_driver = driver_get_name(dbDrivers,id_driver);
-                char *username_user = ride_get_user(dbRides,id);
-                char *name_user = user_get_name(dbUsers,username_user);
-                fprintf(resultado,"%d;%s;%s;%s\n",id_driver,name_driver,username_user,name_user);
+                driver_get_name(dbDrivers,id_driver,driver,&size_driver);
+                ride_get_user(dbRides,id,user,&size_user);
+                user_get_name(dbUsers,user,name_user,&size_nameU);
+                fprintf(resultado,"%012d;%s;%s;%s\n",id_driver,driver,user,name_user);
             }
         }
     }
@@ -318,12 +341,14 @@ void query9(char* data1, char* data2, void *dbStats, void *dbRides,short i){
         }
     }
     order_by_distance(dbRides,ride_ids,num);
+    char* city = malloc(30);
+    int size_city = 30;
     for(int n = num - 1; n >= 0; n--){
         dateCombo *data = conv_Days_to_Date(ride_get_date(dbRides,ride_ids[n]));
         short distancia = ride_get_distance(dbRides,ride_ids[n]);
-        char *cidade = ride_get_city(dbRides,ride_ids[n]);
+        ride_get_city(dbRides,ride_ids[n],city,&size_city);
         double tip = ride_get_tip(dbRides,ride_ids[n]);
-        fprintf(resultado,"%012d;%02d/%02d/%d;%d;%s;%.3f\n",ride_ids[n],data->day,data->month,data->year,distancia,cidade,tip);
+        fprintf(resultado,"%012d;%02d/%02d/%d;%d;%s;%.3f\n",ride_ids[n],data->day,data->month,data->year,distancia,city,tip);
     }
     fclose(resultado);
 }
