@@ -64,7 +64,7 @@ int main(int argc, char **argv){
             queries_menu(DRIVERS,USERS,RIDES,STATS);
         }
         //printw("Insira a path dos ficheiros CSV:");
-        int c = wgetch(win);
+        // int c = wgetch(win);
 
         endwin();
         return 0;
