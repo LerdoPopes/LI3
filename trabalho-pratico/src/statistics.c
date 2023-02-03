@@ -98,7 +98,8 @@ typedef struct Statistics{
     int nF;
     Sexo* males;
     Sexo* shemales; 
-    int order;
+    int order1;
+    int order2;
 } Stats;
 
 
@@ -220,6 +221,8 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
     stats->shemales = shemales;
     stats->nF = num_F;
     stats->nM = num_M;
+    stats->order1 = 0;
+    stats->order2 = 0;
     free(user);
     free(city);
     return stats;
@@ -285,7 +288,7 @@ void *order_by_account_age(void *info, char *gender, void* dbUsers, void* dbDriv
         }
         int n = INFO->nM;
 
-         if (INFO->order != 1){
+         if (INFO->order1 != 1){
             for (int gap = n/2; gap > 0; gap /= 2)
             {
                 for (int i = gap; i < n; i += 1)
@@ -300,13 +303,13 @@ void *order_by_account_age(void *info, char *gender, void* dbUsers, void* dbDriv
                     for (j = i; j >= gap 
                     && ((Gender[j - gap].idade_d)>driver_age 
                     || ((Gender[j - gap].idade_d)==driver_age && (Gender[j - gap].idade_u)>user_age)
-                    || ((Gender[j - gap].idade_d)==driver_age && (Gender[j - gap].idade_u)==user_age && (Gender[j - gap].id) < id)); j -= gap)
+                    || ((Gender[j - gap].idade_d)==driver_age && (Gender[j - gap].idade_u)==user_age && (Gender[j - gap].id) > id)); j -= gap)
                         Gender[j] = Gender[j - gap];
 
                     Gender[j] = genero;
                 }
             }
-            INFO->order = 1;
+            INFO->order1=1;
         }
     }
     else if(strcmp(gender,"F")==0){
@@ -314,8 +317,9 @@ void *order_by_account_age(void *info, char *gender, void* dbUsers, void* dbDriv
         if(Gender == NULL){
         return NULL;
         }
+        printf("aa\n");
         int n = INFO->nF;
-         if (INFO->order != 1){
+         if (INFO->order2 != 1){
             for (int gap = n/2; gap > 0; gap /= 2)
             {
                 for (int i = gap; i < n; i += 1)
@@ -330,13 +334,13 @@ void *order_by_account_age(void *info, char *gender, void* dbUsers, void* dbDriv
                     for (j = i; j >= gap 
                     && ((Gender[j - gap].idade_d)>driver_age 
                     || ((Gender[j - gap].idade_d)==driver_age && (Gender[j - gap].idade_u)>user_age)
-                    || ((Gender[j - gap].idade_d)==driver_age && (Gender[j - gap].idade_u)==user_age && (Gender[j - gap].id) < id)); j -= gap)
+                    || ((Gender[j - gap].idade_d)==driver_age && (Gender[j - gap].idade_u)==user_age && (Gender[j - gap].id) > id)); j -= gap)
                         Gender[j] = Gender[j - gap];
 
                     Gender[j] = genero;
                 }
             }
-             INFO->order = 1;
+            INFO->order2 = 1;    
         }
     }
 }
