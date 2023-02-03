@@ -298,7 +298,8 @@ void query2_UI(char* N, void *dbDrivers,void *dbUsers,void *dbRides, void *dbSta
             clear();
             queries_menu(dbDrivers,dbUsers,dbRides,dbStats);
         }
-    }    
+    }
+    free(driver);
 }
 
 void query3(char *Num, void *dbUsers, short i){
@@ -322,6 +323,8 @@ void query3(char *Num, void *dbUsers, short i){
         }        
     }
     fclose(resultado);
+    free(username);
+    free(name);
 }
 
 void query3_UI(char *Num, void *dbUsers,void *dbRides, void *dbDrivers, void *dbStats){
@@ -338,6 +341,12 @@ void query3_UI(char *Num, void *dbUsers,void *dbRides, void *dbDrivers, void *db
     int page = 0;
     keypad(stdscr, TRUE);
 
+    char* User = malloc(50);
+        int size_u = 50;
+
+    char* name_u = malloc(50);
+    int size_nU = 50;
+
     while (!done) {
         clear();
         
@@ -352,11 +361,6 @@ void query3_UI(char *Num, void *dbUsers,void *dbRides, void *dbDrivers, void *db
         int a = 0;
         mvprintw(9, 27,"ID                                                           Nome                                                       Avaliacao Media                         ");
         
-        char* User = malloc(50);
-        int size_u = 50;
-
-        char* name_u = malloc(50);
-        int size_nU = 50;
         for(int i = start; i < end;j--){
             if (a % 31 == 0) a *= 0;
             get_n_user(dbUsers,j,User,&size_u);
@@ -396,6 +400,8 @@ void query3_UI(char *Num, void *dbUsers,void *dbRides, void *dbDrivers, void *db
             queries_menu(dbDrivers,dbUsers,dbRides,dbStats);
         }
     }
+    free(User);
+    free(name_u);
 }
 
 void query4(char *Cidade,void * dbStats,short i){
@@ -501,6 +507,7 @@ void query6(char* cidade, char* data1, char* data2, void *dbStats, void *dbRides
     if(num_rides){
         fprintf(resultado,"%.3f\n",(double)(total_distance/num_rides));
     }
+    free(ride_c);
     fclose(resultado);
 }
 
@@ -539,6 +546,7 @@ void query6_UI(char* cidade, char* data1, char* data2, void *dbStats, void *dbRi
                 queries_menu(dbDrivers,dbUsers,dbRides,dbStats);
             }
         }
+    free(city);
 }
 
 void query7(char * N, char * cidade, void *dbStats, void *dbDrivers, short i){
@@ -563,6 +571,7 @@ void query7(char * N, char * cidade, void *dbStats, void *dbDrivers, short i){
             fprintf(resultado,"%012d;%s;%.3f\n",id,driver_get_name(dbDrivers,id,driver,&size_d),aval_m);
         }
     }
+    free(driver);
     fclose(resultado);
 }
 
@@ -612,26 +621,32 @@ void query8(char* gender, char* X, void *dbStats, void *dbRides, void *dbDrivers
                 driver_get_name(dbDrivers,id_driver,driver,&size_driver);
                 ride_get_user(dbRides,id,user,&size_user);
                 user_get_name(dbUsers,user,name_user,&size_nameU);
-
-                fprintf(resultado,"%d;%s;%s;%s\n",id_driver,driver,user,name_user,driver_age,user_age);
+                if(driver_get_account_status(dbDrivers,id_driver) == 'a' && user_get_account_status(dbUsers,user) == 'a'){
+                    fprintf(resultado,"%012d;%s;%s;%s;%d;%d\n",id_driver,driver,user,name_user,driver_age,user_age);
+                }
             }
         }
     }
     else if(strcmp(gender,"F") == 0){ 
         int nF = gender_get_nF(dbStats);
         for(int i = 0; i < nF; i++){
-            short driver_age = shemale_driver_get_age(dbStats,i);
-            short user_age = shemale_user_get_age(dbStats,i);
+            short driver_age = idade(shemale_driver_get_age(dbStats,i));
+            short user_age = idade(shemale_user_get_age(dbStats,i));
             if(driver_age >= x && user_age >= x){
                 int id = ride_shemale_get_id(dbStats,i);
                 int id_driver = ride_get_driver(dbRides,id);
                 driver_get_name(dbDrivers,id_driver,driver,&size_driver);
                 ride_get_user(dbRides,id,user,&size_user);
                 user_get_name(dbUsers,user,name_user,&size_nameU);
-                fprintf(resultado,"%012d;%s;%s;%s\n",id_driver,driver,user,name_user);
+                if(driver_get_account_status(dbDrivers,id_driver) == 'a' && user_get_account_status(dbUsers,user) == 'a'){
+                    fprintf(resultado,"%012d;%s;%s;%s;%d;%d\n",id_driver,driver,user,name_user,driver_age,user_age);
+                }
             }
         }
     }
+    free(user);
+    free(name_user);
+    free(driver);
     fclose(resultado);
 }
 

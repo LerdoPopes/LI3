@@ -147,23 +147,6 @@ void *order_by_dist(void *dbUsers)
     }
 }
 
-//struct user{
-//    char *username;
-//    char *name;
-//    char gender;
-//    unsigned short birth_date;
-//    short account_creation;
-//    enum method pay_method;
-//    char account_status;
-//    short trips;
-//    double total_spent;
-//    double total_spent_notip;
-//    unsigned short total_dist;
-//    short aval;
-//    short aval_m;
-//    unsigned short last_trip_date;
-//};
-
 char* get_n_user(void* data, int i,char* dest, int *size){
    DB_Users* users = (DB_Users*) data;
     while(*size <= strlen(users->users_array[i]->username)){

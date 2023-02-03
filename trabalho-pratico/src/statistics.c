@@ -223,6 +223,8 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
     stats->shemales = shemales;
     stats->nF = num_F;
     stats->nM = num_M;
+    free(user);
+    free(city);
     return stats;
 }
 
@@ -281,7 +283,7 @@ void *order_by_account_age(void *info, char *gender, void* dbUsers, void* dbDriv
                     for (j = i; j >= gap 
                     && ((Gender[j - gap].idade_d)>driver_age 
                     || ((Gender[j - gap].idade_d)==driver_age && (Gender[j - gap].idade_u)>user_age)
-                    || ((Gender[j - gap].idade_d)==driver_age && (Gender[j - gap].idade_u)==user_age && (Gender[j - gap].id) > id)); j -= gap)
+                    || ((Gender[j - gap].idade_d)==driver_age && (Gender[j - gap].idade_u)==user_age && (Gender[j - gap].id) < id)); j -= gap)
                         Gender[j] = Gender[j - gap];
 
                     Gender[j] = genero;
@@ -290,7 +292,6 @@ void *order_by_account_age(void *info, char *gender, void* dbUsers, void* dbDriv
              INFO->order = 1;
         }
     }
-    else return NULL;
 }
 
 void *order_by_aval_m(void *info, char *cidade)
