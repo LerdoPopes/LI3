@@ -164,10 +164,14 @@ void *order_by_dist(void *dbUsers)
 //    unsigned short last_trip_date;
 //};
 
-char* get_n_user(void* data, int i){
+char* get_n_user(void* data, int i,char* dest, int *size){
    DB_Users* users = (DB_Users*) data;
-   char* username = strdup(users->users_array[i]->username);
-   return username;
+    while(*size <= strlen(users->users_array[i]->username)){
+        dest = realloc(dest,(*size*=2));
+     }
+    memmove(dest,users->users_array[i]->username,strlen(users->users_array[i]->username)+1);
+    dest[strlen(users->users_array[i]->username)] = '\0';
+    return dest;
 }
 
 int isUser(void* data, char* Username){
@@ -178,13 +182,17 @@ int isUser(void* data, char* Username){
     return (user != NULL);
 }
 
-char *user_get_name(void* user_p, char* ID){
+char *user_get_name(void* user_p, char* ID, char* dest, int* size){
     DB_users* users = (DB_users*) user_p;
     gconstpointer id = (gconstpointer)ID;
     gpointer userp = g_hash_table_lookup(users->users_hashtable, id);
     User* user = (User*) userp;
-    char *Name = strdup(user->name);
-    return Name;
+    while(*size <= strlen(user->name)){
+        dest = realloc(dest,(*size*=2));
+     }
+    memmove(dest,user->name,strlen(user->name)+1);
+    dest[strlen(user->name)] = '\0';
+    return dest;
 
 }
 

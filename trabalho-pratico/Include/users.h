@@ -21,11 +21,11 @@ void set_user_stats(void* dbUsers, void* dist, void* aval, void* username, void*
 
 void *order_by_dist(void *dbUsers);
 
-char* get_n_user(void* data, int i);
+char* get_n_user(void* data, int i, char* dest, int *size);
 
 int isUser(void* data, char* Username);
 
-char *user_get_name(void* user_p, char* ID);
+char *user_get_name(void* user_p, char* ID, char* dest, int *size);
 
 char user_get_gender(void* user_p, char* ID);
 

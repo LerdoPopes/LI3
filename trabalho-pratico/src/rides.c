@@ -99,22 +99,30 @@ int ride_get_driver(void *ride_p, int ID){
     return ride->driver;
 }
 
-char *ride_get_user(void *ride_p, int ID){
+char *ride_get_user(void *ride_p, int ID, char* dest,int* size){
     DB_rides* rides = (DB_rides*) ride_p;
     gconstpointer id = (gconstpointer)&ID;
     gpointer ridep = g_hash_table_lookup(rides->rides_hashtable, id);
     Ride* ride = (Ride*) ridep;
-    char *User = strdup(ride->user);    
-    return User;
+    while(*size <= strlen(ride->user)){
+        dest = realloc(dest,(*size*=2));
+    }
+    memmove(dest,ride->user,strlen(ride->user)+1);
+    dest[strlen(ride->user)] = '\0';
+    return dest;
 }
 
-char *ride_get_city(void *ride_p, int ID){
+char *ride_get_city(void *ride_p, int ID,char* dest, int* size){
     DB_rides* rides = (DB_rides*) ride_p;
     gconstpointer id = (gconstpointer)&ID;
     gpointer ridep = g_hash_table_lookup(rides->rides_hashtable, id);
     Ride* ride = (Ride*) ridep;
-    char *City = strdup(ride->city);    
-    return City;
+    while(*size <= strlen(ride->city)){
+        dest = realloc(dest,(*size*=2));
+    }
+    memmove(dest,ride->city,strlen(ride->city)+1);
+    dest[strlen(ride->city)] = '\0';
+    return dest;
 }
 
 short ride_get_distance(void *ride_p,int ID){

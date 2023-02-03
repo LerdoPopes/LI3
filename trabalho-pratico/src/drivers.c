@@ -219,13 +219,17 @@ int get_n_driver(void* data, int i){
 
 }
 
-char *driver_get_name(void* driver_p, int ID){
+char *driver_get_name(void* driver_p, int ID,char* dest, int* size){
     DB_drivers* drivers = (DB_drivers*) driver_p;
     gconstpointer id = (gconstpointer)&ID;
     gpointer driverp = g_hash_table_lookup(drivers->drivers_hashtable, id);
     Driver* driver = (Driver*) driverp;
-    char *Name = strdup(driver->name);
-    return Name;
+    while(*size <= strlen(driver->name)){
+        dest = realloc(dest,(*size*=2));
+     }
+    memmove(dest,driver->name,strlen(driver->name)+1);
+    dest[strlen(driver->name)] = '\0';
+    return dest;
 
 }
 
@@ -250,14 +254,17 @@ char driver_get_gender(void* driver_p, int ID){
 
 }
 
-char *driver_get_car_class(void* driver_p, int ID){
+char *driver_get_car_class(void* driver_p, int ID,char* dest, int* size){
     DB_drivers* drivers = (DB_drivers*) driver_p;
     gconstpointer id = (gconstpointer)&ID;
     gpointer driverp = g_hash_table_lookup(drivers->drivers_hashtable, id);
     Driver* driver = (Driver*) driverp;
-    char *Car_Class = strdup(driver->car_class);
-    return Car_Class;
-
+    while(*size <= strlen(driver->car_class)){
+        dest = realloc(dest,(*size*=2));
+     }
+    memmove(dest,driver->car_class,strlen(driver->car_class)+1);
+    dest[strlen(driver->car_class)] = '\0';
+    return dest;
 }
 
 unsigned short driver_get_account_creation(void* driver_p, int ID){
