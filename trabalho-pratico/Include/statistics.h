@@ -38,11 +38,11 @@ void *order_by_distance(void *dbRides,int *bla, int Num);
 
 int city_get_num_drivers(void *stats_d,char *ID);
 
-int city_get_info_id(void *stats_d,char *ID, short i);
+int city_get_info_id(void *stats_d,char *ID, int i);
 
-int city_get_info_aval(void *stats_d,char *ID, short i);
+int city_get_info_aval(void *stats_d,char *ID, int i);
 
-int city_get_info_num_trips(void *stats_d,char *ID, short i);
+int city_get_info_num_trips(void *stats_d,char *ID, int i);
 
 int cityValid(void* STATS, char* Cidade);
 

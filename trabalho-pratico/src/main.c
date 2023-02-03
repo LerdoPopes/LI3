@@ -107,8 +107,6 @@ int main(int argc, char **argv){
         fclose(input);
     void* STATS = organize_statistics(USERS,RIDES,DRIVERS);
     answer_queries(INPUT,USERS,DRIVERS,RIDES,STATS);
-    //print_braga(STATS);
-    //print_date(STATS);
     free_rides(RIDES);
     free_driver(DRIVERS);
     free_user(USERS);

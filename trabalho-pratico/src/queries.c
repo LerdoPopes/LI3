@@ -110,26 +110,34 @@ void query1(char *ID, void *dbDrivers, void *dbUsers, short i){
         {
             if (driver_get_account_status(dbDrivers,id) == 'a' && driver_get_trips(dbDrivers,id) != 0)
             {
-                fprintf(resultado, "%s;%c;%d;%.3f;%d;%.3f\n", driver_get_name(dbDrivers,id), driver_get_gender(dbDrivers,id), driver_get_idade(dbDrivers,id), driver_get_aval_m(dbDrivers,id), driver_get_trips(dbDrivers,id), driver_get_total_spent(dbDrivers,id));
+                char* dName = driver_get_name(dbDrivers,id);
+                fprintf(resultado, "%s;%c;%d;%.3f;%d;%.3f\n",dName, driver_get_gender(dbDrivers,id), driver_get_idade(dbDrivers,id), driver_get_aval_m(dbDrivers,id), driver_get_trips(dbDrivers,id), driver_get_total_spent(dbDrivers,id));
+                free(dName);
             }
             else if (driver_get_account_status(dbDrivers,id) == 'a' && driver_get_trips(dbDrivers,id) == 0)
             {
-                fprintf(resultado, "%s;%c;%d;%d;%d;%d\n", driver_get_name(dbDrivers,id), driver_get_gender(dbDrivers,id), driver_get_idade(dbDrivers,id), 0, 0, 0);
+                char* dName = driver_get_name(dbDrivers,id);
+                fprintf(resultado, "%s;%c;%d;%d;%d;%d\n", dName, driver_get_gender(dbDrivers,id), driver_get_idade(dbDrivers,id), 0, 0, 0);
+                free(dName);
             }
         }
     }
     else{
         if(isUser(dbUsers,ID)){
-            char* user = user_get_name(dbUsers,ID);
             if(user_get_account_status(dbUsers,ID) == 'a' && user_get_trips(dbUsers,ID) != 0){
+                char* user = user_get_name(dbUsers,ID);
                 fprintf(resultado,"%s;%c;%d;%.3f;%d;%.3f\n",user,user_get_gender(dbUsers,ID),user_get_idade(dbUsers,ID),user_get_aval_m(dbUsers,ID),user_get_trips(dbUsers,ID),user_get_total_spent(dbUsers,ID));
+                free(user);
             }
             else if(user_get_account_status(dbUsers,ID) == 'a' && user_get_trips(dbUsers,ID) == 0){
+                char* user = user_get_name(dbUsers,ID);
                 fprintf(resultado,"%s;%c;%d;%d;%d;%d\n",user,user_get_gender(dbUsers,ID),user_get_idade(dbUsers,ID),0,0,0);
+                free(user);
             } 
         }
     }
     fclose(resultado);
+    free(id);
 }
 
 void query1_UI(char *ID, void *dbDrivers, void *dbUsers, void *dbStats, void *dbRides){
@@ -458,10 +466,12 @@ void query6(char* cidade, char* data1, char* data2, void *dbStats, void *dbRides
 
         for(int j = 0; j < max;j++){
             int id = date_get_ride(dbStats,i,j);
-            if(strcmp(cidade,ride_get_city(dbRides,id)) == 0){
+            char* ride_c = ride_get_city(dbRides,id);
+            if(strcmp(cidade,ride_c) == 0){
                 total_distance += (double) ride_get_distance(dbRides,id);
                 num_rides++;
             }
+            free(ride_c);
         }
 
 
@@ -510,8 +520,8 @@ void query6_UI(char* cidade, char* data1, char* data2, void *dbStats, void *dbRi
 void query7(char * N, char * cidade, void *dbStats, void *dbDrivers, short i){
     char *id = malloc(50);
     int n = atoi(N);
-    sprintf(id, "./Resultados/command%d_output.txt", i);
-    FILE *resultado = fopen(id, "w");    
+    sprintf(id, "./Resultados/command%d_output.txt", a);
+    FILE *resultado = fopen(id, "w");
     order_by_aval_m(dbStats,cidade);
     for(int i = 0; i < n;i++){
         int num_drivers = city_get_num_drivers(dbStats,cidade)-i-1;

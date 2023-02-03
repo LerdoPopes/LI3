@@ -21,12 +21,12 @@
             cities[city_counter]->size = 256;\
             Info** drivers_array = malloc(sizeof(Info*)* 256);\
             GHashTable* drivers = g_hash_table_new(g_int_hash,g_int_equal);\
-            cities[city_counter]->info  = drivers_array;\
+            cities[city_counter]->info = drivers_array;\
             cities[city_counter]->driversTmp = drivers;\
             g_hash_table_insert(cities_hashtable,cities[city_counter]->city_name,cities[city_counter]);\
             city_counter++;\
             cityGP = g_hash_table_lookup(cities_hashtable,city);\
-        }
+        }       
 
 #define INIT_DATES if (datesGP == NULL){\
             eachday[dates_counter] =  malloc(sizeof(eachDay));\
@@ -188,14 +188,14 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
         if(gender_D == gender_U){
             if(gender_D == 'M'){
                 males[num_M].id = id;
-                males[num_M].idade_d = (int) idade(driver_get_account_creation(dbDrivers,driver_ID));
-                males[num_M].idade_u = (int) idade(user_get_account_creation(dbUsers,user));
+                males[num_M].idade_d = idade(driver_get_account_creation(dbDrivers,driver_ID));
+                males[num_M].idade_u = idade(user_get_account_creation(dbUsers,user));
                 num_M++;
             }
             else{
                 shemales[num_F].id = id;
-                shemales[num_F].idade_d = (int) idade(driver_get_account_creation(dbDrivers,driver_ID));
-                shemales[num_F].idade_u = (int) idade(user_get_account_creation(dbUsers,user));
+                shemales[num_F].idade_d = idade(driver_get_account_creation(dbDrivers,driver_ID));
+                shemales[num_F].idade_u = idade(user_get_account_creation(dbUsers,user));
                 num_F++;
             }
         }
@@ -252,14 +252,6 @@ void *order_by_account_age(void *info, char *gender)
                 }
             }
             INFO->order = 1;
-            char* name = malloc(50);
-            sprintf(name,"./Resultados/IdadeD-IdadeU.txt");
-            FILE *resultado = fopen(name, "w");
-            for(int i = 0; i< n;i++){
-                Sexo genero = Gender[i];
-                fprintf(resultado,"%d %d\n",genero.idade_d,genero.idade_u);
-            }
-            fclose(resultado);
         }
     }
     else if(strcmp(gender,"F")==0){
@@ -304,7 +296,7 @@ void *order_by_aval_m(void *info, char *cidade)
     }
     Info **infos = Cidade->info;
     int n = Cidade->num_drivers;
-     if (Cidade->order != 1){
+    if (Cidade->order != 1){
         for (int gap = n/2; gap > 0; gap /= 2)
         {
             for (int i = gap; i < n; i += 1)
@@ -383,7 +375,7 @@ int city_get_num_rides(void *stats_d,char *ID){
     return city->num_rides;
 }
 
-int city_get_info_id(void *stats_d,char *ID, short i){
+int city_get_info_id(void *stats_d,char *ID, int i){
     Stats* stats = (Stats*) stats_d;
     gconstpointer id = (gconstpointer)ID;
     gpointer cityp = g_hash_table_lookup(stats->cities, id);
@@ -391,7 +383,7 @@ int city_get_info_id(void *stats_d,char *ID, short i){
     return city->info[i]->id;
 }
 
-int city_get_info_aval(void *stats_d,char *ID, short i){
+int city_get_info_aval(void *stats_d,char *ID, int i){
     Stats* stats = (Stats*) stats_d;
     gconstpointer id = (gconstpointer)ID;
     gpointer cityp = g_hash_table_lookup(stats->cities, id);
@@ -399,7 +391,7 @@ int city_get_info_aval(void *stats_d,char *ID, short i){
     return city->info[i]->aval;
 }
 
-int city_get_info_num_trips(void *stats_d,char *ID, short i){
+int city_get_info_num_trips(void *stats_d,char *ID, int i){
     Stats* stats = (Stats*) stats_d;
     gconstpointer id = (gconstpointer)ID;
     gpointer cityp = g_hash_table_lookup(stats->cities, id);
