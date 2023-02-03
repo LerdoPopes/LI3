@@ -148,6 +148,8 @@ void query1_UI(char *ID, void *dbDrivers, void *dbUsers, void *dbStats, void *db
     int yMax, xMax;
     getmaxyx(stdscr,yMax,xMax);
     short done = 0;
+    char* person = malloc(50);
+    int size_p = 50;
     while(!done){
     if(isdigit(ID[0])){
         int id = atoi(ID);
@@ -155,7 +157,7 @@ void query1_UI(char *ID, void *dbDrivers, void *dbUsers, void *dbStats, void *db
         {
             if (driver_get_account_status(dbDrivers,id) == 'a' && driver_get_trips(dbDrivers,id) != 0)
             {
-                mvprintw(yMax/2, 22, "%s", driver_get_name(dbDrivers,id));
+                mvprintw(yMax/2, 22, "%s", driver_get_name(dbDrivers,id,person,&size_p));
                 mvprintw(yMax/2, 52, "%c", driver_get_gender(dbDrivers,id));
                 mvprintw(yMax/2,82 , "%d", driver_get_idade(dbDrivers,id)); 
                 mvprintw(yMax/2, 112, "%.3f", driver_get_aval_m(dbDrivers,id));
@@ -164,7 +166,7 @@ void query1_UI(char *ID, void *dbDrivers, void *dbUsers, void *dbStats, void *db
             }
             else if (driver_get_account_status(dbDrivers,id) == 'a' && driver_get_trips(dbDrivers,id) == 0)
             {
-                mvprintw(yMax/2, 22, "%s", driver_get_name(dbDrivers,id));
+                mvprintw(yMax/2, 22, "%s", driver_get_name(dbDrivers,id,person,&size_p));
                 mvprintw(yMax/2, 52, "%c", driver_get_gender(dbDrivers,id));
                 mvprintw(yMax/2,82 , "%d", driver_get_idade(dbDrivers,id)); 
                 mvprintw(yMax/2, 112, "%d", 0);
@@ -175,9 +177,9 @@ void query1_UI(char *ID, void *dbDrivers, void *dbUsers, void *dbStats, void *db
     }
     else{
         if(isUser(dbUsers,ID)){
-            char* user = user_get_name(dbUsers,ID);
+            user_get_name(dbUsers,ID,person,&size_p);
             if(user_get_account_status(dbUsers,ID) == 'a' && user_get_trips(dbUsers,ID) != 0){
-                mvprintw(yMax/2, 22, "%s", user);
+                mvprintw(yMax/2, 22, "%s", person);
                 mvprintw(yMax/2, 52, "%c", user_get_gender(dbUsers,ID));
                 mvprintw(yMax/2,82 , "%d", user_get_idade(dbUsers,ID)); 
                 mvprintw(yMax/2, 112, "%.3f", user_get_aval_m(dbUsers,ID));
@@ -185,7 +187,7 @@ void query1_UI(char *ID, void *dbDrivers, void *dbUsers, void *dbStats, void *db
                 mvprintw(yMax/2,172 , "%.3f", user_get_total_spent(dbUsers,ID));                
             }
             else if(user_get_account_status(dbUsers,ID) == 'a' && user_get_trips(dbUsers,ID) == 0){
-                mvprintw(yMax/2, 22, "%s", user);
+                mvprintw(yMax/2, 22, "%s", person);
                 mvprintw(yMax/2, 52, "%c", user_get_gender(dbUsers,ID));
                 mvprintw(yMax/2,82 , "%d", user_get_idade(dbUsers,ID)); 
                 mvprintw(yMax/2, 112, "%d", 0);
@@ -240,6 +242,9 @@ void query2_UI(char* N, void *dbDrivers,void *dbUsers,void *dbRides, void *dbSta
     int page = 0;
     keypad(stdscr, TRUE);
 
+    char* driver = malloc(50);
+    int size_d = 50;
+
     while (!done) {
         clear();
         
@@ -249,7 +254,7 @@ void query2_UI(char* N, void *dbDrivers,void *dbUsers,void *dbRides, void *dbSta
         if (end > m) {
             end = m;
         }
-        
+
         mvprintw(45, xMax/2 - strlen ("Page 1 / 1")/2 , "Page %d / %d", page + 1, pages);
         int a = 0;
         mvprintw(9, 27,"ID                                                           Nome                                                       Avaliacao Media                         ");
@@ -261,8 +266,9 @@ void query2_UI(char* N, void *dbDrivers,void *dbUsers,void *dbRides, void *dbSta
                 n++;
             }
             else{
+
                 mvprintw(a + 11, 22, "%012d", id);
-                mvprintw(a + 11, 81, "%s", driver_get_name(dbDrivers,id));
+                mvprintw(a + 11, 81, "%s", driver_get_name(dbDrivers,id,driver,&size_d));
                 mvprintw(a + 11, 152 ,"%.3f", driver_get_aval_m(dbDrivers,id)); 
                 a++;
                 i++;
@@ -345,16 +351,21 @@ void query3_UI(char *Num, void *dbUsers,void *dbRides, void *dbDrivers, void *db
         mvprintw(45, xMax/2 - strlen ("Page 1 / 1")/2 , "Page %d / %d", page + 1, pages);
         int a = 0;
         mvprintw(9, 27,"ID                                                           Nome                                                       Avaliacao Media                         ");
+        
+        char* User = malloc(50);
+        int size_u = 50;
 
+        char* name_u = malloc(50);
+        int size_nU = 50;
         for(int i = start; i < end;j--){
             if (a % 31 == 0) a *= 0;
-            char* User = get_n_user(dbUsers,j);
+            get_n_user(dbUsers,j,User,&size_u);
             if(user_get_account_status(dbUsers,User) != 'a'){
                 n++;
             }
             else{
                 mvprintw(a + 11, 22, "%s", User);
-                mvprintw(a + 11, 81, "%s", user_get_name(dbUsers,User));
+                mvprintw(a + 11, 81, "%s", user_get_name(dbUsers,User,name_u,&size_nU));
                 mvprintw(a + 11, 152 , "%d", user_get_total_dist(dbUsers,User)); 
                 a++;
                 i++;
@@ -501,12 +512,14 @@ void query6_UI(char* cidade, char* data1, char* data2, void *dbStats, void *dbRi
     int date1 = (int) calc_Date(data1);
     int date2 = (int) calc_Date(data2);
     int done = 0;
+    char* city = malloc(30);
+    int size = 30;
     for(int i = date1; i <= date2; i++){
         int max = date_get_num_trips(dbStats,i);
 
         for(int j = 0; j < max;j++){
             int id = date_get_ride(dbStats,i,j);
-            if(strcmp(cidade,ride_get_city(dbRides,id)) == 0){
+            if(strcmp(cidade,ride_get_city(dbRides,id,city,&size)) == 0){
                 total_distance += (double) ride_get_distance(dbRides,id);
                 num_rides++;
             }
@@ -730,12 +743,13 @@ void query9_UI(char* data1, char* data2, void *dbStats, void *dbRides, void *dbU
         mvprintw(45, xMax/2 - strlen ("Page 1 / 1")/2 , "Page %d / %d", page + 1, pages);
         int a = 0;
         mvprintw(9, 27,"ID                                                           Nome                                                       Avaliacao Media                         ");
-
+        char* cidade = malloc(30);
+        int size = 30;
         for(int n = start; n < end; n++){
             if (a % 31 == 0) a *= 0;
             dateCombo *data = conv_Days_to_Date(ride_get_date(dbRides,ride_ids[j]));
             short distancia = ride_get_distance(dbRides,ride_ids[j]);
-            char *cidade = ride_get_city(dbRides,ride_ids[j]);
+            ride_get_city(dbRides,ride_ids[j],cidade,&size);
             double tip = ride_get_tip(dbRides,ride_ids[j]);
             // fprintf(resultado,"%012d;%02d/%02d/%d;%d;%s;%.3f\n",ride_ids[n],data->day,data->month,data->year,distancia,cidade,tip);
             mvprintw(a + 11, 20,"%012d",ride_ids[j]);
