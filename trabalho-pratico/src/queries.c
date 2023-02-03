@@ -250,7 +250,7 @@ void query2_UI(char* N, void *dbDrivers,void *dbUsers,void *dbRides, void *dbSta
 
         for(int i = start; i < end;j--){
             if (a % 31 == 0) a *= 0;
-            int id = get_n_driver(dbDrivers,i);
+            int id = get_n_driver(dbDrivers,j);
             if(driver_get_account_status(dbDrivers,id) != 'a'){
                 n++;
             }
@@ -540,25 +540,79 @@ void query7(char * N, char * cidade, void *dbStats, void *dbDrivers, short i){
     fclose(resultado);
 }
 
-// void query7_UI(char * N, char * cidade, void *dbStats, void *dbDrivers, short i){
-//     int n = atoi(N);
-//     order_by_aval_m(dbStats,cidade);
-//     for(int i = 0; i < n;i++){
-//         int num_drivers = city_get_num_drivers(dbStats,cidade)-i-1;
-//         if(num_drivers == -1){
-//             break;
-//         }
-//         int id = city_get_info_id(dbStats,cidade,num_drivers);
-//         if(driver_get_account_status(dbDrivers,id) != 'a'){
-//             n++;
-//         }
-//         else{
-//             double aval_m = (double) ((double)city_get_info_aval(dbStats,cidade,num_drivers)/(double)city_get_info_num_trips(dbStats,cidade,num_drivers));
-//             fprintf(resultado,"%012d;%s;%.3f\n",id,driver_get_name(dbDrivers,id),aval_m);
-//         }
-//     }
-// }
+void query7_UI(char * N, char * cidade, void *dbStats, void *dbDrivers, void *dbUsers, void *dbRides){
+    int yMax, xMax;
+    int f = 0;
+    getmaxyx(stdscr,yMax,xMax);
+    int n = atoi(N);
+    int m = n;
+    int len = get_len_user(dbUsers);
+    int pages;
+    if (n % 30 == 0) pages = n / 30;
+    else pages = n / 30 + 1;
+    short done = 0;
+    int page = 0;
+    keypad(stdscr, TRUE);
 
+    while (!done) {
+        clear();
+        
+        int start = page * 30;
+        int j = start;
+        int end = start + 30;
+        if (end > m) {
+            end = m;
+        }
+        
+        mvprintw(45, xMax/2 - strlen ("Page 1 / 1")/2 , "Page %d / %d", page + 1, pages);
+        int a = 0;
+        mvprintw(9, 27,"ID                                                           Nome                                                       Avaliacao Media                         ");
+
+        for(int i = start; i < end;j++){
+            if (a % 31 == 0) a *= 0;
+            int num_drivers = city_get_num_drivers(dbStats,cidade)-j-1;
+            if(num_drivers == -1){
+                break;
+            }
+            int id = city_get_info_id(dbStats,cidade,num_drivers);
+            if(driver_get_account_status(dbDrivers,id) != 'a'){
+                n++;
+            }
+            else{
+                double aval_m = (double) ((double)city_get_info_aval(dbStats,cidade,num_drivers)/(double)city_get_info_num_trips(dbStats,cidade,num_drivers));
+                mvprintw(a + 11, 20,"%012d",id);
+                mvprintw(a + 11, 50,"%s",driver_get_name(dbDrivers,id));
+                mvprintw(a + 11, 80,"%.3f",aval_m);
+                a++;
+                i++;
+            }
+        }       
+       
+        mvprintw(50, xMax/2 - strlen("Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial")/2 , "Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial");
+        int ch = getch();
+        switch (ch) {
+        case 'n':
+        case 'N':
+            page++;
+            if (page >= pages) {
+            page = pages - 1;
+            }
+            break;
+        case 'b':
+        case 'B':
+            page--;
+            if (page < 0) {
+            page = 0;
+            }
+            break;
+        case 'q':
+        case 'Q':
+            done = 1;
+            clear();
+            queries_menu(dbDrivers,dbUsers,dbRides,dbStats);
+        }
+    }
+}
 void query8(char* gender, char* X, void *dbStats, void *dbRides, void *dbDrivers, void *dbUsers,short i){
     char *id = malloc(50);
     short x = atoi(X);
@@ -601,6 +655,16 @@ void query8(char* gender, char* X, void *dbStats, void *dbRides, void *dbDrivers
 
 // void query8_UI(char* gender, char* X, void *dbStats, void *dbRides, void *dbDrivers, void *dbUsers,short i){
 //     short x = atoi(X);
+//     int yMax, xMax;
+//     int f = 0;
+//     getmaxyx(stdscr,yMax,xMax);
+//     int len = get_len_user(dbUsers);
+//     int pages;
+//     if (n % 30 == 0) pages = n / 30;
+//     else pages = n / 30 + 1;
+//     short done = 0;
+//     int page = 0;
+//     keypad(stdscr, TRUE);
 //     order_by_account_age(dbStats,gender);
 //     if(strcmp(gender,"M") == 0){
 //         int nM = gender_get_nM(dbStats);
