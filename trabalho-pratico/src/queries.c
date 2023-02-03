@@ -681,7 +681,7 @@ void query8(char* gender, char* X, void *dbStats, void *dbRides, void *dbDrivers
                 ride_get_user(dbRides,id,user,&size_user);
                 user_get_name(dbUsers,user,name_user,&size_nameU);
                 if(driver_get_account_status(dbDrivers,id_driver) == 'a' && user_get_account_status(dbUsers,user) == 'a'){
-                    fprintf(resultado,"%012d;%s;%s;%s;%d;%d\n",id_driver,driver,user,name_user,driver_age,user_age);
+                    fprintf(resultado,"%012d;%s;%s;%s\n",id_driver,driver,user,name_user);
                 }
             }
         }
@@ -698,7 +698,7 @@ void query8(char* gender, char* X, void *dbStats, void *dbRides, void *dbDrivers
                 ride_get_user(dbRides,id,user,&size_user);
                 user_get_name(dbUsers,user,name_user,&size_nameU);
                 if(driver_get_account_status(dbDrivers,id_driver) == 'a' && user_get_account_status(dbUsers,user) == 'a'){
-                    fprintf(resultado,"%012d;%s;%s;%s;%d;%d\n",id_driver,driver,user,name_user,driver_age,user_age);
+                    fprintf(resultado,"%012d;%s;%s;%s\n",id_driver,driver,user,name_user);
                 }
             }
         }
