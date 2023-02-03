@@ -8,8 +8,10 @@
 #include "../Include/dates.h"
 #include "../Include/queries.h"
 #include "../Include/statistics.h"
+#include "../Include/userinterface.h"
 #include <ctype.h>
 #include <math.h>
+#include <ncurses.h>
 
 void* process_query(char** save){
     char** save2 = malloc(12*sizeof(char*));
@@ -142,6 +144,68 @@ void query1(char *ID, void *dbDrivers, void *dbUsers, short i){
     free(id);
 }
 
+void query1_UI(char *ID, void *dbDrivers, void *dbUsers, void *dbStats, void *dbRides){
+    int yMax, xMax;
+    getmaxyx(stdscr,yMax,xMax);
+    short done = 0;
+    while(!done){
+    if(isdigit(ID[0])){
+        int id = atoi(ID);
+        if(isDriver(dbDrivers,id))
+        {
+            if (driver_get_account_status(dbDrivers,id) == 'a' && driver_get_trips(dbDrivers,id) != 0)
+            {
+                mvprintw(yMax/2, 22, "%s", driver_get_name(dbDrivers,id));
+                mvprintw(yMax/2, 52, "%c", driver_get_gender(dbDrivers,id));
+                mvprintw(yMax/2,82 , "%d", driver_get_idade(dbDrivers,id)); 
+                mvprintw(yMax/2, 112, "%.3f", driver_get_aval_m(dbDrivers,id));
+                mvprintw(yMax/2, 142, "%d", driver_get_trips(dbDrivers,id));
+                mvprintw(yMax/2,172 , "%.3f", driver_get_total_spent(dbDrivers,id));
+            }
+            else if (driver_get_account_status(dbDrivers,id) == 'a' && driver_get_trips(dbDrivers,id) == 0)
+            {
+                mvprintw(yMax/2, 22, "%s", driver_get_name(dbDrivers,id));
+                mvprintw(yMax/2, 52, "%c", driver_get_gender(dbDrivers,id));
+                mvprintw(yMax/2,82 , "%d", driver_get_idade(dbDrivers,id)); 
+                mvprintw(yMax/2, 112, "%d", 0);
+                mvprintw(yMax/2, 142, "%d", 0);
+                mvprintw(yMax/2,172 , "%d", 0);                
+            }
+        }
+    }
+    else{
+        if(isUser(dbUsers,ID)){
+            char* user = user_get_name(dbUsers,ID);
+            if(user_get_account_status(dbUsers,ID) == 'a' && user_get_trips(dbUsers,ID) != 0){
+                mvprintw(yMax/2, 22, "%s", user);
+                mvprintw(yMax/2, 52, "%c", user_get_gender(dbUsers,ID));
+                mvprintw(yMax/2,82 , "%d", user_get_idade(dbUsers,ID)); 
+                mvprintw(yMax/2, 112, "%.3f", user_get_aval_m(dbUsers,ID));
+                mvprintw(yMax/2, 142, "%d", user_get_trips(dbUsers,ID));
+                mvprintw(yMax/2,172 , "%.3f", user_get_total_spent(dbUsers,ID));                
+            }
+            else if(user_get_account_status(dbUsers,ID) == 'a' && user_get_trips(dbUsers,ID) == 0){
+                mvprintw(yMax/2, 22, "%s", user);
+                mvprintw(yMax/2, 52, "%c", user_get_gender(dbUsers,ID));
+                mvprintw(yMax/2,82 , "%d", user_get_idade(dbUsers,ID)); 
+                mvprintw(yMax/2, 112, "%d", 0);
+                mvprintw(yMax/2, 142, "%d", 0);
+                mvprintw(yMax/2,172 , "%d", 0);                
+            } 
+        }
+    }
+    mvprintw(50, xMax/2 - strlen("Pressione 'Q' para voltar ao Menu Inicial")/2 , "Pressione 'Q' para voltar ao Menu Inicial");
+    int ch = getch();
+    switch (ch) {
+    case 'q':
+    case 'Q':
+        done = 1;
+        clear();
+        queries_menu(dbDrivers,dbUsers,dbRides,dbStats);
+    }
+    }
+}
+
 void query2(char* N, void *dbDrivers, short i){
     char *id = malloc(50);
     sprintf(id, "./Resultados/command%d_output.txt", i);
@@ -163,6 +227,73 @@ void query2(char* N, void *dbDrivers, short i){
     fclose(resultado);
 }
 
+void query2_UI(char* N, void *dbDrivers,void *dbUsers,void *dbRides, void *dbStats){
+    int n = atoi(N);
+    int m = n;
+    int len = driver_get_len(dbDrivers);
+    int yMax, xMax;
+    getmaxyx(stdscr,yMax,xMax);
+    int pages;
+    if (n % 30 == 0) pages = n / 30;
+    else pages = n / 30 + 1;
+    short done = 0;
+    int page = 0;
+    keypad(stdscr, TRUE);
+
+    while (!done) {
+        clear();
+        
+        int start = page * 30;
+        int j = (len-1) - start;
+        int end = start + 30;
+        if (end > m) {
+            end = m;
+        }
+        
+        mvprintw(45, xMax/2 - strlen ("Page 1 / 1")/2 , "Page %d / %d", page + 1, pages);
+        int a = 0;
+        mvprintw(9, 27,"ID                                                           Nome                                                       Avaliacao Media                         ");
+
+        for(int i = start; i < end;j--){
+            if (a % 31 == 0) a *= 0;
+            int id = get_n_driver(dbDrivers,i);
+            if(driver_get_account_status(dbDrivers,id) != 'a'){
+                n++;
+            }
+            else{
+                mvprintw(a + 11, 22, "%012d", id);
+                mvprintw(a + 11, 81, "%s", driver_get_name(dbDrivers,id));
+                mvprintw(a + 11, 152 ,"%.3f", driver_get_aval_m(dbDrivers,id)); 
+                a++;
+                i++;
+            }      
+        }       
+       
+        mvprintw(50, xMax/2 - strlen("Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial")/2 , "Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial");
+        int ch = getch();
+        switch (ch) {
+        case 'n':
+        case 'N':
+            page++;
+            if (page >= pages) {
+            page = pages - 1;
+            }
+            break;
+        case 'b':
+        case 'B':
+            page--;
+            if (page < 0) {
+            page = 0;
+            }
+            break;
+        case 'q':
+        case 'Q':
+            done = 1;
+            clear();
+            queries_menu(dbDrivers,dbUsers,dbRides,dbStats);
+        }
+    }    
+}
 
 void query3(char *Num, void *dbUsers, short i){
     char *id = malloc(50);
@@ -187,6 +318,75 @@ void query3(char *Num, void *dbUsers, short i){
     fclose(resultado);
 }
 
+void query3_UI(char *Num, void *dbUsers,void *dbRides, void *dbDrivers, void *dbStats){
+    int yMax, xMax;
+    int f = 0;
+    getmaxyx(stdscr,yMax,xMax);
+    int n = atoi(Num);
+    int m = n;
+    int len = get_len_user(dbUsers);
+    int pages;
+    if (n % 30 == 0) pages = n / 30;
+    else pages = n / 30 + 1;
+    short done = 0;
+    int page = 0;
+    keypad(stdscr, TRUE);
+
+    while (!done) {
+        clear();
+        
+        int start = page * 30;
+        int j = (len-1) - start;
+        int end = start + 30;
+        if (end > m) {
+            end = m;
+        }
+        
+        mvprintw(45, xMax/2 - strlen ("Page 1 / 1")/2 , "Page %d / %d", page + 1, pages);
+        int a = 0;
+        mvprintw(9, 27,"ID                                                           Nome                                                       Avaliacao Media                         ");
+
+        for(int i = start; i < end;j--){
+            if (a % 31 == 0) a *= 0;
+            char* User = get_n_user(dbUsers,j);
+            if(user_get_account_status(dbUsers,User) != 'a'){
+                n++;
+            }
+            else{
+                mvprintw(a + 11, 22, "%s", User);
+                mvprintw(a + 11, 81, "%s", user_get_name(dbUsers,User));
+                mvprintw(a + 11, 152 , "%d", user_get_total_dist(dbUsers,User)); 
+                a++;
+                i++;
+            }      
+        }       
+       
+        mvprintw(50, xMax/2 - strlen("Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial")/2 , "Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial");
+        int ch = getch();
+        switch (ch) {
+        case 'n':
+        case 'N':
+            page++;
+            if (page >= pages) {
+            page = pages - 1;
+            }
+            break;
+        case 'b':
+        case 'B':
+            page--;
+            if (page < 0) {
+            page = 0;
+            }
+            break;
+        case 'q':
+        case 'Q':
+            done = 1;
+            clear();
+            queries_menu(dbDrivers,dbUsers,dbRides,dbStats);
+        }
+    }
+}
+
 void query4(char *Cidade,void * dbStats,short i){
     char *id = malloc(50);
     sprintf(id, "./Resultados/command%d_output.txt", i);
@@ -195,6 +395,26 @@ void query4(char *Cidade,void * dbStats,short i){
         fprintf(resultado,"%.3f\n",(double)(city_get_money(dbStats,Cidade)/city_get_num_rides(dbStats,Cidade)));
     }
     fclose(resultado);
+}
+
+void query4_UI(char *Cidade,void * dbStats,void *dbUsers, void *dbRides, void *dbDrivers){
+    int yMax, xMax;
+    getmaxyx(stdscr,yMax,xMax);
+    short done = 0;
+    while(!done){
+        if(cityValid(dbStats,Cidade)){
+            mvprintw(yMax/2,xMax/2,"%.3f\n", (double)(city_get_money(dbStats,Cidade)/city_get_num_rides(dbStats,Cidade)));
+        }
+        mvprintw(50, xMax/2 - strlen("Pressione 'Q' para voltar ao Menu Inicial")/2 , "Pressione 'Q' para voltar ao Menu Inicial");
+        int ch = getch();
+        switch (ch) {
+        case 'q':
+        case 'Q':
+            done = 1;
+            clear();
+            queries_menu(dbDrivers,dbUsers,dbRides,dbStats);
+        }
+    }
 }
 
 void query5(char* data1, char* data2, void *dbStats,short i){
@@ -213,6 +433,34 @@ void query5(char* data1, char* data2, void *dbStats,short i){
         fprintf(resultado,"%.3f\n",(double)(total_money/num_rides));
     }
     fclose(resultado);
+}
+
+void query5_UI(char* data1, char* data2, void *dbStats,void *dbUsers, void *dbRides,void *dbDrivers){
+    int yMax, xMax;
+    getmaxyx(stdscr,yMax,xMax);
+    int num_rides = 0;
+    double total_money = 0;
+    int date1 = (int) calc_Date(data1);
+    int date2 = (int) calc_Date(data2);
+    short done = 0;
+    for(int i = date1; i <= date2; i++){
+        total_money += date_get_money(dbStats,i);
+        num_rides += date_get_num_trips(dbStats,i);
+    }
+    while(!done){
+        if(num_rides > 0){
+            mvprintw(yMax/2,xMax/2,"%.3f\n", (double)(total_money/num_rides));
+        }
+        mvprintw(50, xMax/2 - strlen("Pressione 'Q' para voltar ao Menu Inicial")/2 , "Pressione 'Q' para voltar ao Menu Inicial");
+            int ch = getch();
+            switch (ch) {
+            case 'q':
+            case 'Q':
+                done = 1;
+                clear();
+                queries_menu(dbDrivers,dbUsers,dbRides,dbStats);
+            }
+    }
 }
 
 void query6(char* cidade, char* data1, char* data2, void *dbStats, void *dbRides,short i){
@@ -245,10 +493,45 @@ void query6(char* cidade, char* data1, char* data2, void *dbStats, void *dbRides
     fclose(resultado);
 }
 
-void query7(char * N, char * cidade, void *dbStats, void *dbDrivers, short a){
+void query6_UI(char* cidade, char* data1, char* data2, void *dbStats, void *dbRides, void *dbUsers, void *dbDrivers){
+    int yMax, xMax;
+    getmaxyx(stdscr,yMax,xMax);
+    int num_rides = 0;
+    double total_distance = 0;
+    int date1 = (int) calc_Date(data1);
+    int date2 = (int) calc_Date(data2);
+    int done = 0;
+    for(int i = date1; i <= date2; i++){
+        int max = date_get_num_trips(dbStats,i);
+
+        for(int j = 0; j < max;j++){
+            int id = date_get_ride(dbStats,i,j);
+            if(strcmp(cidade,ride_get_city(dbRides,id)) == 0){
+                total_distance += (double) ride_get_distance(dbRides,id);
+                num_rides++;
+            }
+        }
+    }
+    while(!done){
+    if(num_rides){
+        mvprintw(yMax/2,xMax/2,"%.3f\n", (double)(total_distance/num_rides));
+    }
+    mvprintw(50, xMax/2 - strlen("Pressione 'Q' para voltar ao Menu Inicial")/2 , "Pressione 'Q' para voltar ao Menu Inicial");
+            int ch = getch();
+            switch (ch) {
+            case 'q':
+            case 'Q':
+                done = 1;
+                clear();
+                queries_menu(dbDrivers,dbUsers,dbRides,dbStats);
+            }
+        }
+}
+
+void query7(char * N, char * cidade, void *dbStats, void *dbDrivers, short i){
     char *id = malloc(50);
     int n = atoi(N);
-    sprintf(id, "./Resultados/command%d_output.txt", a);
+    sprintf(id, "./Resultados/command%d_output.txt", i);
     FILE *resultado = fopen(id, "w");
     char* driver = malloc(50);
     int size_d = 50;
@@ -269,6 +552,25 @@ void query7(char * N, char * cidade, void *dbStats, void *dbDrivers, short a){
     }
     fclose(resultado);
 }
+
+// void query7_UI(char * N, char * cidade, void *dbStats, void *dbDrivers, short i){
+//     int n = atoi(N);
+//     order_by_aval_m(dbStats,cidade);
+//     for(int i = 0; i < n;i++){
+//         int num_drivers = city_get_num_drivers(dbStats,cidade)-i-1;
+//         if(num_drivers == -1){
+//             break;
+//         }
+//         int id = city_get_info_id(dbStats,cidade,num_drivers);
+//         if(driver_get_account_status(dbDrivers,id) != 'a'){
+//             n++;
+//         }
+//         else{
+//             double aval_m = (double) ((double)city_get_info_aval(dbStats,cidade,num_drivers)/(double)city_get_info_num_trips(dbStats,cidade,num_drivers));
+//             fprintf(resultado,"%012d;%s;%.3f\n",id,driver_get_name(dbDrivers,id),aval_m);
+//         }
+//     }
+// }
 
 void query8(char* gender, char* X, void *dbStats, void *dbRides, void *dbDrivers, void *dbUsers,short i){
     char *id = malloc(50);
@@ -320,6 +622,41 @@ void query8(char* gender, char* X, void *dbStats, void *dbRides, void *dbDrivers
     fclose(resultado);
 }
 
+// void query8_UI(char* gender, char* X, void *dbStats, void *dbRides, void *dbDrivers, void *dbUsers,short i){
+//     short x = atoi(X);
+//     order_by_account_age(dbStats,gender);
+//     if(strcmp(gender,"M") == 0){
+//         int nM = gender_get_nM(dbStats);
+//         for(int i = nM-1; i > 0; i--){
+//             short driver_age = male_driver_get_age(dbStats,i);
+//             short user_age = male_user_get_age(dbStats,i);
+//             if(driver_age < x || user_age < x){
+//                 break;
+//             }
+//             int id = ride_male_get_id(dbStats,i);
+//             int id_driver = ride_get_driver(dbRides,id);
+//             char *name_driver = driver_get_name(dbDrivers,id_driver);
+//             char *username_user = ride_get_user(dbRides,id);
+//             char *name_user = user_get_name(dbUsers,username_user);
+//             fprintf(resultado,"%d;%s;%s;%s\n",id_driver,name_driver,username_user,name_user);
+//         }
+//     }
+//     else if(strcmp(gender,"F") == 0){ 
+//         int nF = gender_get_nF(dbStats);
+//         for(int i = 0; i < nF; i++){
+//             short driver_age = shemale_driver_get_age(dbStats,i);
+//             short user_age = shemale_user_get_age(dbStats,i);
+//             if(driver_age >= x && user_age >= x){
+//                 int id = ride_shemale_get_id(dbStats,i);
+//                 int id_driver = ride_get_driver(dbRides,id);
+//                 char *name_driver = driver_get_name(dbDrivers,id_driver);
+//                 char *username_user = ride_get_user(dbRides,id);
+//                 char *name_user = user_get_name(dbUsers,username_user);
+//                 fprintf(resultado,"%d;%s;%s;%s\n",id_driver,name_driver,username_user,name_user);
+//             }
+//         }
+//     }
+// }
 
 void query9(char* data1, char* data2, void *dbStats, void *dbRides,short i){
     char *id = malloc(50);
@@ -351,6 +688,102 @@ void query9(char* data1, char* data2, void *dbStats, void *dbRides,short i){
         fprintf(resultado,"%012d;%02d/%02d/%d;%d;%s;%.3f\n",ride_ids[n],data->day,data->month,data->year,distancia,city,tip);
     }
     fclose(resultado);
+}
+
+void query9_UI(char* data1, char* data2, void *dbStats, void *dbRides, void *dbUsers, void *dbDrivers){
+    int yMax, xMax;
+    getmaxyx(stdscr,yMax,xMax);
+    int num = 0;
+    int current = 256;
+    int *ride_ids = malloc(sizeof(int) * current);
+    int date1 = (int) calc_Date(data1);
+    int date2 = (int) calc_Date(data2);
+    for(int i = date1; i <= date2; i++){
+        int max = date_get_num_trips(dbStats,i);
+        for(int j = 0; j < max;j++){
+            int id = date_get_ride(dbStats,i,j);
+            if(num + 1 == current) ride_ids = realloc(ride_ids, (current *= 2) * sizeof(int)); 
+            if(ride_get_tip(dbRides,id) != 0){
+                ride_ids[num++] = id;
+            }
+        }
+    }
+    order_by_distance(dbRides,ride_ids,num);
+    int pages;
+    if (num % 30 == 0) pages = num / 30;
+    else pages = num / 30 + 1;
+    int done = 0;
+    int page = 0;
+
+    keypad(stdscr, TRUE);
+
+    while (!done) {
+        clear();
+        
+        int start = page * 30;
+        int j = (num-1) - start;
+        int end = start + 30;
+        if (end > num) {
+            end = num;
+        }
+        
+        mvprintw(45, xMax/2 - strlen ("Page 1 / 1")/2 , "Page %d / %d", page + 1, pages);
+        int a = 0;
+        mvprintw(9, 27,"ID                                                           Nome                                                       Avaliacao Media                         ");
+
+        for(int n = start; n < end; n++){
+            if (a % 31 == 0) a *= 0;
+            dateCombo *data = conv_Days_to_Date(ride_get_date(dbRides,ride_ids[j]));
+            short distancia = ride_get_distance(dbRides,ride_ids[j]);
+            char *cidade = ride_get_city(dbRides,ride_ids[j]);
+            double tip = ride_get_tip(dbRides,ride_ids[j]);
+            // fprintf(resultado,"%012d;%02d/%02d/%d;%d;%s;%.3f\n",ride_ids[n],data->day,data->month,data->year,distancia,cidade,tip);
+            mvprintw(a + 11, 20,"%012d",ride_ids[j]);
+            mvprintw(a + 11, 60,"%02d/%02d/%d",data->day,data->month,data->year);
+            mvprintw(a + 11, 100,"%d",distancia);
+            mvprintw(a + 11, 140,"%s",cidade);
+            mvprintw(a + 11, 180,"%.3f",tip);
+            a++;
+            j--;
+        }       
+       
+        // for (int i = start; i < end; i++) {
+        //     if (a % 31 == 0) a *= 0;
+        //     mvprintw(a + 11, 22, "%012d", get_id_driver_top_N(catalog_drivers, i));
+        //     mvprintw(a + 11, 81, "%s", get_name_driver_top_N(catalog_drivers, i));
+        //     mvprintw(a + 11, 152 , "%.3f", get_aval_med_top_N(catalog_drivers, i));
+        //     mvprintw(a+11, 61, "|");
+        //     mvprintw(a+11, 122, "|");
+        //     mvprintw(a+11, 183, "|");
+        //     a++;
+        // }
+        
+        mvprintw(50, xMax/2 - strlen("Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial")/2 , "Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial");
+        int ch = getch();
+        switch (ch) {
+        case 'n':
+        case 'N':
+            page++;
+            if (page >= pages) {
+            page = pages - 1;
+            }
+            break;
+        case 'b':
+        case 'B':
+            page--;
+            if (page < 0) {
+            page = 0;
+            }
+            break;
+        case 'q':
+        case 'Q':
+            done = 1;
+            clear();
+            queries_menu(dbDrivers,dbUsers,dbRides,dbStats);
+            // queries_menu(x, y, catalog_users, catalog_drivers, catalog_rides, catalog_cities);
+        }
+    }
+    
 }
 
 // for (size_t i = n-1; i>n-N-1; i--)
