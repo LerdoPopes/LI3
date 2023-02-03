@@ -205,9 +205,6 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
             }
         }
 
-        //free(city);
-        //free(user);
-
     }
     for (size_t i = 0; i < city_counter; i++)
     {
@@ -226,6 +223,56 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
     free(user);
     free(city);
     return stats;
+}
+
+
+// typedef struct each_day{
+    
+//     int day;
+//     int num_trips;
+//     int size;
+//     double money;
+//     int* rides;
+
+// } eachDay;
+
+
+// typedef struct Statistics{
+//     GHashTable* cities;
+//     struct city** cities_p;
+
+//     GHashTable* dates;
+//     eachDay** dates_p;
+
+//     int nM;
+//     int nF;
+//     Sexo* males;
+//     Sexo* shemales; 
+//     int order;
+// } Stats;
+void free_Stats(void* info){
+    Stats* stats = (Stats*) info;
+    for(int i = 0; stats->cities_p[i];i++){
+        for(int j = 0; stats->cities_p[i]->info[j];j++){
+            free(stats->cities_p[i]->info[j]);
+        }
+        free(stats->cities_p[i]->city_name);
+        free(stats->cities_p[i]->info);
+        free(stats->cities_p[i]);
+    }
+    free(stats->cities_p);
+    g_hash_table_destroy(stats->cities);
+
+    for (size_t i = 0;stats->dates_p[i]; i++)
+    {
+        free(stats->dates_p[i]->rides);
+    }
+    free(stats->dates_p);
+    g_hash_table_destroy(stats->dates);
+    
+    free(stats->males);
+    free(stats->shemales);
+    free(stats);
 }
 
 void *order_by_account_age(void *info, char *gender, void* dbUsers, void* dbDrivers, void* dbRides)
@@ -331,6 +378,8 @@ void *order_by_aval_m(void *info, char *cidade)
 //     int _b = * (int*) b;
 //     return (_a > _b) - (_a < _b);
 // }
+
+
 
 void *order_by_distance(void *dbRides,int *bla, int Num)
 {

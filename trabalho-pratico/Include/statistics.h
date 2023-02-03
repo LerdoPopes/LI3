@@ -14,9 +14,7 @@ typedef struct Statistics Stats;
 
 void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers);
 
-void print_braga(void* STATS);
-
-void print_date(void* STATS);
+void free_Stats(void* info);
 
 double city_get_money(void *stats_d,char *ID);
 
