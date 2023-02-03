@@ -107,7 +107,7 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
     int n = get_len_ride(dbRides);
     int size_cities = 16;
     
-    Stats* stats = malloc(sizeof(Stats*));
+    Stats* stats = malloc(sizeof(Stats));
     GHashTable* cities_hashtable = g_hash_table_new(g_str_hash,g_str_equal);
     struct city** cities= malloc(sizeof(struct city*)*size_cities);
     int city_counter= 0;
