@@ -36,8 +36,8 @@ coiso: $(PNTO) Resultados
 compile: coiso Resultados
 	./programa-principal
 
-#teste: Resultados
-#	$(CC) teste/testes.c $(PNTC) -lncurses -g -o programa-teste `pkg-config --libs glib-2.0` -lncurses
+teste: Resultados
+	$(CC) teste/testes.c $(PNTC) -lncurses -g -o programa-teste `pkg-config --libs glib-2.0` -lncurses
 
 objetos:
 	mkdir -p $@
@@ -49,5 +49,4 @@ $(DIREC)%.o: src/.c | objetos
 	$(CC) -o "$@" -c "$<"
 
 clean:
-	rm -rf $(DIREC) programa-principal Resultados 
-#acrescentar teste
+	rm -rf $(DIREC) programa-principal Resultados teste

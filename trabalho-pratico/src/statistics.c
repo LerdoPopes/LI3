@@ -263,7 +263,7 @@ void free_Stats(void* info){
         
         for(int j = 0; stats->cities_p[i]->info[j];j++){
             
-            free(stats->cities_p[i]->info[j]);
+            //free(stats->cities_p[i]->info[j]);
         }
         free(stats->cities_p[i]->city_name);
         free(stats->cities_p[i]->info);
