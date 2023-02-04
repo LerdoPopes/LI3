@@ -54,12 +54,12 @@ void answer_queries(void** input, void* USERS, void* DRIVERS, void* RIDES, void*
                 clock_t end2 = clock();
                 printf("Query 2: %f\n",((float)(end2 - start2))/CLOCKS_PER_SEC);
                 break;
-            case(3):
-                clock_t start3 = clock();
-                query3(INPUT[i][1],USERS,j);
-                clock_t end3 = clock();
-                printf("Query 3: %f\n",((float)(end3 - start3))/CLOCKS_PER_SEC);
-                break;
+            //case(3):
+            //    clock_t start3 = clock();
+            //    query3(INPUT[i][1],USERS,j);
+            //    clock_t end3 = clock();
+            //    printf("Query 3: %f\n",((float)(end3 - start3))/CLOCKS_PER_SEC);
+            //    break;
             case(4):
                 clock_t start4 = clock();
                 query4(INPUT[i][1],STATS,j);
@@ -114,14 +114,13 @@ void query1(char *ID, void *dbDrivers, void *dbUsers, short i){
             {
                 driver_get_name(dbDrivers,id,driver,&size_d);
                 fprintf(resultado, "%s;%c;%d;%.3f;%d;%.3f\n",driver, driver_get_gender(dbDrivers,id), driver_get_idade(dbDrivers,id), driver_get_aval_m(dbDrivers,id), driver_get_trips(dbDrivers,id), driver_get_total_spent(dbDrivers,id));
-                free(driver);
             }
             else if (driver_get_account_status(dbDrivers,id) == 'a' && driver_get_trips(dbDrivers,id) == 0)
             {
                 driver_get_name(dbDrivers,id,driver,&size_d);
                 fprintf(resultado, "%s;%c;%d;%d;%d;%d\n", driver, driver_get_gender(dbDrivers,id), driver_get_idade(dbDrivers,id), 0, 0, 0);
-                free(driver);
             }
+            free(driver);
         }
     }
     else{
@@ -131,13 +130,12 @@ void query1(char *ID, void *dbDrivers, void *dbUsers, short i){
             if(user_get_account_status(dbUsers,ID) == 'a' && user_get_trips(dbUsers,ID) != 0){
                 user_get_name(dbUsers,ID,user,&size_user);
                 fprintf(resultado,"%s;%c;%d;%.3f;%d;%.3f\n",user,user_get_gender(dbUsers,ID),user_get_idade(dbUsers,ID),user_get_aval_m(dbUsers,ID),user_get_trips(dbUsers,ID),user_get_total_spent(dbUsers,ID));
-                free(user);
             }
             else if(user_get_account_status(dbUsers,ID) == 'a' && user_get_trips(dbUsers,ID) == 0){
                 user_get_name(dbUsers,ID,user,&size_user);
                 fprintf(resultado,"%s;%c;%d;%d;%d;%d\n",user,user_get_gender(dbUsers,ID),user_get_idade(dbUsers,ID),0,0,0);
-                free(user);
             } 
+            free(user);
         }
     }
     fclose(resultado);
@@ -222,14 +220,16 @@ void query2(char* N, void *dbDrivers, short i){
     int size_d = 50;
     for (size_t i = len-1; i>len-n-1; i--)
     {
-        int id = get_n_driver(dbDrivers,i);
-        if(driver_get_account_status(dbDrivers,id) != 'a'){
+        int idm = get_n_driver(dbDrivers,i);
+        if(driver_get_account_status(dbDrivers,idm) != 'a'){
             n++;
         }
         else{
-            fprintf(resultado,"%012d;%s;%.3f\n",id,driver_get_name(dbDrivers,id,driver,&size_d),driver_get_aval_m(dbDrivers,id));
+            fprintf(resultado,"%012d;%s;%.3f\n",idm,driver_get_name(dbDrivers,idm,driver,&size_d),driver_get_aval_m(dbDrivers,idm));
         }        
     }
+    free(id);
+    free(driver);
     fclose(resultado);
 }
 
@@ -329,6 +329,7 @@ void query3(char *Num, void *dbUsers, short i){
     fclose(resultado);
     free(username);
     free(name);
+    free(id);
 }
 
 void query3_UI(char *Num, void *dbUsers,void *dbRides, void *dbDrivers, void *dbStats){
@@ -415,6 +416,7 @@ void query4(char *Cidade,void * dbStats,short i){
     if(cityValid(dbStats,Cidade)){
         fprintf(resultado,"%.3f\n",(double)(city_get_money(dbStats,Cidade)/city_get_num_rides(dbStats,Cidade)));
     }
+    free(id);
     fclose(resultado);
 }
 
@@ -453,6 +455,7 @@ void query5(char* data1, char* data2, void *dbStats,short i){
     if(num_rides > 0){
         fprintf(resultado,"%.3f\n",(double)(total_money/num_rides));
     }
+    free(id);
     fclose(resultado);
 }
 
@@ -512,6 +515,7 @@ void query6(char* cidade, char* data1, char* data2, void *dbStats, void *dbRides
         fprintf(resultado,"%.3f\n",(double)(total_distance/num_rides));
     }
     free(ride_c);
+    free(id);
     fclose(resultado);
 }
 
@@ -576,6 +580,7 @@ void query7(char * N, char * cidade, void *dbStats, void *dbDrivers, short i){
         }
     }
     free(driver);
+    free(id);
     fclose(resultado);
 }
 
@@ -706,6 +711,7 @@ void query8(char* gender, char* X, void *dbStats, void *dbRides, void *dbDrivers
     free(user);
     free(name_user);
     free(driver);
+    free(id);
     fclose(resultado);
 }
 
@@ -895,10 +901,10 @@ void query9(char* data1, char* data2, void *dbStats, void *dbRides,short i){
     for(int i = date1; i <= date2; i++){
         int max = date_get_num_trips(dbStats,i);
         for(int j = 0; j < max;j++){
-            int id = date_get_ride(dbStats,i,j);
+            int idm = date_get_ride(dbStats,i,j);
             if(num + 1 == current) ride_ids = realloc(ride_ids, (current *= 2) * sizeof(int)); 
-            if(ride_get_tip(dbRides,id) != 0){
-                ride_ids[num++] = id;
+            if(ride_get_tip(dbRides,idm) != 0){
+                ride_ids[num++] = idm;
             }
         }
     }
@@ -906,12 +912,16 @@ void query9(char* data1, char* data2, void *dbStats, void *dbRides,short i){
     char* city = malloc(30);
     int size_city = 30;
     for(int n = num - 1; n >= 0; n--){
-        dateCombo *data = conv_Days_to_Date(ride_get_date(dbRides,ride_ids[n]));
+        dateCombo *ndata = conv_Days_to_Date(ride_get_date(dbRides,ride_ids[n]));
         short distancia = ride_get_distance(dbRides,ride_ids[n]);
         ride_get_city(dbRides,ride_ids[n],city,&size_city);
         double tip = ride_get_tip(dbRides,ride_ids[n]);
-        fprintf(resultado,"%012d;%02d/%02d/%d;%d;%s;%.3f\n",ride_ids[n],data->day,data->month,data->year,distancia,city,tip);
+        fprintf(resultado,"%012d;%02d/%02d/%d;%d;%s;%.3f\n",ride_ids[n],ndata->day,ndata->month,ndata->year,distancia,city,tip);
+        free(ndata);
     }
+    free(ride_ids);
+    free(city);
+    free(id);
     fclose(resultado);
 }
 

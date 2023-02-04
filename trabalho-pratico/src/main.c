@@ -110,6 +110,7 @@ int main(int argc, char **argv){
     free_rides(RIDES);
     free_driver(DRIVERS);
     free_user(USERS);
+    free_Stats(STATS);
     free_queries(INPUT);
     free(Input);
     clock_t time = clock();

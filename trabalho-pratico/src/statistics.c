@@ -90,9 +90,11 @@ typedef struct each_day{
 typedef struct Statistics{
     GHashTable* cities;
     struct city** cities_p;
+    int num_c;
 
     GHashTable* dates;
     eachDay** dates_p;
+    int num_d;
 
     int nM;
     int nF;
@@ -215,8 +217,10 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
     order_by_aval(dbDrivers);
     stats->cities = cities_hashtable;
     stats->cities_p = cities;
+    stats->num_c = city_counter;
     stats->dates = dates_hashtable;
     stats->dates_p = eachday;
+    stats->num_d = dates_counter;
     stats->males = males;
     stats->shemales = shemales;
     stats->nF = num_F;
@@ -255,8 +259,10 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
 // } Stats;
 void free_Stats(void* info){
     Stats* stats = (Stats*) info;
-    for(int i = 0; stats->cities_p[i];i++){
+    for(int i = 0; i < stats->num_c;i++){
+        
         for(int j = 0; stats->cities_p[i]->info[j];j++){
+            
             free(stats->cities_p[i]->info[j]);
         }
         free(stats->cities_p[i]->city_name);
@@ -266,16 +272,17 @@ void free_Stats(void* info){
     free(stats->cities_p);
     g_hash_table_destroy(stats->cities);
 
-    for (size_t i = 0;stats->dates_p[i]; i++)
+    for (int i = 0;i<stats->num_d; i++)
     {
         free(stats->dates_p[i]->rides);
+        free(stats->dates_p[i]);
     }
     free(stats->dates_p);
     g_hash_table_destroy(stats->dates);
-    
     free(stats->males);
     free(stats->shemales);
     free(stats);
+
 }
 
 void *order_by_account_age(void *info, char *gender, void* dbUsers, void* dbDrivers, void* dbRides)
@@ -303,7 +310,7 @@ void *order_by_account_age(void *info, char *gender, void* dbUsers, void* dbDriv
                     for (j = i; j >= gap 
                     && ((Gender[j - gap].idade_d)>driver_age 
                     || ((Gender[j - gap].idade_d)==driver_age && (Gender[j - gap].idade_u)>user_age)
-                    || ((Gender[j - gap].idade_d)==driver_age && (Gender[j - gap].idade_u)==user_age && (Gender[j - gap].id) < id)); j -= gap)
+                    || ((Gender[j - gap].idade_d)==driver_age && (Gender[j - gap].idade_u)==user_age && (Gender[j - gap].id) > id)); j -= gap)
                         Gender[j] = Gender[j - gap];
 
                     Gender[j] = genero;
@@ -333,7 +340,7 @@ void *order_by_account_age(void *info, char *gender, void* dbUsers, void* dbDriv
                     for (j = i; j >= gap 
                     && ((Gender[j - gap].idade_d)>driver_age 
                     || ((Gender[j - gap].idade_d)==driver_age && (Gender[j - gap].idade_u)>user_age)
-                    || ((Gender[j - gap].idade_d)==driver_age && (Gender[j - gap].idade_u)==user_age && (Gender[j - gap].id) < id)); j -= gap)
+                    || ((Gender[j - gap].idade_d)==driver_age && (Gender[j - gap].idade_u)==user_age && (Gender[j - gap].id) > id)); j -= gap)
                         Gender[j] = Gender[j - gap];
 
                     Gender[j] = genero;
