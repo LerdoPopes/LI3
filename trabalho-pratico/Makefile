@@ -28,10 +28,10 @@ PNTC=$(wildcard src/* .c)
 PNTH=$(wildcard Include/* .h)
 FLAGS= -IInclude `pkg-config --cflags glib-2.0`
 DIREC:=objetos/
-PNTO=$(PNTH:src/%.c=$(DIREC)%.o)
+PNTO=$(PNTC:src/%.c=$(DIREC)%.o)
 
 coiso: $(PNTO) Resultados teste
-	$(CC) $(PNTC) $(FLAGS) -lncurses -g -o programa-principal `pkg-config --libs glib-2.0` -lncurses
+	$(CC) $(PNTC) $(FLAGS) -lncurses -g -o programa-principal `pkg-config --libs glib-2.0` -lncurses 
 
 compile: coiso Resultados
 	./programa-principal
@@ -45,8 +45,8 @@ objetos:
 Resultados:
 	mkdir -p $@
 
-$(DIREC)%.o: src/.c | objetos
-	$(CC) -o "$@" -c "$<"
+$(DIREC)%.o: src/%.c | objetos
+	$(CC) $(FLAGS) -o "$@" -c "$<" `pkg-config --libs glib-2.0` 
 
 clean:
-	rm -rf $(DIREC) programa-principal Resultados programa-teste
+	rm -rf $(DIREC) programa-principal Resultados programa-teste resultados_testes.txt
