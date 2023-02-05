@@ -30,7 +30,7 @@ FLAGS= -IInclude `pkg-config --cflags glib-2.0`
 DIREC:=objetos/
 PNTO=$(PNTH:src/%.c=$(DIREC)%.o)
 
-coiso: $(PNTO) Resultados
+coiso: $(PNTO) Resultados teste
 	$(CC) $(PNTC) $(FLAGS) -lncurses -g -o programa-principal `pkg-config --libs glib-2.0` -lncurses
 
 compile: coiso Resultados
