@@ -198,7 +198,7 @@ void query1_UI(char *ID, void *dbDrivers, void *dbUsers, void *dbStats, void *db
             } 
         }
     } 
-    mvprintw(50, xMax/2 - strlen("Pressione 'Q' para voltar ao Menu Inicial")/2 , "Pressione 'Q' para voltar ao Menu Inicial");
+    mvprintw(50, xMax/2 - strlen("Pressione 'Q' para voltar ao Menu Inicial, 'Ctrl + C' para sair")/2 , "Pressione 'Q' para voltar ao Menu Inicial, 'Ctrl + C' para sair");
     int ch = getch();
     switch (ch) {
     case 'q':
@@ -254,6 +254,9 @@ void query2_UI(char* N, void *dbDrivers,void *dbUsers,void *dbRides, void *dbSta
         
         int start = page * 30;
         int j = (len-1) - start;
+        if(page > 0){
+            j = (len-1) - (start + page);
+        }
         int end = start + 30;
         if (end > m) {
             end = m;
@@ -279,7 +282,7 @@ void query2_UI(char* N, void *dbDrivers,void *dbUsers,void *dbRides, void *dbSta
             }      
         }       
        
-        mvprintw(50, xMax/2 - strlen("Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial")/2 , "Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial");
+        mvprintw(50, xMax/2 - strlen("Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial, 'Ctrl + C' para sair")/2 , "Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial, 'Ctrl + C' para sair");
         int ch = getch();
         switch (ch) {
         case 'n':
@@ -381,7 +384,7 @@ void query3_UI(char *Num, void *dbUsers,void *dbRides, void *dbDrivers, void *db
             }      
         }       
        
-        mvprintw(50, xMax/2 - strlen("Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial")/2 , "Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial");
+        mvprintw(50, xMax/2 - strlen("Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial, 'Ctrl + C' para sair")/2 , "Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial, 'Ctrl + C' para sair");
         int ch = getch();
         switch (ch) {
         case 'n':
@@ -426,9 +429,9 @@ void query4_UI(char *Cidade,void * dbStats,void *dbUsers, void *dbRides, void *d
     short done = 0;
     while(!done){
         if(cityValid(dbStats,Cidade)){
-            mvprintw(yMax/2,xMax/2,"%.3f\n", (double)(city_get_money(dbStats,Cidade)/city_get_num_rides(dbStats,Cidade)));
+            mvprintw(yMax/2,xMax/2,"Preço medio das viagens %.3f\n", (double)(city_get_money(dbStats,Cidade)/city_get_num_rides(dbStats,Cidade)));
         }
-        mvprintw(50, xMax/2 - strlen("Pressione 'Q' para voltar ao Menu Inicial")/2 , "Pressione 'Q' para voltar ao Menu Inicial");
+        mvprintw(50, xMax/2 - strlen("Pressione 'Q' para voltar ao Menu Inicial, 'Ctrl + C' para sair")/2 , "Pressione 'Q' para voltar ao Menu Inicial, 'Ctrl + C' para sair");
         int ch = getch();
         switch (ch) {
         case 'q':
@@ -475,15 +478,15 @@ void query5_UI(char* data1, char* data2, void *dbStats,void *dbUsers, void *dbRi
         if(num_rides > 0){
             mvprintw(yMax/2,xMax/2,"%.3f\n", (double)(total_money/num_rides));
         }
-        mvprintw(50, xMax/2 - strlen("Pressione 'Q' para voltar ao Menu Inicial")/2 , "Pressione 'Q' para voltar ao Menu Inicial");
-            int ch = getch();
-            switch (ch) {
-            case 'q':
-            case 'Q':
-                done = 1;
-                clear();
-                queries_menu(dbDrivers,dbUsers,dbRides,dbStats);
-            }
+        mvprintw(50, xMax/2 - strlen("Pressione 'Q' para voltar ao Menu Inicial, 'Ctrl + C' para sair")/2 , "Pressione 'Q' para voltar ao Menu Inicial, 'Ctrl + C' para sair");
+        int ch = getch();
+        switch (ch) {
+        case 'q':
+        case 'Q':
+            done = 1;
+            clear();
+            queries_menu(dbDrivers,dbUsers,dbRides,dbStats);
+        }
     }
 }
 
@@ -544,7 +547,7 @@ void query6_UI(char* cidade, char* data1, char* data2, void *dbStats, void *dbRi
     if(num_rides){
         mvprintw(yMax/2,xMax/2,"%.3f\n", (double)(total_distance/num_rides));
     }
-    mvprintw(50, xMax/2 - strlen("Pressione 'Q' para voltar ao Menu Inicial")/2 , "Pressione 'Q' para voltar ao Menu Inicial");
+    mvprintw(50, xMax/2 - strlen("Pressione 'Q' para voltar ao Menu Inicial, 'Ctrl + C' para sair")/2 , "Pressione 'Q' para voltar ao Menu Inicial, 'Ctrl + C' para sair");
             int ch = getch();
             switch (ch) {
             case 'q':
@@ -584,79 +587,82 @@ void query7(char * N, char * cidade, void *dbStats, void *dbDrivers, short i){
     fclose(resultado);
 }
 
-// void query7_UI(char * N, char * cidade, void *dbStats, void *dbDrivers, void *dbUsers, void *dbRides){
-//     int yMax, xMax;
-//     int f = 0;
-//     getmaxyx(stdscr,yMax,xMax);
-//     int n = atoi(N);
-//     int m = n;
-//     int len = get_len_user(dbUsers);
-//     int pages;
-//     if (n % 30 == 0) pages = n / 30;
-//     else pages = n / 30 + 1;
-//     short done = 0;
-//     int page = 0;
-//     keypad(stdscr, TRUE);
+void query7_UI(char * N, char * cidade, void *dbStats, void *dbDrivers, void *dbUsers, void *dbRides){
+    int yMax, xMax;
+    int f = 0;
+    getmaxyx(stdscr,yMax,xMax);
+    int n = atoi(N);
+    int m = n;
+    int len = get_len_user(dbUsers);
+    int pages;
+    if (n % 30 == 0) pages = n / 30;
+    else pages = n / 30 + 1;
+    short done = 0;
+    int page = 0;
+    keypad(stdscr, TRUE);
 
-//     while (!done) {
-//         clear();
-        
-//         int start = page * 30;
-//         int j = start;
-//         int end = start + 30;
-//         if (end > m) {
-//             end = m;
-//         }
-        
-//         mvprintw(45, xMax/2 - strlen ("Page 1 / 1")/2 , "Page %d / %d", page + 1, pages);
-//         int a = 0;
-//         mvprintw(9, 27,"ID                                                           Nome                                                       Avaliacao Media                         ");
+    char* name_driver = malloc(50);
+    int size_nameD = 50;
 
-//         for(int i = start; i < end;j++){
-//             if (a % 31 == 0) a *= 0;
-//             int num_drivers = city_get_num_drivers(dbStats,cidade)-j-1;
-//             if(num_drivers == -1){
-//                 break;
-//             }
-//             int id = city_get_info_id(dbStats,cidade,num_drivers);
-//             if(driver_get_account_status(dbDrivers,id) != 'a'){
-//                 n++;
-//             }
-//             else{
-//                 double aval_m = (double) ((double)city_get_info_aval(dbStats,cidade,num_drivers)/(double)city_get_info_num_trips(dbStats,cidade,num_drivers));
-//                 mvprintw(a + 11, 20,"%012d",id);
-//                 mvprintw(a + 11, 50,"%s",driver_get_name(dbDrivers,id));
-//                 mvprintw(a + 11, 80,"%.3f",aval_m);
-//                 a++;
-//                 i++;
-//             }
-//         }       
-       
-//         mvprintw(50, xMax/2 - strlen("Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial")/2 , "Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial");
-//         int ch = getch();
-//         switch (ch) {
-//         case 'n':
-//         case 'N':
-//             page++;
-//             if (page >= pages) {
-//             page = pages - 1;
-//             }
-//             break;
-//         case 'b':
-//         case 'B':
-//             page--;
-//             if (page < 0) {
-//             page = 0;
-//             }
-//             break;
-//         case 'q':
-//         case 'Q':
-//             done = 1;
-//             clear();
-//             queries_menu(dbDrivers,dbUsers,dbRides,dbStats);
-//         }
-//     }
-// }
+    while (!done) {
+        clear();
+        
+        int start = page * 30;
+        int j = start;
+        int end = start + 30;
+        if (end > m) {
+            end = m;
+        }
+        
+        mvprintw(45, xMax/2 - strlen ("Page 1 / 1")/2 , "Page %d / %d", page + 1, pages);
+        int a = 0;
+        mvprintw(9, 27,"ID                                                           Nome                                                       Avaliacao Media                         ");
+
+        for(int i = start; i < end;j++){
+            if (a % 31 == 0) a *= 0;
+            int num_drivers = city_get_num_drivers(dbStats,cidade)-j-1;
+            if(num_drivers == -1){
+                break;
+            }
+            int id = city_get_info_id(dbStats,cidade,num_drivers);
+            if(driver_get_account_status(dbDrivers,id) != 'a'){
+                n++;
+            }
+            else{
+                double aval_m = (double) ((double)city_get_info_aval(dbStats,cidade,num_drivers)/(double)city_get_info_num_trips(dbStats,cidade,num_drivers));
+                mvprintw(a + 11, 22,"%012d",id);
+                mvprintw(a + 11, 81,"%s",driver_get_name(dbDrivers,id,name_driver,&size_nameD));
+                mvprintw(a + 11, 152,"%.3f",aval_m);
+                a++;
+                i++;
+            }
+        }       
+        
+        mvprintw(50, xMax/2 - strlen("Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial, 'Ctrl + C' para sair")/2 , "Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial, 'Ctrl + C' para sair");
+        int ch = getch();
+        switch (ch) {
+        case 'n':
+        case 'N':
+            page++;
+            if (page >= pages) {
+            page = pages - 1;
+            }
+            break;
+        case 'b':
+        case 'B':
+            page--;
+            if (page < 0) {
+            page = 0;
+            }
+            break;
+        case 'q':
+        case 'Q':
+            done = 1;
+            clear();
+            queries_menu(dbDrivers,dbUsers,dbRides,dbStats);
+        }
+    }
+}
 
 void query8(char* gender, char* X, void *dbStats, void *dbRides, void *dbDrivers, void *dbUsers,short i){
     char *id = malloc(50);
@@ -781,8 +787,7 @@ void query8_UI(char* gender, char* X, void *dbStats, void *dbRides, void *dbDriv
             a++;
             j--;
         }       
-       
-        mvprintw(50, xMax/2 - strlen("Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial")/2 , "Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial");
+        mvprintw(50, xMax/2 - strlen("Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial, 'Ctrl + C' para sair")/2 , "Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial, 'Ctrl + C' para sair");
         int ch = getch();
         switch (ch) {
         case 'n':
@@ -839,7 +844,7 @@ void query8_UI(char* gender, char* X, void *dbStats, void *dbRides, void *dbDriv
         
         mvprintw(45, xMax/2 - strlen ("Page 1 / 1")/2 , "Page %d / %d", page + 1, pages);
         int a = 0;
-        mvprintw(9, 27,"ID do Condutor                  Nome do Condutor                    Username do Utilizador                  Nome do Utilizador ");
+        mvprintw(9, 20,"ID do Condutor                         Nome do Condutor                       Username do Utilizador                  Nome do Utilizador ");
         char* cidade = malloc(30);
         int size = 30;
         for(int i = start; i < end; i++){
@@ -881,7 +886,6 @@ void query8_UI(char* gender, char* X, void *dbStats, void *dbRides, void *dbDriv
             done = 1;
             clear();
             queries_menu(dbDrivers,dbUsers,dbRides,dbStats);
-            // queries_menu(x, y, catalog_users, catalog_drivers, catalog_rides, catalog_cities);
         }
     }    
     
@@ -964,7 +968,7 @@ void query9_UI(char* data1, char* data2, void *dbStats, void *dbRides, void *dbU
         
         mvprintw(45, xMax/2 - strlen ("Page 1 / 1")/2 , "Page %d / %d", page + 1, pages);
         int a = 0;
-        mvprintw(9, 20,"ID de Viagem                            Data de viagem                          Distancia                                   Cidade                              Valor da Gorjeta");
+        mvprintw(9, 20,"ID de Viagem                            Data de viagem                          Distancia                               Cidade                              Valor da Gorjeta");
         char* cidade = malloc(30);
         int size = 30;
         for(int n = start; n < end; n++){
@@ -993,8 +997,7 @@ void query9_UI(char* data1, char* data2, void *dbStats, void *dbRides, void *dbU
         //     mvprintw(a+11, 183, "|");
         //     a++;
         // }
-        
-        mvprintw(50, xMax/2 - strlen("Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial")/2 , "Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial");
+        mvprintw(50, xMax/2 - strlen("Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial, 'Ctrl + C' para sair")/2 , "Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial, 'Ctrl + C' para sair");
         int ch = getch();
         switch (ch) {
         case 'n':
@@ -1022,15 +1025,4 @@ void query9_UI(char* data1, char* data2, void *dbStats, void *dbRides, void *dbU
     
 }
 
-// for (size_t i = n-1; i>n-N-1; i--)
-//     {
-//         User *user = users[i];
-//         if(user->account_status != 'a'){
-//             N++;
-//         }
-//         else{
-//             fprintf(output,"%s;%s;%d\n",user->username,user->name,user->total_dist);
-//         }        
-//     }
-//     fclose(output);
 

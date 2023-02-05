@@ -174,7 +174,7 @@ void *order_by_aval(void *dbDrivers)
                     media = 0;
                 }
                 int j;
-                for (j = i; j >= gap 
+                for (j = i; j >= gap //&& (drivers[j-gap]->account_status == 'a' && temp->account_status == 'i')
                 && ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)>media 
                 || ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)==media && (drivers[j - gap]->last_trip_date)>temp->last_trip_date)
                 || ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)==media && (drivers[j - gap]->last_trip_date) == temp->last_trip_date) && (drivers[j - gap]->id) < temp->id); j -= gap)

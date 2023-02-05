@@ -20,7 +20,7 @@ void query_menu(int opçao,void *DRIVERS,void *USERS,void *RIDES,void *STATS){
     char Cidade[15];
     char data1[11];
     char data2[11];
-    char *Gender;
+    char Gender[1];
     char Idade[3];
     getmaxyx(stdscr,yMax,xMax);
     switch(opçao){
@@ -83,7 +83,7 @@ void query_menu(int opçao,void *DRIVERS,void *USERS,void *RIDES,void *STATS){
             mvgetstr(yMax/2+4,3*(xMax/2) - strlen(data1)/2,data1);
             clear();
             mvprintw(yMax/2,xMax/2-strlen("Insira agora a segunda data:")/2,"Insira agora a segunda data:");
-            mvgetstr(yMax/2+4,(xMax/2) - strlen(data2),data2);
+            mvgetstr(yMax/2+4,(xMax/2) - strlen(data2)/2,data2);
             clear();
             query6_UI(Cidade,data1,data2,STATS,RIDES,USERS,DRIVERS);
             break;
@@ -94,10 +94,10 @@ void query_menu(int opçao,void *DRIVERS,void *USERS,void *RIDES,void *STATS){
             mvprintw(yMax/2,xMax/2-strlen("Insira o número de condutores:")/2,"Insira o número de condutores:");
             mvgetstr(yMax/2+4,(xMax/2)-strlen(N)/2,N);
             clear();
-            mvprintw(yMax/2,xMax/2-strlen("Insira agora a cidade:"),"Insira agora a cidade:");
+            mvprintw(yMax/2,xMax/2-strlen("Insira agora a cidade:")/2,"Insira agora a cidade:");
             mvgetstr(yMax/2+4,(xMax/2)-strlen(Cidade)/2,Cidade);
             clear();
-            // query7_UI(N,Cidade,STATS,DRIVERS,USERS,RIDES);
+            query7_UI(N,Cidade,STATS,DRIVERS,USERS,RIDES);
             // answer_queries_interativo(bla);
             break;
         case(8):
@@ -122,7 +122,7 @@ void query_menu(int opçao,void *DRIVERS,void *USERS,void *RIDES,void *STATS){
             mvprintw(yMax/2,xMax/2 - strlen("Insira a primeira data:")/2,"Insira a primeira data:");
             mvgetstr(yMax/2 + 4,(xMax/2) - strlen(data1)/2,data1);
             clear();
-            mvprintw(yMax/2,xMax/2,"Insira agora a segunda data:");
+            mvprintw(yMax/2,xMax/2 - strlen("Insira a segunda data:")/2,"Insira agora a segunda data:");
             mvgetstr(yMax/2 + 4,(xMax/2)-strlen(data2)/2,data2);
             clear();
             query9_UI(data1,data2,STATS,RIDES,USERS,DRIVERS);
