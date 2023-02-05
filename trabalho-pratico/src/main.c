@@ -13,10 +13,10 @@
 #include "../Include/userinterface.h"
 
 int main(int argc, char **argv){
+// Modo Interativo 
     if(argc < 2){
         initscr();
         cbreak();
-        // noecho();
         curs_set(0);
         int height,width,start_y,start_x;
         int yMax, xMax;
@@ -58,17 +58,13 @@ int main(int argc, char **argv){
         if(strcmp(input,".")==0){
             werase(win);
             wrefresh(win);
-            // WINDOW * menu = newwin(15,xMax,0,0);
-            // mvwprintw(menu,7,(xMax/2) - 5,"Query Selector");
-            // wrefresh(menu);
             queries_menu(DRIVERS,USERS,RIDES,STATS);
         }
-        //printw("Insira a path dos ficheiros CSV:");
-        // int c = wgetch(win);
 
         endwin();
         return 0;
     }
+// Modo Batch 
     else{
     char aux[4096];
     strcpy(aux,argv[1]);

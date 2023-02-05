@@ -53,11 +53,9 @@ void *process_driver(char **info)
     dr->id = atol(info[0]);
     dr->name = strdup(info[1]);
     dr->birth_date = calc_Date(info[2]);
-    // memmove(dr->birth_date, info[2], size);
     dr->gender = *info[3];
     dr->car_class = strdup(info[4]);
     dr->account_creation = calc_Date(info[7]);
-    // memmove(dr->account_creation, info[7], size);
     dr->account_status = tolower(info[8][0]);
     dr->aval = 0;
     dr->total_dist = 0;
@@ -140,16 +138,12 @@ double set_driver_stats(void *dbDrivers, void *distp, void *avalp, void *id, voi
 void print_driver(void *driversDB)
 {
     DB_drivers *db_drivers = (DB_drivers *)driversDB;
-    // gconstpointer id = (gconstpointer) key;
-    // gpointer guser = g_hash_table_lookup(db_drivers->drivers_hashtable,id);
     for (size_t i = 0; db_drivers->drivers_array[i]; i++)
     {
         Driver *driver = (Driver *)db_drivers->drivers_array[i];
         printf("%d,%s,%c,%u,%u,%.3f\n", driver->id, driver->name, driver->gender, driver->birth_date, driver->trips, driver->total_spent);
     }
 
-    // Driver* driver = (Driver*) guser;
-    // printf("%d,%s,%c,%u,%u\n",driver->id,driver->name,driver->gender,driver->birth_date,driver->account_creation);
 }
 
 
@@ -158,7 +152,6 @@ void *order_by_aval(void *dbDrivers)
 {
     DB_drivers *db_drivers = (DB_drivers *)dbDrivers;
     Driver **drivers = db_drivers->drivers_array;
-    // qsort(drivers, 10000, sizeof(Driver *), comparador);
     int n = db_drivers->len;
     if (db_drivers->order != 1){
         for (int gap = n/2; gap > 0; gap /= 2)
@@ -174,10 +167,10 @@ void *order_by_aval(void *dbDrivers)
                     media = 0;
                 }
                 int j;
-                for (j = i; j >= gap //&& (drivers[j-gap]->account_status == 'a' && temp->account_status == 'i')
-                && ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)>media 
+                for (j = i; j >= gap && ((tolower(drivers[j-gap]->account_status) == 'a' && tolower(temp->account_status) == 'i')
+                || ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)>media 
                 || ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)==media && (drivers[j - gap]->last_trip_date)>temp->last_trip_date)
-                || ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)==media && (drivers[j - gap]->last_trip_date) == temp->last_trip_date) && (drivers[j - gap]->id) < temp->id); j -= gap)
+                || ((double)(drivers[j - gap]->aval)/(drivers[j - gap]->trips)==media && (drivers[j - gap]->last_trip_date) == temp->last_trip_date) && (drivers[j - gap]->id) < temp->id)); j -= gap)
                     drivers[j] = drivers[j - gap];
 
                 drivers[j] = temp;
@@ -186,26 +179,6 @@ void *order_by_aval(void *dbDrivers)
         db_drivers->order = 1;
     }
 }
-
-
-//struct driver
-//{
-//    int id;
-//    char *name;
-//    unsigned short birth_date;
-//    char gender;
-//    char *car_class;
-//    char license_plate[sizeof("00-00-AA")];
-//    char *city;
-//    unsigned short account_creation;
-//    char account_status;
-//    int total_dist;
-//    unsigned short trips;
-//    unsigned short aval;
-//    double total_spent;
-//    double aval_m;
-//    unsigned short last_trip_date;
-//};
 
 int driver_get_len(void* driver_p){
     DB_drivers* drivers = (DB_drivers*) driver_p;

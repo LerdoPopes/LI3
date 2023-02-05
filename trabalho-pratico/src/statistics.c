@@ -232,31 +232,6 @@ void *organize_statistics(void* dbUsers, void* dbRides, void* dbDrivers){
     return stats;
 }
 
-
-// typedef struct each_day{
-    
-//     int day;
-//     int num_trips;
-//     int size;
-//     double money;
-//     int* rides;
-
-// } eachDay;
-
-
-// typedef struct Statistics{
-//     GHashTable* cities;
-//     struct city** cities_p;
-
-//     GHashTable* dates;
-//     eachDay** dates_p;
-
-//     int nM;
-//     int nF;
-//     Sexo* males;
-//     Sexo* shemales; 
-//     int order;
-// } Stats;
 void free_Stats(void* info){
     Stats* stats = (Stats*) info;
     for(int i = 0; i < stats->num_c;i++){
@@ -367,8 +342,6 @@ void *order_by_aval_m(void *info, char *cidade)
             {
                 Info* temp = infos[i];
                 double media = (double) (temp->aval)/(temp->num_trips);
-                //printf("%.3f\n",media);
-
 
                 int j;
                 for (j = i; j >= gap 
@@ -382,14 +355,6 @@ void *order_by_aval_m(void *info, char *cidade)
          Cidade->order = 1;
     }
 }
-
-// int compar_int(const void *a, const void *b) {
-//     int _a = * (int*) a;
-//     int _b = * (int*) b;
-//     return (_a > _b) - (_a < _b);
-// }
-
-
 
 void *order_by_distance(void *dbRides,int *bla, int Num)
 {

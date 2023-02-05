@@ -255,7 +255,7 @@ void query2_UI(char* N, void *dbDrivers,void *dbUsers,void *dbRides, void *dbSta
         int start = page * 30;
         int j = (len-1) - start;
         if(page > 0){
-            j = (len-1) - (start + page);
+            j = (len-1) - start ;
         }
         int end = start + 30;
         if (end > m) {
@@ -740,13 +740,12 @@ void query8_UI(char* gender, char* X, void *dbStats, void *dbRides, void *dbDriv
     
     if(strcmp(gender,"M") == 0){
         int nM = gender_get_nM(dbStats);
-        for(int i = nM-1; i > 0; i--){
+        for(int i = 0; i < nM; i++){
             short driver_age = idade(male_driver_get_age(dbStats,i));
             short user_age = idade(male_user_get_age(dbStats,i));
             if(driver_age >= x && user_age >= x){
                 n++;
             }
-            else break;
         }
 
     int pages;
@@ -760,7 +759,6 @@ void query8_UI(char* gender, char* X, void *dbStats, void *dbRides, void *dbDriv
         clear();
 
         int start = page * 30;
-        int j = (nM-1) - start;
         int end = start + 30;
         if (end > n) {
             end = n;
@@ -773,19 +771,20 @@ void query8_UI(char* gender, char* X, void *dbStats, void *dbRides, void *dbDriv
         int size = 30;
         for(int i = start; i < end; i++){
             if (a % 31 == 0) a *= 0;
-            short driver_age = idade(male_driver_get_age(dbStats,j));
-            short user_age = idade(male_user_get_age(dbStats,j));            
-            int id = ride_male_get_id(dbStats,j);
+            short driver_age = idade(male_driver_get_age(dbStats,i));
+            short user_age = idade(male_user_get_age(dbStats,i));            
+            int id = ride_male_get_id(dbStats,i);
             int id_driver = ride_get_driver(dbRides,id);
             driver_get_name(dbDrivers,id_driver,driver,&size_driver);
             ride_get_user(dbRides,id,user,&size_user);
             user_get_name(dbUsers,user,name_user,&size_nameU);
-            mvprintw(a + 11, 20,"%d",id_driver);
-            mvprintw(a + 11, 60,"%s",driver);
-            mvprintw(a + 11, 100,"%s",user);
-            mvprintw(a + 11, 140,"%s",name_user);
-            a++;
-            j--;
+            if(driver_get_account_status(dbDrivers,id_driver) == 'a' && user_get_account_status(dbUsers,user) == 'a'){
+                mvprintw(a + 11, 20,"%d",id_driver);
+                mvprintw(a + 11, 60,"%s",driver);
+                mvprintw(a + 11, 100,"%s",user);
+                mvprintw(a + 11, 140,"%s",name_user);
+                a++;
+            }
         }       
         mvprintw(50, xMax/2 - strlen("Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial, 'Ctrl + C' para sair")/2 , "Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial, 'Ctrl + C' para sair");
         int ch = getch();
@@ -809,22 +808,20 @@ void query8_UI(char* gender, char* X, void *dbStats, void *dbRides, void *dbDriv
             done = 1;
             clear();
             queries_menu(dbDrivers,dbUsers,dbRides,dbStats);
-            // queries_menu(x, y, catalog_users, catalog_drivers, catalog_rides, catalog_cities);
         }
     }
 
     }
     else if(strcmp(gender,"F") == 0){ 
         int nF = gender_get_nF(dbStats);
-        for(int i = nF -1; i > 0; i--){
+        for(int i = 0; i < nF; i++){
             short driver_age = shemale_driver_get_age(dbStats,i);
             short user_age = shemale_user_get_age(dbStats,i);
             if(driver_age >= x && user_age >= x){
                 n++;
             }
-            else break;
         }
-    
+
     int pages;
     if (n % 30 == 0) pages = n / 30;
     else pages = n / 30 + 1;
@@ -836,7 +833,6 @@ void query8_UI(char* gender, char* X, void *dbStats, void *dbRides, void *dbDriv
         clear();
         
         int start = page * 30;
-        int j = (nF-1) - start;
         int end = start + 30;
         if (end > n) {
             end = n;
@@ -849,19 +845,20 @@ void query8_UI(char* gender, char* X, void *dbStats, void *dbRides, void *dbDriv
         int size = 30;
         for(int i = start; i < end; i++){
             if (a % 31 == 0) a *= 0;
-            short driver_age = shemale_driver_get_age(dbStats,j);
-            short user_age = shemale_user_get_age(dbStats,j);         
-            int id = ride_shemale_get_id(dbStats,j);
+            short driver_age = shemale_driver_get_age(dbStats,i);
+            short user_age = shemale_user_get_age(dbStats,i);         
+            int id = ride_shemale_get_id(dbStats,i);
             int id_driver = ride_get_driver(dbRides,id);
             driver_get_name(dbDrivers,id_driver,driver,&size_driver);
             ride_get_user(dbRides,id,user,&size_user);
             user_get_name(dbUsers,user,name_user,&size_nameU);
-            mvprintw(a + 11, 20,"%012d",id_driver);
-            mvprintw(a + 11, 60,"%s",driver);
-            mvprintw(a + 11, 100,"%s",user);
-            mvprintw(a + 11, 140,"%s",name_user);
-            a++;
-            j--;
+                if(driver_get_account_status(dbDrivers,id_driver) == 'a' && user_get_account_status(dbUsers,user) == 'a'){
+                    mvprintw(a + 11, 20,"%012d",id_driver);
+                    mvprintw(a + 11, 60,"%s",driver);
+                    mvprintw(a + 11, 100,"%s",user);
+                    mvprintw(a + 11, 140,"%s",name_user);
+                    a++;
+                }
         }       
 
         mvprintw(50, xMax/2 - strlen("Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial")/2 , "Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial");
@@ -977,7 +974,6 @@ void query9_UI(char* data1, char* data2, void *dbStats, void *dbRides, void *dbU
             short distancia = ride_get_distance(dbRides,ride_ids[j]);
             ride_get_city(dbRides,ride_ids[j],cidade,&size);
             double tip = ride_get_tip(dbRides,ride_ids[j]);
-            // fprintf(resultado,"%012d;%02d/%02d/%d;%d;%s;%.3f\n",ride_ids[n],data->day,data->month,data->year,distancia,cidade,tip);
             mvprintw(a + 11, 20,"%012d",ride_ids[j]);
             mvprintw(a + 11, 60,"%02d/%02d/%d",data->day,data->month,data->year);
             mvprintw(a + 11, 100,"%d",distancia);
@@ -987,16 +983,6 @@ void query9_UI(char* data1, char* data2, void *dbStats, void *dbRides, void *dbU
             j--;
         }       
        
-        // for (int i = start; i < end; i++) {
-        //     if (a % 31 == 0) a *= 0;
-        //     mvprintw(a + 11, 22, "%012d", get_id_driver_top_N(catalog_drivers, i));
-        //     mvprintw(a + 11, 81, "%s", get_name_driver_top_N(catalog_drivers, i));
-        //     mvprintw(a + 11, 152 , "%.3f", get_aval_med_top_N(catalog_drivers, i));
-        //     mvprintw(a+11, 61, "|");
-        //     mvprintw(a+11, 122, "|");
-        //     mvprintw(a+11, 183, "|");
-        //     a++;
-        // }
         mvprintw(50, xMax/2 - strlen("Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial, 'Ctrl + C' para sair")/2 , "Pressione 'N' para ver a próxima página, 'B' para a página anterior, 'Q' para voltar ao Menu Inicial, 'Ctrl + C' para sair");
         int ch = getch();
         switch (ch) {
@@ -1019,7 +1005,6 @@ void query9_UI(char* data1, char* data2, void *dbStats, void *dbRides, void *dbU
             done = 1;
             clear();
             queries_menu(dbDrivers,dbUsers,dbRides,dbStats);
-            // queries_menu(x, y, catalog_users, catalog_drivers, catalog_rides, catalog_cities);
         }
     }
     

@@ -6,12 +6,6 @@
 #include <math.h>
 #include <stdarg.h>
 
-//typedef struct querie{
-//    int line; //linha do ficheiro da query
-//    char queriex; //query a ser executada
-//    char comando[500]; //arguments
-//} querie;
-
 void *parser(FILE *to_parse, 
 char const*rest,  
 void* (*parse_func)(char**), 
@@ -77,26 +71,3 @@ size_t current = 64;
     return result;
 }
 
-
-
-//void q_printall(void **all){
-//    int i;
-//    for(i=0;all[i];i++){
-//        char** save = (char**) all[i];
-//        for (size_t j = 0; save[j]; j++)
-//        {
-//            printf("%s\n",save[j]);
-//        }
-//    
-//    }
-//    printf("done\n");
-//
-//} 
-//
-//void main(int argc,char **argv) {
-//    FILE * querys = fopen("./input.txt", "r");
-//    void ** monky = parser(querys);
-//    q_printall(monky);
-//}
-
-//  void* (organize_func2)(void** ,void* , void*, void*, void*), void* struct_drivers, void* struct_users, void*(set_users_stats)(void*,void*), void*(set_driver_stats)(void*,void*)

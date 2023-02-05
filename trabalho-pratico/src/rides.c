@@ -46,7 +46,6 @@ typedef struct data_base_rides{
  
      ri->id = atol(info[0]);
      ri->date = calc_Date(info[1]);
-     // memmove(ri->date, info[1], strlen(info[1]));
      ri->driver = atoi(info[2]);
      ri->user = strdup(info[3]);
      ri->city = strdup(info[4]);
@@ -86,10 +85,6 @@ void free_rides(void* rides){
     free(db_rides->rides_array);
     free(db_rides);
 }
-
-//short ride_get_date(ride* rides_p, int Id){
-//eturn g_hash_table_lookup(rides->rides_hashtable, id)
-//}
 
 int ride_get_driver(void *ride_p, int ID){
     DB_rides* rides = (DB_rides*) ride_p;
@@ -183,16 +178,3 @@ int isRide(void* ride_p, int ID){
     Ride *driver = (Ride*) driverp;
     return (driver != NULL);
 }
-
-
-//short ride_get_date(void* rides_p, int Id){
-//    DB_rides* rides = (DB_rides*) rides_p;
-//    gconstpointer id = (gconstpointer;
-//    gpointer ridep = g_hash_table_lookup(rides->rides_hashtable, id);
-//    Ride* ride = (Ride*) ridep;
-//    return ride->date;
-//}
-//
-//short ride_get_date(ride* rides_p, int Id){
-//return g_hash_table_lookup(rides->rides_hashtable, id)
-//}

@@ -92,7 +92,3 @@ int invalid_date(char* error){
     }
     return 1;
 }
-
-//short ride_get_date(ride* rides_p, int Id){
-//return g_hash_table_lookup(rides->rides_hashtable, id)
-//}
