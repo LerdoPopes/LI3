@@ -23,7 +23,6 @@ void timequary(int arg, int j, char *input1, char *input2, char *input3, int nli
     clock_t start, end;
     double cpu_time_used;
     char ansfim[SIZE];
-    //printf ("arg %d\n\n", arg);
     start = clock();
     //char *resultadoo = "";
     //double resultado2;
@@ -163,10 +162,7 @@ void testing(void **input, char *resultados, char *outputs, void *DRIVERS,void *
         int arg = atoi(INPUT[i][0]);
         //printf("i %d\n", i);
         char *input1 = INPUT[i][1], *input2 = INPUT[i][2], *input3 = INPUT[i][3];
-        //printf("i %d\n", i);
         timequary(arg, j, input1, input2, input3, linhas, respostaM, DRIVERS, USERS, RIDES, STATS);
-        if(i==47)
-            //printf("1\n\n");
         linhas++;
     }
 
@@ -241,7 +237,7 @@ void main(int argc, char *argv[]){
         if(users == NULL) {
             perror("Opening users.csv: try another path");
         }
-        void *USERS = parser(users, ";\n\r", process_user,organize_user,0);
+        void *USERS = parser(users, ";\n\r", process_user,organize_user);
         fclose(users);
 
         strcpy(aux,argv[1]);
@@ -250,7 +246,7 @@ void main(int argc, char *argv[]){
         if(drivers == NULL) {
             perror("Opening drivers.csv: try another path");
         }
-        void *DRIVERS = parser(drivers, ";\n\r", process_driver,organize_driver,0);
+        void *DRIVERS = parser(drivers, ";\n\r", process_driver,organize_driver);
         fclose(drivers);
 
         strcpy(aux,argv[1]);
@@ -276,10 +272,9 @@ void main(int argc, char *argv[]){
 
         sprintf(respostaM[0], "Tempo de loading:%0.3f seg\n", cpu_time_used);
         fputs(respostaM[0], fPtr);
-        //printf("0\n");
-
+        
         if (argv != NULL){             
-            testing(INPUT, argv[3], argv[4], USERS, DRIVERS, RIDES, STATS, respostaM); //argv[2]- ficheiro inputs; argv[3]-ficheiro dos resultados criados; argv[4]-resultados esperados; USERS; DRIVERS,RIDES;STATs;respostaM
+            testing(INPUT, argv[3], argv[4], DRIVERS, USERS, RIDES, STATS, respostaM); //argv[2]- ficheiro inputs; argv[3]-ficheiro dos resultados criados; argv[4]-resultados esperados; USERS; DRIVERS,RIDES;STATs;respostaM
         }
         free_rides(RIDES);
         free_driver(DRIVERS);
