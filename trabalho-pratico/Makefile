@@ -49,4 +49,4 @@ $(DIREC)%.o: src/.c | objetos
 	$(CC) -o "$@" -c "$<"
 
 clean:
-	rm -rf $(DIREC) programa-principal Resultados teste
+	rm -rf $(DIREC) programa-principal Resultados programa-teste

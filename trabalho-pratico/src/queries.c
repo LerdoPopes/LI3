@@ -501,6 +501,7 @@ void query6(char* cidade, char* data1, char* data2, void *dbStats, void *dbRides
 
     char* ride_c = malloc(30);
     int city_size = 30;
+    //printf("a\n");
     
     for(int i = date1; i <= date2; i++){
         int max = date_get_num_trips(dbStats,i);
@@ -514,9 +515,11 @@ void query6(char* cidade, char* data1, char* data2, void *dbStats, void *dbRides
             }
         }
     }
+    //printf("b\n");
     if(num_rides){
         fprintf(resultado,"%.3f\n",(double)(total_distance/num_rides));
     }
+    //printf("c\n");
     free(ride_c);
     free(id);
     fclose(resultado);
@@ -570,14 +573,17 @@ void query7(char * N, char * cidade, void *dbStats, void *dbDrivers, short i){
     order_by_aval_m(dbStats,cidade);
     for(int i = 0; i < n;i++){
         int num_drivers = city_get_num_drivers(dbStats,cidade)-i-1;
+        //printf ("atm, %d\n\n", i);
         if(num_drivers == -1){
             break;
         }
         int id = city_get_info_id(dbStats,cidade,num_drivers);
         if(driver_get_account_status(dbDrivers,id) != 'a'){
             n++;
+        //printf ("att, %d,%c\n\n", i, driver_get_account_status(dbDrivers,id));
         }
         else{
+            //printf ("a, %d\n\n", id) ;
             double aval_m = (double) ((double)city_get_info_aval(dbStats,cidade,num_drivers)/(double)city_get_info_num_trips(dbStats,cidade,num_drivers));
             fprintf(resultado,"%012d;%s;%.3f\n",id,driver_get_name(dbDrivers,id,driver,&size_d),aval_m);
         }
