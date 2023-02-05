@@ -54,12 +54,12 @@ void answer_queries(void** input, void* USERS, void* DRIVERS, void* RIDES, void*
                 clock_t end2 = clock();
                 printf("Query 2: %f\n",((float)(end2 - start2))/CLOCKS_PER_SEC);
                 break;
-            //case(3):
-            //    clock_t start3 = clock();
-            //    query3(INPUT[i][1],USERS,j);
-            //    clock_t end3 = clock();
-            //    printf("Query 3: %f\n",((float)(end3 - start3))/CLOCKS_PER_SEC);
-            //    break;
+            case(3):
+               clock_t start3 = clock();
+               query3(INPUT[i][1],USERS,j);
+               clock_t end3 = clock();
+               printf("Query 3: %f\n",((float)(end3 - start3))/CLOCKS_PER_SEC);
+               break;
             case(4):
                 clock_t start4 = clock();
                 query4(INPUT[i][1],STATS,j);
