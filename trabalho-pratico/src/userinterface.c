@@ -56,7 +56,7 @@ void query_menu(int opçao,void *DRIVERS,void *USERS,void *RIDES,void *STATS){
         case(4):
             clear();
             mvprintw(yMax/2 - 4, xMax/2-strlen("Esta query calcula o preço médio de viagens numa determinada cidade.")/2,"Esta query calcula o preço médio de viagens numa determinada cidade.");
-            mvprintw(yMax/2,xMax/2-strlen("Insira a cidade:")/2,"Insira a cidade:");
+            mvprintw(yMax/2,xMax/2-strlen("Insira a cidade (primeira letra maiúscula):")/2,"Insira a cidade (primeira letra maiúscula):");
             mvgetstr(yMax/2 + 4,xMax/2-strlen(Cidade)/2,Cidade);
             clear();
             query4_UI(Cidade,STATS,USERS,RIDES,DRIVERS);
@@ -76,11 +76,11 @@ void query_menu(int opçao,void *DRIVERS,void *USERS,void *RIDES,void *STATS){
         case(6):
             clear();
             mvprintw(yMax/2 - 4,xMax/2 - strlen("Esta query calcula a distância média percorrida, numa determinada cidade, entre 2 dias.")/2,"Esta query calcula a distância média percorrida, numa determinada cidade, entre 2 dias.");
-            mvprintw(yMax/2,xMax/2-strlen("Insira a cidade")/2,"Insira a cidade:");
+            mvprintw(yMax/2,xMax/2-strlen("Insira a cidade (primeira letra maiúscula)")/2,"Insira a cidade (primeira letra maiúscula):");
             mvgetstr(yMax/2 + 4,(xMax/2)-strlen(Cidade)/2,Cidade);
             clear();
             mvprintw(yMax/2,xMax/2-strlen("Insira a primeira data:")/2,"Insira a primeira data:");
-            mvgetstr(yMax/2+4,3*(xMax/2) - strlen(data1)/2,data1);
+            mvgetstr(yMax/2+4,(xMax/2) - strlen(data1)/2,data1);
             clear();
             mvprintw(yMax/2,xMax/2-strlen("Insira agora a segunda data:")/2,"Insira agora a segunda data:");
             mvgetstr(yMax/2+4,(xMax/2) - strlen(data2)/2,data2);
@@ -94,7 +94,7 @@ void query_menu(int opçao,void *DRIVERS,void *USERS,void *RIDES,void *STATS){
             mvprintw(yMax/2,xMax/2-strlen("Insira o número de condutores:")/2,"Insira o número de condutores:");
             mvgetstr(yMax/2+4,(xMax/2)-strlen(N)/2,N);
             clear();
-            mvprintw(yMax/2,xMax/2-strlen("Insira agora a cidade:")/2,"Insira agora a cidade:");
+            mvprintw(yMax/2,xMax/2-strlen("Insira agora a cidade (primeira letra maiúscula):")/2,"Insira agora a cidade (primeira letra maiúscula):");
             mvgetstr(yMax/2+4,(xMax/2)-strlen(Cidade)/2,Cidade);
             clear();
             query7_UI(N,Cidade,STATS,DRIVERS,USERS,RIDES);
@@ -105,7 +105,7 @@ void query_menu(int opçao,void *DRIVERS,void *USERS,void *RIDES,void *STATS){
             mvprintw(yMax/2 - 12,xMax/2-strlen("Esta query lista todas as viagens nas quais o utilizador e o condutor são do género selecionado e têm perfis com uma certa quantia ou mais de anos.")/2,"Esta query lista todas as viagens nas quais o utilizador e o condutor são do género selecionado e têm perfis com uma certa quantia ou mais de anos.");
             mvprintw(yMax/2 - 8,xMax/2 - strlen("O resultado será ordenado de forma que as contas mais antigas de condutores apareçam primeiro e, se necessário, que as contas de utilizadores apareçam primeiro.")/2,"O resultado será ordenado de forma que as contas mais antigas de condutores apareçam primeiro e, se necessário, que as contas de utilizadores apareçam primeiro.");
             mvprintw(yMax/2 - 4,xMax/2-strlen("Em caso de empate, o resultado é ordenado pelo id da viagem (em ordem crescente).")/2,"Em caso de empate, o resultado é ordenado pelo id da viagem (em ordem crescente).");
-            mvprintw(yMax/2,xMax/2 - strlen("Insira o género do condutor e utilizador das viagens:")/2,"Insira o género do condutor e utilizador das viagens:");
+            mvprintw(yMax/2,xMax/2 - strlen("Insira o género do condutor e utilizador das viagens (letra maiúscula):")/2,"Insira o género do condutor e utilizador das viagens (letra maiúscula):");
             mvgetstr(yMax/2 + 4,(xMax/2)-strlen(Gender)/2,Gender);
             clear();
             mvprintw(yMax/2,xMax/2 - strlen("Insira agora a idade mínima dos perfis em anos:")/2,"Insira agora a idade mínima dos perfis em anos:");

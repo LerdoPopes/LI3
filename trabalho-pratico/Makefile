@@ -30,14 +30,14 @@ FLAGS= -IInclude `pkg-config --cflags glib-2.0`
 DIREC:=objetos/
 PNTO=$(PNTH:src/%.c=$(DIREC)%.o)
 
-coiso: $(PNTO) Resultados teste
+coiso: $(PNTO) Resultados 
 	$(CC) $(PNTC) $(FLAGS) -lncurses -g -o programa-principal `pkg-config --libs glib-2.0` -lncurses
 
 compile: coiso Resultados
 	./programa-principal
 
 teste: Resultados
-	$(CC) testmode/testes.c src/dates.c src/drivers.c src/erros.c src/parser.c src/queries.c src/rides.c src/statistics.c users.c userinterface.c -lncurses -g -o programa-teste `pkg-config --libs glib-2.0` -lncurses
+	$(CC) testmode/testes.c src/dates.c src/drivers.c src/erros.c src/parser.c src/queries.c src/rides.c src/statistics.c src/users.c src/userinterface.c -lncurses -g -o programa-teste `pkg-config --libs glib-2.0` -lncurses
 
 objetos:
 	mkdir -p $@
