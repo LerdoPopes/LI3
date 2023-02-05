@@ -261,7 +261,7 @@ void free_Stats(void* info){
     Stats* stats = (Stats*) info;
     for(int i = 0; i < stats->num_c;i++){
         
-        for(int j = 0; stats->cities_p[i]->info[j];j++){
+        for(int j = 0; j<stats->cities_p[i]->num_drivers;j++){
             
             free(stats->cities_p[i]->info[j]);
         }
