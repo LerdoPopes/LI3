@@ -14,14 +14,14 @@
 #include "../Include/statistics.h"
 #include "../Include/userinterface.h"
 
-#define TM 500
+#define SIZE 500
 
 //answer_queries(INPUT,USERS,DRIVERS,RIDES,STATS);
 //tempo_query(arg, input1, input2, input3, linhas, respostaM, dbDrivers, dbUsers, dbRides, dbStats);
 void tempo_query(int arg, int j, char *input1, char *input2, char *input3, int nlinhas, char Ans[][400], void *DRIVERS,void *USERS,void *RIDES,void *STATS){
     clock_t start, end;
     double cpu_time_used;
-    char ansfim[TM];
+    char ansfim[SIZE];
     start = clock();
     //char *resultadoo = "";
     //double resultado2;
@@ -77,7 +77,7 @@ void tempo_query(int arg, int j, char *input1, char *input2, char *input3, int n
     strcpy(Ans[nlinhas], ansfim);
 }
 
-/Função que lê os ficheiros das queries
+//Função que lê os ficheiros das queries
 void verificar(char *resultados, char *resultados_certos, char respostaM[][400], int j)
 {
     FILE *result;
@@ -150,7 +150,7 @@ void query_teste(void **input, char *resultados, char *outputs, void *DRIVERS,vo
    
     char*** INPUT = (char***) input;
     for(short i = 0, j = 1; INPUT[i] != NULL;i++,j++){   
-        int agr = atoi(INPUT[i][0]);
+        int arg = atoi(INPUT[i][0]);
         char *input1 = INPUT[i][1], *input2 = INPUT[i][2], *input3 = INPUT[i][3];
         tempo_query(arg, j, input1, input2, input3, linhas, respostaM, DRIVERS, USERS, RIDES, STATS);
         linhas++;
@@ -220,14 +220,14 @@ void main(int argc, char *argv[])
 
     if (argc >= 4)
     {
-        if (argv != NULL)
-        {             
-            query_teste(argv[2], argv[3], argv[4], tu, td, tr, respostaM);
-        }
-        fclose(fPtr);
-        freeHashtableUser(tu);
-        freeHashtableDriver(td);
-        freeHashtableRides(tr);
+        // if (argv != NULL)
+        // {             
+            // query_teste(argv[2], argv[3], argv[4], tu, td, tr, respostaM);
+        // }
+        // fclose(fPtr);
+        // freeHashtableUser(tu);
+        // freeHashtableDriver(td);
+        // freeHashtableRides(tr);
 
         char aux[4096];
         strcpy(aux,argv[1]);
