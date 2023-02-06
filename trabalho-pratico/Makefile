@@ -37,7 +37,7 @@ compile: coiso Resultados
 	./programa-principal
 
 teste: Resultados
-	$(CC) $(FLAGS) testmode/testes.c src/dates.c src/drivers.c src/errors.c src/parser.c src/queries.c src/rides.c src/statistics.c src/users.c src/userinterface.c -lncurses -g -o programa-teste `pkg-config --libs glib-2.0` -lncurses
+	$(CC) $(FLAGS) testmode/testes.c src/dates.c src/drivers.c src/errors.c src/parser.c src/queries.c src/rides.c src/statistics.c src/users.c src/userinterface.c -lncurses -g -o programa-testes `pkg-config --libs glib-2.0` -lncurses
 
 objetos:
 	mkdir -p $@
@@ -49,4 +49,4 @@ $(DIREC)%.o: src/%.c | objetos
 	$(CC) $(FLAGS) -o "$@" -c "$<" `pkg-config --libs glib-2.0` 
 
 clean:
-	rm -rf $(DIREC) programa-principal Resultados programa-teste resultados_testes.txt
+	rm -rf $(DIREC) programa-principal Resultados programa-testes resultados_testes.txt
