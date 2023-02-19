@@ -1,5 +1,7 @@
-a100547,José Eduardo Silva Monteiro Santos Oliveira,Wally1906 
+Projeto de Laboratórios de Informática III, realizado por:
 
-a100759,Pedro Afonso Moreira Lopes,LerdoPopes 
+A100547,José Eduardo Silva Monteiro Santos Oliveira,Wally1906 
 
-a100824,Gonçalo Daniel Machado Costa,Goncalini
+A100759,Pedro Afonso Moreira Lopes,LerdoPopes 
+
+A100824,Gonçalo Daniel Machado Costa,Goncalini
